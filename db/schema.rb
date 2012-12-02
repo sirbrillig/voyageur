@@ -11,11 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121202205646) do
+ActiveRecord::Schema.define(:version => 20121202212447) do
 
   create_table "locations", :force => true do |t|
     t.string   "title"
     t.string   "address"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "locations_trips", :id => false, :force => true do |t|
+    t.integer "location_id"
+    t.integer "trip_id"
+  end
+
+  add_index "locations_trips", ["location_id", "trip_id"], :name => "index_locations_trips_on_location_id_and_trip_id"
+
+  create_table "trips", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
