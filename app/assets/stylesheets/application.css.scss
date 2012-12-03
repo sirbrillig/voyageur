@@ -7,7 +7,23 @@ $header-height: 150px;
   @include zen-grid-container;
 }
 
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
 header {
   background-image: url('header.png');
   height: $header-height;
+  text-align: center;
+
+  h1 {
+    color: #fff;
+    font-family: Copperplate, serif;
+    font-size: 4em; // FIXME
+    font-weight: normal;
+    padding: 0px;
+    margin: 0px;
+    padding-top: 15px;
+  }
 }
