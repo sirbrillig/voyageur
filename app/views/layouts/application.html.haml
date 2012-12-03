@@ -1,0 +1,28 @@
+!!! HTML
+!!!
+%html
+  %head
+    %title Voyageur
+    = stylesheet_link_tag    "application", :media => "all"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .container#container
+      %header
+        = link_to(image_tag('logo.png'), root_url)
+
+      - if flash[:notice]
+        #notice
+          = flash[:notice]
+      - if flash[:error]
+        #error
+          = flash[:error]
+      - if @location and @location.errors.any?
+        #error_explanation
+          %h2= "#{pluralize(@location.errors.count, "error")} prohibited this location from being saved:"
+          %ul
+            - @location.errors.full_messages.each do |msg|
+              %li= msg
+      .content
+        = yield
+    %footer#footer

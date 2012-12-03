@@ -1,0 +1,13 @@
+@import "zen";
+$zen-column-count: 12;
+$zen-gutter-width: 10px;
+$header-height: 150px;
+
+.container {
+  @include zen-grid-container;
+}
+
+header {
+  background-image: url('header.png');
+  height: $header-height;
+}
