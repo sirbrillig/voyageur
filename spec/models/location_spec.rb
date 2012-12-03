@@ -8,7 +8,7 @@ describe Location do
 
   it "calculates the distance between one Location and another" do
     dist1 = @loc1.distance_to @loc2
-    milage_between_loc1_and_loc2 = 2.7 # It would be better to get this dynamically
+    milage_between_loc1_and_loc2 = 4266 # It would be better to get this dynamically
     dist1.should eq milage_between_loc1_and_loc2
   end
 end
