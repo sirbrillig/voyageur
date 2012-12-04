@@ -3,6 +3,14 @@ $zen-column-count: 12;
 $zen-gutter-width: 10px;
 $header-height: 150px;
 
+// Assuming font-size defaults to 16pt, we can use math to make ems.
+// Found a function here: http://blog.poleteweb.com/pixel-to-em-math-using-sass
+$browser-context: 16pt;
+@mixin pt-to-ems($prop, $pixels, $context: $browser-context) {
+  #{$prop}: #{$pixels/$context}em
+}
+
+
 .container {
   @include zen-grid-container;
 }
@@ -10,6 +18,8 @@ $header-height: 150px;
 body {
   margin: 0px;
   padding: 0px;
+  width: 100%;
+  height: 100%;
 }
 
 header {
@@ -19,11 +29,16 @@ header {
 
   h1 {
     color: #fff;
-    font-family: Copperplate, serif;
-    font-size: 4em; // FIXME
+    @include pt-to-ems(font-size, 48pt);
+    font-family: 'Copperplate', serif;
     font-weight: normal;
     padding: 0px;
     margin: 0px;
-    padding-top: 15px;
+    margin-bottom: -15px;
+  }
+
+  img {
+    margin: 0px;
+    padding: 0px;
   }
 }
