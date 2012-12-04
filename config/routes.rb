@@ -1,6 +1,19 @@
 Voyageur::Application.routes.draw do
   resources :locations
 
+  resources :trips do
+    member do
+      get 'clear'
+    end
+
+    resources :locations do
+      member do
+        get 'add'
+        get 'remove'
+      end
+    end
+  end
+
   root :to => 'locations#index'
 
 

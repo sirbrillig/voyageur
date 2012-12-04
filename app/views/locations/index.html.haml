@@ -1,4 +1,5 @@
 .content_locations
+
   .instructions
     %h1 Drag and Drop
     =image_tag('arrow_right.png')
@@ -8,30 +9,31 @@
     %ul.library_locations
       - if @locations
         - @locations.each do |loc|
-          %li.location
+          %li.location{class: "location_#{loc.id}"}
             %h1= loc.title
             %p= loc.address
             %nav.actions
               = link_to(image_tag('edit.png'), edit_location_path(loc))
-              = link_to(image_tag('delete.png'), location_path(loc), :method => :delete)
+              = link_to(image_tag('delete.png'), location_path(loc), :method => :delete, :id => "delete_location")
+              = link_to(image_tag('arrow_right.png'), add_trip_location_path(@trip, loc), :id => "add_to_trip") if @trip
 
   .trip
     .summary
       %h1 This Trip
       %h1= "#{@distance || 0} miles total"
       - if @trip
-        =link_to(image_tag('clear_button.png'), "/trip/#{@trip.id}/clear")
+        =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
 
     %ul.trip_locations
       - if @trip
         %li.distance 
           %h1 Start of the Journey
         - @trip.locations.each_with_index do |loc, index|
-          %li.location
+          %li.location{class: "location_#{loc.id}"}
             %h1= loc.title
             %p= loc.address
             %nav.actions
-              = link_to(image_tag('remove.png'), "/trip/#{@trip.id}/remove/#{loc.id}")
+              = link_to(image_tag('remove.png'), remove_trip_location_path(@trip, loc), :id => "remove_from_trip")
           - unless (index + 1) >= @trip.locations.size
             %li.distance
               %h1= "#{loc.distance_to(@trip.locations[index + 1])} miles to"

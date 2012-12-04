@@ -29,7 +29,7 @@ describe "The Location list page" do
     before do
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
       within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-      within(:css, ".trip .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".trip .location_#{@loc1.id}") { click_link('remove_from_trip') }
     end
 
     it "removes the location from the trip" do
@@ -44,7 +44,7 @@ describe "The Location list page" do
   context "when the 'delete location' button is clicked" do
     before do
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-      within(:css, ".trip .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".library .location_#{@loc1.id}") { click_link('delete_location') }
     end
 
     it "removes the location from the library" do

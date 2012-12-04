@@ -3,6 +3,7 @@ class LocationsController < ApplicationController
   # GET /locations.json
   def index
     @locations = Location.all
+    @trip = Trip.find_or_create_by_id(1) # FIXME: hm. tie this to users.
 
     respond_to do |format|
       format.html # index.html.erb
@@ -74,6 +75,30 @@ class LocationsController < ApplicationController
   def destroy
     @location = Location.find(params[:id])
     @location.destroy
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def add
+    @location = Location.find(params[:id])
+    @trip = Trip.find(params[:trip_id])
+
+    @location.trips << @trip
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def remove
+    @location = Location.find(params[:id])
+    @trip = Trip.find(params[:trip_id])
+
+    @location.trips.delete(@trip)
 
     respond_to do |format|
       format.html { redirect_to locations_url }
