@@ -5,6 +5,7 @@ describe Trip do
     @trip = Trip.create
     @loc1 = FactoryGirl.create(:home_location)
     @loc2 = FactoryGirl.create(:work_location)
+    @loc3 = FactoryGirl.create(:food_location)
   end
 
   it "can have many Locations" do
@@ -27,5 +28,11 @@ describe Trip do
     dist2 = @loc2.distance_to @loc1
     total_dist = dist1 + dist2
     @trip.distance.should eq total_dist
+  end
+
+  it "allows the Locations to be reordered" do
+    @trip.locations << @loc1 << @loc2 << @loc1 << @loc3
+    @trip.move_location(3, to: 1)
+    @trip.locations[1].should eq @loc3
   end
 end
