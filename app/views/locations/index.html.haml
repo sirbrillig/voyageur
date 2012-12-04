@@ -5,6 +5,15 @@
 
   .library
     =link_to(image_tag('add_location_button.png'), new_location_path)
+    .library_locations
+      - if @locations
+        - @locations.each do |loc|
+          .location
+            %h1= loc.title
+            %p= loc.address
+            %nav.actions
+              = link_to(image_tag('edit.png'), edit_location_path(loc))
+              = link_to(image_tag('delete.png'), location_path(loc), :method => :delete)
 
   .trip
     .summary
@@ -20,6 +29,7 @@
           .location
             %h1= loc.title
             %p= loc.address
-            = link_to(image_tag('remove.png'), "/trip/#{@trip.id}/remove/#{loc.id}")
+            %nav.actions
+              = link_to(image_tag('remove.png'), "/trip/#{@trip.id}/remove/#{loc.id}")
           - unless (index + 1) >= @trip.locations.size
             %h1.distance= "#{loc.distance_to(@trip.locations[index + 1])} miles to"

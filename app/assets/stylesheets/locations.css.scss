@@ -9,11 +9,19 @@ $box-background-color: #e8e4d2;
   border: 1px solid #000;
   background-color: $box-background-color;
   text-align: center;
-  padding: 10px;
+  padding: 7px;
+  width: 286px; // 300px - padding
 
   h1 {
     @include pt-to-ems(font-size, 24pt);
-    }
+  }
+}
+
+@mixin location-images {
+  nav.actions {
+    float: right;
+    margin-top: -75px;
+  }
 }
 
 .content_locations {
@@ -28,6 +36,11 @@ $box-background-color: #e8e4d2;
 
   .library {
     @include zen-grid-item(4, 3);
+
+    .location {
+      @include location-block;
+      @include location-images;
+    }
   }
 
   .trip {
@@ -36,10 +49,14 @@ $box-background-color: #e8e4d2;
     .summary {
       @include location-block;
 
-      img {
+      nav.actions {
         float: right;
         margin-top: -50px;
       }
+    }
+
+    .location {
+      @include location-block;
     }
   }
 }
