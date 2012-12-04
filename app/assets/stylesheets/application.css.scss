@@ -1,6 +1,6 @@
 @import "zen";
 $zen-column-count: 12;
-$zen-gutter-width: 10px;
+$zen-gutter-width: 20px;
 $header-height: 150px;
 
 // Assuming font-size defaults to 16pt, we can use math to make ems.
@@ -8,6 +8,10 @@ $header-height: 150px;
 $browser-context: 16pt;
 @mixin pt-to-ems($prop, $pixels, $context: $browser-context) {
   #{$prop}: #{$pixels/$context}em
+}
+
+@mixin debug {
+  border: 1px dotted red;
 }
 
 
@@ -22,18 +26,22 @@ body {
   height: 100%;
 }
 
+h1 {
+  @include pt-to-ems(font-size, 48pt);
+  font-family: 'Copperplate', serif;
+  font-weight: normal;
+  padding: 0px;
+  margin: 0px;
+}
+
 header {
   background-image: url('header.png');
   height: $header-height;
   text-align: center;
+  margin-bottom: 80px;
 
   h1 {
     color: #fff;
-    @include pt-to-ems(font-size, 48pt);
-    font-family: 'Copperplate', serif;
-    font-weight: normal;
-    padding: 0px;
-    margin: 0px;
     margin-bottom: -15px;
   }
 

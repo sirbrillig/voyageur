@@ -1,0 +1,25 @@
+.content_locations
+  .instructions
+    %h1 Drag and Drop
+    =image_tag('arrow_right.png')
+
+  .library
+    =link_to(image_tag('add_location_button.png'), new_location_path)
+
+  .trip
+    .summary
+      %h1 This Trip
+      %h1= "#{@distance || 0} miles total"
+      - if @trip
+        =link_to(image_tag('clear_button.png'), "/trip/#{@trip.id}/clear")
+
+    .trip_locations
+      - if @trip
+        %h1.distance Start of the Journey
+        - @trip.locations.each_with_index do |loc, index|
+          .location
+            %h1= loc.title
+            %p= loc.address
+            = link_to(image_tag('remove.png'), "/trip/#{@trip.id}/remove/#{loc.id}")
+          - unless (index + 1) >= @trip.locations.size
+            %h1.distance= "#{loc.distance_to(@trip.locations[index + 1])} miles to"

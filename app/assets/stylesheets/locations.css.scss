@@ -3,3 +3,43 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "application.css.scss";
 
+$box-background-color: #e8e4d2;
+
+@mixin location-block {
+  border: 1px solid #000;
+  background-color: $box-background-color;
+  text-align: center;
+  padding: 10px;
+
+  h1 {
+    @include pt-to-ems(font-size, 24pt);
+    }
+}
+
+.content_locations {
+  .instructions {
+    text-align: center;
+    margin-bottom: 10px;
+
+    h1 {
+      @include pt-to-ems(font-size, 24pt);
+    }
+  }
+
+  .library {
+    @include zen-grid-item(4, 3);
+  }
+
+  .trip {
+    @include zen-grid-item(4, 7);
+
+    .summary {
+      @include location-block;
+
+      img {
+        float: right;
+        margin-top: -50px;
+      }
+    }
+  }
+}
