@@ -14,4 +14,8 @@ class Trip < ActiveRecord::Base
     loc = self.locations.delete_at(id)
     self.locations.insert(options[:to], loc)
   end
+
+  def remove_location_at(index)
+    loc = self.locations.delete_at(index)
+  end
 end

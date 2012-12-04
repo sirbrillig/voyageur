@@ -33,6 +33,14 @@ describe Trip do
   it "allows the Locations to be reordered" do
     @trip.locations << @loc1 << @loc2 << @loc1 << @loc3
     @trip.move_location(3, to: 1)
-    @trip.locations[1].should eq @loc3
+    @trip.reload
+    @trip.locations[1].title.should eq @loc3.title
+  end
+
+  it "deletes locations by index" do
+    @trip.locations << @loc1 << @loc2 << @loc1 << @loc3
+    @trip.remove_location_at(1)
+    @trip.reload
+    @trip.locations[1].title.should_not eq @loc2.title
   end
 end

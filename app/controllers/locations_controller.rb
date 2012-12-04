@@ -86,7 +86,7 @@ class LocationsController < ApplicationController
     @location = Location.find(params[:id])
     @trip = Trip.find(params[:trip_id])
 
-    @location.trips << @trip
+    @trip.locations << @location
 
     respond_to do |format|
       format.html { redirect_to locations_url }

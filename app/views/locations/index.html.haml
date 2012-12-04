@@ -23,7 +23,8 @@
         %h1 This Trip
         %h1= "#{meters_to_miles @trip.distance} miles total"
         - unless @trip.locations.empty?
-          =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
+          %nav.actions
+            =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
 
     %ul.trip_locations
       - if @trip

@@ -70,6 +70,7 @@ $box-background-color: #e8e4d2;
 
     .location {
       @include location-block;
+      @include location-images;
     }
   }
 }

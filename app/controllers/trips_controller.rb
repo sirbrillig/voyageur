@@ -1,9 +1,8 @@
 class TripsController < ApplicationController
-
   def remove
     @trip = Trip.find(params[:id])
 
-    @trip.locations.delete_at(params[:index].to_i) # FIXME: this is not working; possibly because the trip.locations thing is unordered?
+    @trip.remove_location_at(params[:index].to_i)
 
     respond_to do |format|
       format.html { redirect_to locations_url }
