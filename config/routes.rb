@@ -1,4 +1,6 @@
 Voyageur::Application.routes.draw do
+  root :to => 'locations#index'
+
   resources :locations
 
   resources :trips do
@@ -9,12 +11,11 @@ Voyageur::Application.routes.draw do
     resources :locations do
       member do
         get 'add'
-        get 'remove'
       end
     end
   end
 
-  root :to => 'locations#index'
+  match 'trips/:id/remove/:index' => 'trips#remove', :as => 'remove_trip'
 
 
   # The priority is based upon order of creation:

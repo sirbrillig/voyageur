@@ -18,10 +18,15 @@ describe "The Location list page" do
   context "when the 'add to trip' button is clicked" do
     before do
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
     end
 
     it "shows the location in the trip" do
       page.should have_css(".trip .location_#{@loc1.id}")
+    end
+
+    it "shows the location at the end of the trip" do
+      page.should have_css(".trip .trip_location_1 .location_#{@loc2.id}")
     end
   end
 
@@ -29,15 +34,20 @@ describe "The Location list page" do
     before do
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
       within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-      within(:css, ".trip .location_#{@loc1.id}") { click_link('remove_from_trip') }
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".trip .trip_location_0 .location_#{@loc1.id}") { click_link('remove_from_trip') }
     end
 
     it "removes the location from the trip" do
-      page.should_not have_css(".trip .location_#{@loc1.id}")
+      page.should_not have_css(".trip .trip_location_0 .location_#{@loc1.id}")
     end
 
     it "does not affect the other trip locations" do
       page.should have_css(".trip .location_#{@loc2.id}")
+    end
+
+    it "does not remove duplicate locations from the trip" do
+      page.should have_css(".trip .location_#{@loc1.id}")
     end
   end
 

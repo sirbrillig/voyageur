@@ -93,16 +93,4 @@ class LocationsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
-  def remove
-    @location = Location.find(params[:id])
-    @trip = Trip.find(params[:trip_id])
-
-    @location.trips.delete(@trip)
-
-    respond_to do |format|
-      format.html { redirect_to locations_url }
-      format.json { head :no_content }
-    end
-  end
 end
