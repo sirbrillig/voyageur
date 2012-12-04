@@ -62,6 +62,12 @@ $box-background-color: #e8e4d2;
       }
     }
 
+    .distance {
+      @include location-block;
+      background-color: darken($box-background-color, 10);
+      text-align: center;
+    }
+
     .location {
       @include location-block;
     }
