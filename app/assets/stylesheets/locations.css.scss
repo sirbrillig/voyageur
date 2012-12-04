@@ -8,9 +8,9 @@ $box-background-color: #e8e4d2;
 @mixin location-block {
   border: 1px solid #000;
   background-color: $box-background-color;
-  text-align: center;
   padding: 7px;
   width: 286px; // 300px - padding
+  margin-bottom: 5px;
 
   h1 {
     @include pt-to-ems(font-size, 24pt);
@@ -25,6 +25,12 @@ $box-background-color: #e8e4d2;
 }
 
 .content_locations {
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+  }
+
   .instructions {
     text-align: center;
     margin-bottom: 10px;
@@ -48,6 +54,7 @@ $box-background-color: #e8e4d2;
 
     .summary {
       @include location-block;
+      text-align: center;
 
       nav.actions {
         float: right;
