@@ -8,4 +8,10 @@ class Trip < ActiveRecord::Base
     end
     total
   end
+
+  def move_location(id, options={})
+    raise "A :to option is required." unless options.has_key? :to
+    loc = self.locations.delete_at(id)
+    self.locations.insert(options[:to], loc)
+  end
 end
