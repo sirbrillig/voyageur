@@ -21,7 +21,7 @@
     - if @trip
       .summary
         %h1 This Trip
-        %h1= "#{@trip.distance} miles total"
+        %h1= "#{meters_to_miles @trip.distance} miles total"
         - unless @trip.locations.empty?
           =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
 
@@ -38,6 +38,6 @@
                 = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip")
             - unless (index + 1) >= @trip.locations.size
               %li.distance
-                %h1= "#{loc.distance_to(@trip.locations[index + 1])} miles to"
+                %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
       %li.location.info
         %h1 Add a Location
