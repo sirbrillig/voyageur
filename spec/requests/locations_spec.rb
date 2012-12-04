@@ -16,22 +16,54 @@ describe "The Location list page" do
   end
 
   context "when the 'add to trip' button is clicked" do
-    it "shows the location in the trip"
+    before do
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+    end
+
+    it "shows the location in the trip" do
+      page.should have_css(".trip .location_#{@loc1.id}")
+    end
   end
 
   context "when the 'remove from trip' button is clicked" do
-    it "removes the location from the trip"
+    before do
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+      within(:css, ".trip .location_#{@loc1.id}") { click_link('add_to_trip') }
+    end
 
-    it "does not affect the other trip locations"
+    it "removes the location from the trip" do
+      page.should_not have_css(".trip .location_#{@loc1.id}")
+    end
+
+    it "does not affect the other trip locations" do
+      page.should have_css(".trip .location_#{@loc2.id}")
+    end
   end
 
   context "when the 'delete location' button is clicked" do
-    it "removes the location from the library"
+    before do
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".trip .location_#{@loc1.id}") { click_link('add_to_trip') }
+    end
 
-    it "removes the location from the trip"
+    it "removes the location from the library" do
+      page.should_not have_css(".library .location_#{@loc1.id}")
+    end
+
+    it "removes the location from the trip" do
+      page.should_not have_css(".trip .location_#{@loc1.id}")
+    end
   end
 
   context "when the 'clear trip' button is clicked" do
-    it "removes all locations in the trip"
+    before do
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      click_link('clear_trip')
+    end
+
+    it "removes all locations in the trip" do
+      page.should_not have_css(".trip .location_#{@loc1.id}")
+    end
   end
 end
