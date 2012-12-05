@@ -20,12 +20,11 @@ ActiveRecord::Schema.define(:version => 20121202212447) do
     t.datetime "updated_at", :null => false
   end
 
-  create_table "locations_trips", :id => false, :force => true do |t|
+  create_table "triplocations", :force => true do |t|
+    t.integer "index"
     t.integer "location_id"
     t.integer "trip_id"
   end
-
-  add_index "locations_trips", ["location_id", "trip_id"], :name => "index_locations_trips_on_location_id_and_trip_id"
 
   create_table "trips", :force => true do |t|
     t.datetime "created_at", :null => false

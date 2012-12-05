@@ -4,10 +4,9 @@ class CreateTrips < ActiveRecord::Migration
       t.timestamps
     end
 
-    create_table :locations_trips, :id => false do |t|
+    create_table :triplocations do |t|
+      t.integer :index
       t.references :location, :trip
     end
-
-    add_index :locations_trips, [:location_id, :trip_id]
   end
 end
