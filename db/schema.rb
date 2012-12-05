@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20121202212447) do
   end
 
   create_table "triplocations", :force => true do |t|
-    t.integer "index"
+    t.integer "position"
     t.integer "location_id"
     t.integer "trip_id"
   end

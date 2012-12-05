@@ -21,6 +21,8 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'haml-rails'
 
+gem 'acts_as_list'
+
 group :development, :test do
   gem 'rspec-rails'
 end

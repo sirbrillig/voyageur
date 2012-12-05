@@ -34,13 +34,13 @@ describe Trip do
   end
 
   it "allows the Locations to be reordered" do
-    @trip.add_location @loc1
-    @trip.add_location @loc2
-    @trip.add_location @loc1
-    @trip.add_location @loc3
+    @trip.add_location @loc1 # 0: home
+    @trip.add_location @loc2 # 1: work
+    @trip.add_location @loc1 # 2: home
+    @trip.add_location @loc3 # 3: food
     @trip.move_location(3, to: 1)
     @trip.reload
-    @trip.locations[1].title.should eq @loc3.title
+    @trip.location_at(1).title.should eq @loc3.title # 1: was work, now food
   end
 
   context "when deleting locations by index" do
@@ -54,12 +54,16 @@ describe Trip do
     end
 
     it "deletes the location" do
-      @trip.locations[1].title.should_not eq @loc2.title
+      @trip.location_at(1).title.should_not eq @loc2.title
     end
 
     it "reorders other elements" do
-      @trip.locations[1].title.should eq @loc1.title
-      @trip.locations[2].title.should eq @loc3.title
+      @trip.location_at(1).title.should eq @loc1.title
+      @trip.location_at(2).title.should eq @loc3.title
+    end
+
+    it "does not reorder elements above it" do
+      @trip.location_at(0).title.should eq @loc1.title
     end
   end
 end

@@ -4,7 +4,7 @@ require 'json'
 
 class Location < ActiveRecord::Base
   attr_accessible :address, :title
-  has_many :triplocations
+  has_many :triplocations, order: :position
   has_many :trips, through: :triplocations
 
   def uri_address

@@ -5,7 +5,7 @@ class CreateTrips < ActiveRecord::Migration
     end
 
     create_table :triplocations do |t|
-      t.integer :index
+      t.integer :position
       t.references :location, :trip
     end
   end
