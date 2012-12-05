@@ -43,13 +43,23 @@ describe Trip do
     @trip.locations[1].title.should eq @loc3.title
   end
 
-  it "deletes locations by index" do
-    @trip.add_location @loc1
-    @trip.add_location @loc2
-    @trip.add_location @loc1
-    @trip.add_location @loc3
-    @trip.remove_location_at(1)
-    @trip.reload
-    @trip.locations[1].title.should_not eq @loc2.title
+  context "when deleting locations by index" do
+    before do
+      @trip.add_location @loc1
+      @trip.add_location @loc2
+      @trip.add_location @loc1
+      @trip.add_location @loc3
+      @trip.remove_location_at(1)
+      @trip.reload
+    end
+
+    it "deletes the location" do
+      @trip.locations[1].title.should_not eq @loc2.title
+    end
+
+    it "reorders other elements" do
+      @trip.locations[1].title.should eq @loc1.title
+      @trip.locations[2].title.should eq @loc3.title
+    end
   end
 end

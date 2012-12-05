@@ -10,28 +10,18 @@ class Trip < ActiveRecord::Base
     total
   end
 
-  def move_location(id, options={})
+  def move_location(index, options={})
     raise "A :to option is required." unless options.has_key? :to
-    loc = self.remove_location_at(id)
-    self.triplocations.create(location_id: loc.id, trip_id: self.id, index: options[:to]) # FIXME: we need to re-order all the other elements so this is a poor strategy
+    loc = self.locations[index]
+    self.remove_location_at(index)
+    self.triplocations.create(location_id: loc.id, trip_id: self.id)
   end
 
   def add_location(location)
-    self.triplocations.create(location_id: location.id, trip_id: self.id, index: last_index + 1)
+    self.locations << location
   end
 
   def remove_location_at(index)
-    the_one = self.triplocations.select { |tloc| tloc.index == index }
-    raise "no Location found at index #{index}" unless the_one
-    loc = self.triplocations.delete(the_one)
-    return loc.first if loc.respond_to? :first
-    loc
-  end
-
-  private
-  def last_index
-    i = 0
-    self.triplocations.each { |tloc| i = tloc.index if tloc.index > i }
-    i
+    self.triplocations.delete(self.triplocations[index])
   end
 end
