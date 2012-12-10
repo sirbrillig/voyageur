@@ -3,6 +3,7 @@ require 'open-uri'
 require 'json'
 
 class Location < ActiveRecord::Base
+  attr_reader :query_sent
   attr_accessible :address, :title
   has_many :triplocations, order: :position
   has_many :trips, through: :triplocations
@@ -12,7 +13,33 @@ class Location < ActiveRecord::Base
   end
 
   def distance_to(destination)
-    # FIXME: add caching.
+    if cached = cached_distance_to(destination)
+      return cached
+    end
+    val = query_distance_to(destination)
+    cache_distance_to(destination, val)
+    return val
+  end
+
+  def cached_distance_to(destination)
+    cache_timeout_date = Time.now - 2.days
+    dist = Distance.where(origin: self.address, destination: destination.address).first
+    return nil unless dist
+    if dist.created_at < cache_timeout_date
+      dist.destroy
+      return nil
+    end
+    @query_sent = false
+    return dist.distance
+  end
+
+  private
+  def cache_distance_to(destination, distance)
+    Distance.create(origin: self.address, destination: destination.address, distance: distance)
+  end
+
+  def query_distance_to(destination)
+    @query_sent = true
     # https://developers.google.com/maps/documentation/distancematrix/
     query = "http://maps.googleapis.com/maps/api/distancematrix/json?origins=#{self.uri_address}&destinations=#{destination.uri_address}&mode=driving&sensor=false&units=imperial"
     json_object = JSON.parse(open(query).read)

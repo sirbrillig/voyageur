@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121202212447) do
+ActiveRecord::Schema.define(:version => 20121210220326) do
+
+  create_table "distances", :force => true do |t|
+    t.string   "origin"
+    t.string   "destination"
+    t.integer  "distance"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "locations", :force => true do |t|
     t.string   "title"

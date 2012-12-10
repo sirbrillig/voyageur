@@ -76,4 +76,16 @@ describe "The Location list page" do
       page.should_not have_css(".trip .location_#{@loc1.id}")
     end
   end
+
+  context "when the 'move up' button is clicked on a trip location" do
+    before do
+      within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+      within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+      within(:css, ".trip .location_#{@loc2.id}") { click_link('move_up') }
+    end
+
+    it "moves the location up in the list" do
+      page.should have_css(".trip .trip_location_0 .location_#{@loc2.id}")
+    end
+  end
 end
