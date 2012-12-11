@@ -36,9 +36,9 @@
               %h1= loc.title
               %p= loc.address
               %nav.actions
+                = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up")
+                = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down")
                 = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip")
             - unless (index + 1) >= @trip.locations.size
               %li.distance
                 %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
-      %li.location.info
-        %h1 Add a Location

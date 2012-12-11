@@ -43,6 +43,34 @@ describe Trip do
     @trip.location_at(1).title.should eq @loc3.title # 1: was work, now food
   end
 
+  context "when moving a Location down" do
+    before do
+      @trip.add_location @loc1
+      @trip.add_location @loc2
+      @trip.add_location @loc3
+      @trip.move_location_down 1
+      @trip.reload
+    end
+
+    it "moves the Location down in the trip order" do
+      @trip.location_at(2).title.should eq @loc2.title
+    end
+  end
+
+  context "when moving a Location up" do
+    before do
+      @trip.add_location @loc1
+      @trip.add_location @loc2
+      @trip.add_location @loc3
+      @trip.move_location_up 2
+      @trip.reload
+    end
+
+    it "moves the Location up in the trip order" do
+      @trip.location_at(1).title.should eq @loc3.title
+    end
+  end
+
   context "when deleting locations by index" do
     before do
       @trip.add_location @loc1

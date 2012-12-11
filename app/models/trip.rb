@@ -1,6 +1,6 @@
 class Trip < ActiveRecord::Base
   has_many :triplocations, order: :position
-  has_many :locations, through: :triplocations
+  has_many :locations, through: :triplocations, order: :position
 
   def distance
     total = 0
@@ -25,5 +25,13 @@ class Trip < ActiveRecord::Base
 
   def remove_location_at(index)
     self.triplocations.delete(self.triplocations[index])
+  end
+
+  def move_location_up(index)
+    move_location(index, to: index - 1) unless index < 1
+  end
+
+  def move_location_down(index)
+    move_location(index, to: index + 1) if index < self.triplocations.size
   end
 end

@@ -20,4 +20,28 @@ class TripsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def up
+    @trip = Trip.find(params[:id])
+
+    @trip.move_location_up(params[:index].to_i)
+    @trip.save
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
+
+  def down
+    @trip = Trip.find(params[:id])
+
+    @trip.move_location_down(params[:index].to_i)
+    @trip.save
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
 end
