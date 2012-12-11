@@ -20,8 +20,12 @@ class Trip < ActiveRecord::Base
   end
 
   def add_location(location, index=nil)
-    # FIXME: do index inserting
     self.locations << location
+    if index
+      # Not a perfect solution in the case of multiple simultaneous additions,
+      # but should prevent most problems.
+      self.triplocations.where(location_id: location.id).last.insert_at(index)
+    end
   end
 
   def remove_location_at(index)
