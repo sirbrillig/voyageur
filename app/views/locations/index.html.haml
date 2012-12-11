@@ -15,7 +15,7 @@
             %nav.actions
               = link_to(image_tag('edit.png'), edit_location_path(loc))
               = link_to(image_tag('delete.png'), location_path(loc), :method => :delete, :id => "delete_location")
-              = link_to(image_tag('arrow_right.png'), add_trip_location_path(@trip, loc), :id => "add_to_trip") if @trip
+              = link_to(image_tag('arrow_right.png'), add_location_path(@trip, loc), :id => "add_to_trip") if @trip
 
   .trip
     - if @trip

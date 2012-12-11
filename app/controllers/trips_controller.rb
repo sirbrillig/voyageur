@@ -44,4 +44,17 @@ class TripsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def add
+    @trip = Trip.find(params[:id])
+    @location = Location.find(params[:location_id])
+    index = params[:index]
+
+    @trip.add_location(@location, index)
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
 end

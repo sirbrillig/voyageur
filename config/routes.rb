@@ -7,17 +7,12 @@ Voyageur::Application.routes.draw do
     member do
       get 'clear'
     end
-
-    resources :locations do
-      member do
-        get 'add'
-      end
-    end
   end
 
   match 'trips/:id/remove/:index' => 'trips#remove', :as => 'remove_trip'
   match 'trips/:id/up/:index' => 'trips#up', :as => 'up_trip'
   match 'trips/:id/down/:index' => 'trips#down', :as => 'down_trip'
+  match 'trips/:id/add/:location_id' => 'trips#add', :as => 'add_location'
 
 
   # The priority is based upon order of creation:

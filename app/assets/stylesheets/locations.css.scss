@@ -72,5 +72,12 @@ $box-background-color: #e8e4d2;
       @include location-block;
       @include location-images;
     }
+
+    .location-glow {
+      @include location-block;
+      background-color: lighten($box-background-color, 5);
+      border-color: darken($box-background-color, 5);
+      height: 70px;
+    }
   }
 }

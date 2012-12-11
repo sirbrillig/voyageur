@@ -19,7 +19,8 @@ class Trip < ActiveRecord::Base
     self.triplocations[index].insert_at(options[:to] + 1) # Compensate for acts_as_list starting at 1
   end
 
-  def add_location(location)
+  def add_location(location, index=nil)
+    # FIXME: do index inserting
     self.locations << location
   end
 
