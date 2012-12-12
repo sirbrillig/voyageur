@@ -29,4 +29,17 @@ describe "The Javascript" do
       @trip1.location_at(1).title.should eq @loc3.title
     end
   end
+
+  context "of the drag-to-move" do
+    before do
+      @trip1.add_location @loc1
+      @trip1.add_location @loc2
+      @trip1.add_location @loc3
+      visit move_location_path(id: @trip1.id, location_index: 2, index: 1)
+    end
+
+    it "adds the location to a set index in the trip" do
+      @trip1.location_at(1).title.should eq @loc3.title
+    end
+  end
 end

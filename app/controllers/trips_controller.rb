@@ -45,6 +45,18 @@ class TripsController < ApplicationController
     end
   end
 
+  def move
+    @trip = Trip.find(params[:id])
+
+    @trip.move_location(params[:location_index].to_i, to: params[:index].to_i)
+    @trip.save
+
+    respond_to do |format|
+      format.html { redirect_to locations_url }
+      format.json { head :no_content }
+    end
+  end
+
   def add
     @trip = Trip.find(params[:id])
     @location = Location.find(params[:location_id])

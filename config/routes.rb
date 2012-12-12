@@ -12,6 +12,7 @@ Voyageur::Application.routes.draw do
   match 'trips/:id/remove/:index' => 'trips#remove', :as => 'remove_trip'
   match 'trips/:id/up/:index' => 'trips#up', :as => 'up_trip'
   match 'trips/:id/down/:index' => 'trips#down', :as => 'down_trip'
+  match 'trips/:id/move/:location_index/to/:index' => 'trips#move', :as => 'move_location'
   match 'trips/:id/add/:location_id' => 'trips#add', :as => 'add_location'
   match 'trips/:id/add/:location_id/at/:index' => 'trips#add', :as => 'insert_location'
 
