@@ -48,7 +48,7 @@ class TripsController < ApplicationController
   def add
     @trip = Trip.find(params[:id])
     @location = Location.find(params[:location_id])
-    index = params[:index]
+    index = params[:index].to_i
 
     @trip.add_location(@location, index)
 

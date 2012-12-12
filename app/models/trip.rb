@@ -16,7 +16,7 @@ class Trip < ActiveRecord::Base
 
   def move_location(index, options={})
     raise "A :to option is required." unless options.has_key? :to
-    self.triplocations[index].insert_at(options[:to] + 1) # Compensate for acts_as_list starting at 1
+    self.triplocations[index].insert_at_index(options[:to])
   end
 
   def add_location(location, index=nil)
@@ -24,7 +24,7 @@ class Trip < ActiveRecord::Base
     if index
       # Not a perfect solution in the case of multiple simultaneous additions,
       # but should prevent most problems.
-      self.triplocations.where(location_id: location.id).last.insert_at(index)
+      self.triplocations.where(location_id: location.id).last.insert_at_index(index)
     end
   end
 
