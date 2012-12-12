@@ -38,7 +38,7 @@ describe "The Javascript" do
       visit move_location_path(id: @trip1.id, location_index: 2, index: 1)
     end
 
-    it "adds the location to a set index in the trip" do
+    it "moves the location to a set index in the trip" do
       @trip1.location_at(1).title.should eq @loc3.title
     end
   end
