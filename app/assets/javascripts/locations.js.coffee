@@ -8,7 +8,7 @@ location_id_from_ui = (ui) ->
     return matches[1]
 
 index_from_ui = (ui) ->
-  ui.item.index() # FIXME: for some reason this only starts working once the item has been moved once already
+  ui.item.index() - 1
 
 add_to_trip_at_index = (event, ui) -> 
   trip_id = 1 # FIXME: get the trip id
@@ -47,6 +47,9 @@ save_index = (event, ui) ->
   ui.item.start_index = index_from_ui(ui)
 
 $ ->
+  # FIXME: the below doesn't work because the .location elements are in span
+  # elements.
   $('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", stop: add_to_trip_at_index, placeholder: "location-glow"})
+  # FIXME: the below does not work at all
   #$('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: save_index, stop: move_location, receive: add_to_trip, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip_locations")
