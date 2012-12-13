@@ -26,7 +26,7 @@ describe "The Location list page" do
     end
 
     it "shows the location at the end of the trip" do
-      page.should have_css(".trip .trip_location_1 .location_#{@loc2.id}")
+      page.should have_css(".trip .trip_location_1.location_#{@loc2.id}")
     end
   end
 
@@ -35,11 +35,11 @@ describe "The Location list page" do
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
       within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
       within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-      within(:css, ".trip .trip_location_0 .location_#{@loc1.id}") { click_link('remove_from_trip') }
+      within(:css, ".trip .trip_location_0.location_#{@loc1.id}") { click_link('remove_from_trip') }
     end
 
     it "removes the location from the trip" do
-      page.should_not have_css(".trip .trip_location_0 .location_#{@loc1.id}")
+      page.should_not have_css(".trip .trip_location_0.location_#{@loc1.id}")
     end
 
     it "does not affect the other trip locations" do
@@ -85,7 +85,7 @@ describe "The Location list page" do
     end
 
     it "moves the location up in the list" do
-      page.should have_css(".trip .trip_location_0 .location_#{@loc2.id}")
+      page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
     end
   end
 
@@ -97,7 +97,7 @@ describe "The Location list page" do
     end
 
     it "moves the location down in the list" do
-      page.should have_css(".trip .trip_location_1 .location_#{@loc1.id}")
+      page.should have_css(".trip .trip_location_1.location_#{@loc1.id}")
     end
   end
 end

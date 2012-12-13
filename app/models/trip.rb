@@ -17,7 +17,7 @@ class Trip < ActiveRecord::Base
   def move_location(index, options={})
     raise "A :to option is required." unless options.has_key? :to
     triploc = self.triplocations[index]
-    raise "Error moving to index #{options[:to]}: No Location found at index #{index}"
+    raise "Error moving index #{index} to index #{options[:to]}: No Location found at index #{index}" unless triploc
     triploc.insert_at_index(options[:to])
   end
 
