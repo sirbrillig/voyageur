@@ -18,26 +18,4 @@
               = link_to(image_tag('arrow_right.png'), add_location_path(@trip, loc), :id => "add_to_trip") if @trip
 
   .trip
-    - if @trip
-      .summary
-        %h1 This Trip
-        %h1= "#{meters_to_miles @trip.distance} miles total"
-        - unless @trip.locations.empty?
-          %nav.actions
-            =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
-
-    %ul.trip_locations
-      - if @trip
-        %li.distance 
-          %h1 Start of the Journey
-        - @trip.locations.each_with_index do |loc, index|
-          %li.location{class: "location_#{loc.id} trip_location_#{index}"}
-            %h1= loc.title
-            %p= loc.address
-            %nav.actions
-              = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up")
-              = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down")
-              = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip")
-          - unless (index + 1) >= @trip.locations.size
-            %li.distance
-              %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
+    = render('trips/trip')
