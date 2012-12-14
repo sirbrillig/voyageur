@@ -23,12 +23,19 @@ class Trip < ActiveRecord::Base
 
   def add_location(location, index=nil)
     if index
-      # FIXME: not working
-      self.triplocations << Triplocation.create!(location_id: location.id, trip_id: self.id, position: position_for_index(index) + 1)
+      position = position_for_index(index)
+#       $stderr.puts "trying to #{position} (index #{index})"
+#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+      self.locations << location
+#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+      tloc = self.triplocations.where(location_id: location.id, trip_id: self.id).last
+#       $stderr.puts "tloc = #{tloc.inspect}"
+      tloc.insert_at(position)
+      save
+#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
     else
       self.locations << location
     end
-    $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
   end
 
   def remove_location_at(index)
@@ -48,6 +55,7 @@ class Trip < ActiveRecord::Base
   def position_for_index(index)
     to_move = self.triplocations.last
     self.triplocations.each_with_index { |tloc, tloc_index| to_move = tloc if tloc_index == index; }
-    to_move.position
+    return to_move.position if to_move
+    1
   end
 end

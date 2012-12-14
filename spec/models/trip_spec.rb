@@ -43,7 +43,7 @@ describe Trip do
     @trip.location_at(1).title.should eq @loc3.title # 1: was work, now food
   end
 
-  context "when adding a Location to an index" do
+  context "when adding a Location to index 0" do
     before do
       @trip.add_location @loc1
       @trip.add_location @loc2
@@ -53,6 +53,23 @@ describe Trip do
 
     it "places the Location at the index" do
       @trip.location_at(0).title.should eq @loc3.title
+    end
+    
+    it "moves the other Locations down" do
+      @trip.location_at(2).title.should eq @loc2.title
+    end
+  end
+
+  context "when adding a Location to index 1" do
+    before do
+      @trip.add_location @loc1
+      @trip.add_location @loc2
+      @trip.add_location @loc3, 1
+      @trip.reload
+    end
+
+    it "places the Location at the index" do
+      @trip.location_at(1).title.should eq @loc3.title
     end
     
     it "moves the other Locations down" do
