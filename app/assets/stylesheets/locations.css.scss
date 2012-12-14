@@ -31,6 +31,10 @@ $box-background-color: #e8e4d2;
     list-style-type: none;
   }
 
+  li {
+    list-style-type: none;
+  }
+
   .instructions {
     text-align: center;
     margin-bottom: 10px;
@@ -58,7 +62,7 @@ $box-background-color: #e8e4d2;
 
       nav.actions {
         float: right;
-        margin-top: -50px;
+        margin-top: -52px;
       }
     }
 

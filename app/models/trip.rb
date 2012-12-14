@@ -22,12 +22,13 @@ class Trip < ActiveRecord::Base
   end
 
   def add_location(location, index=nil)
-    self.locations << location
     if index
-      # Not a perfect solution in the case of multiple simultaneous additions,
-      # but should prevent most problems.
-      self.triplocations.where(location_id: location.id).last.insert_at_index(index)
+      # FIXME: not working
+      self.triplocations << Triplocation.create!(location_id: location.id, trip_id: self.id, position: position_for_index(index) + 1)
+    else
+      self.locations << location
     end
+    $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
   end
 
   def remove_location_at(index)
@@ -35,10 +36,18 @@ class Trip < ActiveRecord::Base
   end
 
   def move_location_up(index)
-    move_location(index, to: index - 1) unless index < 1
+    self.triplocations[index].move_higher unless index < 1
   end
 
   def move_location_down(index)
-    move_location(index, to: index + 1) if index < self.triplocations.size
+    self.triplocations[index].move_lower if index < self.triplocations.size
+  end
+
+  private
+  # Find the acts_as_list position for a 0-based index value.
+  def position_for_index(index)
+    to_move = self.triplocations.last
+    self.triplocations.each_with_index { |tloc, tloc_index| to_move = tloc if tloc_index == index; }
+    to_move.position
   end
 end

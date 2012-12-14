@@ -19,8 +19,8 @@ add_to_trip_at_index = (event, ui) ->
     type: "GET"
     dataType: "json"
     success: (data) ->
-      #alert("Location #{id} added at #{index}") # FIXME: update or reload the trip list
-      $('.trip').load("/trips/#{trip_id}") # FIXME: this breaks further sorting
+      $('.trip').load("/trips/#{trip_id}")
+      setup_dragging()
 
 add_to_trip = (event, ui) -> 
   trip_id = 1 # FIXME: get the trip id
@@ -67,10 +67,13 @@ finish_reorder_drag = (event, ui) ->
   show_distances(event, ui)
   move_location(event, ui)
 
-$ ->
+setup_dragging = () ->
   # This is for adding
-  $('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", stop: add_to_trip_at_index, placeholder: "location-glow"})
+  $('.trip').sortable({items: ".location", opacity: 0.5, revert: "invalid", stop: add_to_trip_at_index, placeholder: "location-glow"})
   # FIXME: the below does not work at all
   # This is for reordering
   #$('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: start_reorder_drag, stop: finish_reorder_drag, placeholder: "location-glow"})
-  $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", start: start_add_drag, stop: finish_add_drag, connectToSortable: ".trip_locations")
+  $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", start: start_add_drag, stop: finish_add_drag, connectToSortable: ".trip")
+
+$ ->
+  setup_dragging()
