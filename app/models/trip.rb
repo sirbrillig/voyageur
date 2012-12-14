@@ -1,5 +1,6 @@
 class Trip < ActiveRecord::Base
   has_many :triplocations, order: :position
+  # FIXME: make sure triplocations get deleted when no longer used.
   has_many :locations, through: :triplocations, order: :position
 
   def distance
@@ -24,15 +25,15 @@ class Trip < ActiveRecord::Base
   def add_location(location, index=nil)
     if index
       position = position_for_index(index)
-#       $stderr.puts "trying to #{position} (index #{index})"
-#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+      $stderr.puts "trying to insert at position #{position} (index #{index})"
+      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
       self.locations << location
-#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
       tloc = self.triplocations.where(location_id: location.id, trip_id: self.id).last
-#       $stderr.puts "tloc = #{tloc.inspect}"
+      $stderr.puts "tloc = #{tloc.inspect}"
       tloc.insert_at(position)
       save
-#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
     else
       self.locations << location
     end
