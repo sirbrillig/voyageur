@@ -25,15 +25,15 @@ class Trip < ActiveRecord::Base
   def add_location(location, index=nil)
     if index
       position = position_for_index(index)
-      $stderr.puts "trying to insert at position #{position} (index #{index})"
-      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+#       $stderr.puts "trying to insert at position #{position} (index #{index})"
       self.locations << location
-      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
       tloc = self.triplocations.where(location_id: location.id, trip_id: self.id).last
-      $stderr.puts "tloc = #{tloc.inspect}"
+#       $stderr.puts "tloc = #{tloc.inspect}"
       tloc.insert_at(position)
       save
-      $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
+#       reload
+#       $stderr.puts "triplocations = "+self.triplocations.collect { |t| t.inspect }.join(", ")
     else
       self.locations << location
     end
@@ -52,11 +52,11 @@ class Trip < ActiveRecord::Base
   end
 
   private
-  # Find the acts_as_list position for a 0-based index value.
+  # Find the (1-based) acts_as_list position for a 0-based index value.
   def position_for_index(index)
-    to_move = self.triplocations.last
-    self.triplocations.each_with_index { |tloc, tloc_index| to_move = tloc if tloc_index == index; }
+    to_move = self.triplocations[index]
     return to_move.position if to_move
-    1
+    return 1 if self.triplocations.empty?
+    self.triplocations.last.position + 1
   end
 end

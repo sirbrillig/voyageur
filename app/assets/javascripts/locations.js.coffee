@@ -46,22 +46,10 @@ move_location = (event, ui) ->
 save_index = (event, ui) ->
   ui.item.start_index = index_from_ui(ui)
 
-show_distances = (event, ui) -> 
-  $('.trip_locations .distance').show()
-
-hide_distances = (event, ui) -> 
-  $('.trip_locations .distance').hide()
-
 start_reorder_drag = (event, ui) ->
   hide_distances(event, ui)
   # FIXME: there's something weird about the indexes that get returned
   save_index(event, ui)
-
-start_add_drag = (event, ui) ->
-  hide_distances(event, ui)
-
-finish_add_drag = (event, ui) ->
-  show_distances(event, ui)
 
 finish_reorder_drag = (event, ui) ->
   show_distances(event, ui)
@@ -73,7 +61,7 @@ setup_dragging = () ->
   # FIXME: the below does not work at all
   # This is for reordering
   #$('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: start_reorder_drag, stop: finish_reorder_drag, placeholder: "location-glow"})
-  $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", start: start_add_drag, stop: finish_add_drag, connectToSortable: ".trip")
+  $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
 $ ->
   setup_dragging()
