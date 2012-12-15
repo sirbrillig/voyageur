@@ -10,8 +10,15 @@ location_id_from_ui = (ui) ->
 index_from_ui = (ui) ->
   ui.item.index() - 1
 
+get_trip_id = () ->
+  1 # FIXME: get the trip id
+
+reload_trip = () ->
+  $('.trip').load("/trips/#{trip_id}")
+  setup_dragging()
+
 add_to_trip_at_index = (event, ui) -> 
-  trip_id = 1 # FIXME: get the trip id
+  trip_id = get_trip_id()
   id = location_id_from_ui(ui)
   index = index_from_ui(ui)
   $.ajax
@@ -19,21 +26,10 @@ add_to_trip_at_index = (event, ui) ->
     type: "GET"
     dataType: "json"
     success: (data) ->
-      $('.trip').load("/trips/#{trip_id}")
-      setup_dragging()
-
-add_to_trip = (event, ui) -> 
-  trip_id = 1 # FIXME: get the trip id
-  id = location_id_from_ui(ui)
-  $.ajax
-    url: "/trips/#{trip_id}/add/#{id}"
-    type: "GET"
-    dataType: "html"
-    success: (data) ->
-      alert("Location #{id} added") # FIXME: update or reload the trip list
+      reload_trip()
 
 move_location = (event, ui) ->
-  trip_id = 1 # FIXME: get the trip id
+  trip_id = get_trip_id()
   index = index_from_ui(ui)
   start_index = ui.item.start_index
   $.ajax
@@ -41,26 +37,26 @@ move_location = (event, ui) ->
     type: "GET"
     dataType: "html"
     success: (data) ->
-      alert("Location #{start_index} moved to #{index}") # FIXME: update or reload the trip list
+      reload_trip()
+      alert("Location #{start_index} moved to #{index}")
 
 save_index = (event, ui) ->
   ui.item.start_index = index_from_ui(ui)
 
-start_reorder_drag = (event, ui) ->
-  hide_distances(event, ui)
-  # FIXME: there's something weird about the indexes that get returned
+start_drag = (event, ui) ->
   save_index(event, ui)
 
-finish_reorder_drag = (event, ui) ->
-  show_distances(event, ui)
-  move_location(event, ui)
+from_trip_list = (event, ui) ->
+  false # FIXME: make this check for the saved index
+
+stop_drag = (event, ui) ->
+  if from_trip_list(event, ui)
+    move_location(event, ui)
+  else 
+    add_to_trip_at_index(event, ui)
 
 setup_dragging = () ->
-  # This is for adding
-  $('.trip').sortable({items: ".location", opacity: 0.5, revert: "invalid", stop: add_to_trip_at_index, placeholder: "location-glow"})
-  # FIXME: the below does not work at all
-  # This is for reordering
-  #$('.trip_locations').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: start_reorder_drag, stop: finish_reorder_drag, placeholder: "location-glow"})
+  $('.trip').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
 $ ->
