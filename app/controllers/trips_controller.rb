@@ -53,7 +53,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { head :no_content }
+      format.json { render json: @trip }
     end
   end
 

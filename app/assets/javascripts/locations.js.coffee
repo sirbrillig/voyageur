@@ -14,6 +14,7 @@ get_trip_id = () ->
   1 # FIXME: get the trip id
 
 reload_trip = () ->
+  trip_id = get_trip_id()
   $('.trip').load("/trips/#{trip_id}")
   setup_dragging()
 
@@ -38,7 +39,6 @@ move_location = (event, ui) ->
     dataType: "html"
     success: (data) ->
       reload_trip()
-      alert("Location #{start_index} moved to #{index}")
 
 save_index = (event, ui) ->
   ui.item.start_index = index_from_ui(ui)
@@ -46,17 +46,22 @@ save_index = (event, ui) ->
 start_drag = (event, ui) ->
   save_index(event, ui)
 
-from_trip_list = (event, ui) ->
-  false # FIXME: make this check for the saved index
+is_from_trip_list = (event, ui) ->
+  # FIXME: there has *got* to be some way to figure out where this item is
+  # coming from.
+  if ui.sender
+    return false
+  else
+    return true
 
 stop_drag = (event, ui) ->
-  if from_trip_list(event, ui)
+  if is_from_trip_list(event, ui)
     move_location(event, ui)
   else 
     add_to_trip_at_index(event, ui)
 
 setup_dragging = () ->
-  $('.trip').sortable({items: ".location", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, placeholder: "location-glow"})
+  $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
 $ ->
