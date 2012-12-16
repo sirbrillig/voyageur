@@ -2,6 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
+from_library = false
+
 location_id_from_ui = (ui) ->
   matches = ui.item[0].className.match(/location_(\d+)/)
   if matches
@@ -47,9 +49,7 @@ start_drag = (event, ui) ->
   save_index(event, ui)
 
 is_from_trip_list = (event, ui) ->
-  # FIXME: there has *got* to be some way to figure out where this item is
-  # coming from.
-  if ui.sender
+  if from_library
     return false
   else
     return true
@@ -59,9 +59,13 @@ stop_drag = (event, ui) ->
     move_location(event, ui)
   else 
     add_to_trip_at_index(event, ui)
+  from_library = false
+
+move_from_library = (event, ui) ->
+  from_library = true
 
 setup_dragging = () ->
-  $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, placeholder: "location-glow"})
+  $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, receive: move_from_library, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
 $ ->
