@@ -35,11 +35,40 @@ describe "The Javascript" do
       @trip1.add_location @loc1
       @trip1.add_location @loc2
       @trip1.add_location @loc3
-      visit move_location_path(id: @trip1.id, location_index: 2, index: 1)
     end
 
-    it "moves the location to a set index in the trip" do
-      @trip1.location_at(1).title.should eq @loc3.title
+    context "when moving from the end to the middle" do
+      before do
+        visit move_location_path(id: @trip1.id, location_index: 2, index: 1)
+      end
+
+      it "moves the location to a set index in the trip" do
+        @trip1.location_at(1).title.should eq @loc3.title
+      end
+    end
+
+    context "when moving from the middle to the top" do
+      before do
+        visit move_location_path(id: @trip1.id, location_index: 1, index: 0)
+      end
+
+      it "moves the location to a set index in the trip" do
+        @trip1.location_at(0).title.should eq @loc2.title
+      end
+
+      it "does not effect the number of elements" do
+        @trip1.locations.count.should eq 3
+      end
+    end
+
+    context "when moving from the top to the bottom" do
+      before do
+        visit move_location_path(id: @trip1.id, location_index: 0, index: 2)
+      end
+
+      it "moves the location to a set index in the trip" do
+        @trip1.location_at(2).title.should eq @loc1.title
+      end
     end
   end
 end

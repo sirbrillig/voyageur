@@ -53,14 +53,15 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { head :no_content }
+      format.json { render json: @trip }
     end
   end
 
   def add
     @trip = Trip.find(params[:id])
     @location = Location.find(params[:location_id])
-    index = params[:index].to_i
+    index = nil
+    index = params[:index].to_i if params[:index]
 
     @trip.add_location(@location, index)
 
