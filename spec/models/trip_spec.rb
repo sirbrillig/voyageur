@@ -8,6 +8,20 @@ describe Trip do
     @loc3 = FactoryGirl.create(:food_location)
   end
 
+  context "when adding a Location" do
+    before do
+      @trip.add_location @loc1
+    end
+
+    it "creates a Triplocation association" do
+      Triplocation.where(trip_id: @trip.id, location_id: @loc1.id).should_not be nil
+    end
+
+    it "adds the Location" do
+      @trip.locations.should include @loc1
+    end
+  end
+
   it "can have many Locations" do
     @trip.add_location @loc1
     @trip.add_location @loc2
@@ -128,6 +142,19 @@ describe Trip do
 
     it "moves the Location up in the trip order" do
       @trip.location_at(1).title.should eq @loc3.title
+    end
+  end
+
+  context "when deleting a location" do
+    before do
+      @trip.add_location @loc1
+      @trip.add_location @loc2
+      @trip.remove_location_at(1)
+      @trip.reload
+    end
+
+    it "removes the associated Triplocation" do
+      Triplocation.where(trip_id: @trip.id, location_id: @loc2.id).should be_empty
     end
   end
 
