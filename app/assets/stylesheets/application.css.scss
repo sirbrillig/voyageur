@@ -50,6 +50,12 @@ header {
     margin: 0px;
     padding: 0px;
   }
+
+  nav.actions {
+    position: absolute;
+    top: $header-height;
+    right: 120px;
+  }
 }
 
 #error_explanation {

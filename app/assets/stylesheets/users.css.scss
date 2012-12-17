@@ -1,3 +1,27 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "application.css.scss";
+
+.content_user {
+  @include zen-grid-item(4, 5);
+  h1 {
+    @include pt-to-ems(font-size, 38pt);
+  }
+
+  label {
+    @include pt-to-ems(font-size, 18pt);
+    display: block;
+    margin-top: 10px;
+  }
+
+  input {
+    @include pt-to-ems(font-size, 18pt);
+    width: 100%;
+  }
+
+  input[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}
