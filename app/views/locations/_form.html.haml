@@ -1,0 +1,10 @@
+= form_for(@location) do |f|
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :address
+    = f.text_field :address
+  .actions
+    = f.submit %>
+
