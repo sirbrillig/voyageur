@@ -20,7 +20,30 @@ $box-background-color: #e8e4d2;
 @mixin location-images {
   nav.actions {
     float: right;
-    margin-top: -75px;
+  }
+}
+
+.content_new_location {
+  @include zen-grid-item(4, 5);
+
+  h1 {
+    @include pt-to-ems(font-size, 38pt);
+  }
+
+  label {
+    @include pt-to-ems(font-size, 18pt);
+    display: block;
+    margin-top: 10px;
+  }
+
+  input {
+    @include pt-to-ems(font-size, 18pt);
+    width: 100%;
+  }
+
+  input[type="submit"] {
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
@@ -62,7 +85,6 @@ $box-background-color: #e8e4d2;
 
       nav.actions {
         float: right;
-        margin-top: -52px;
       }
     }
 

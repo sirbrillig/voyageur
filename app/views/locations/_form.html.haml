@@ -1,10 +1,9 @@
 = form_for(@location) do |f|
   .field
     = f.label :title
-    = f.text_field :title
+    = f.text_field :title, autofocus: true
   .field
     = f.label :address
     = f.text_field :address
   .actions
-    = f.submit %>
-
+    = f.submit

@@ -2,6 +2,7 @@
 $zen-column-count: 12;
 $zen-gutter-width: 20px;
 $header-height: 150px;
+$notice-background-color: #e8e4d2;
 
 // Assuming font-size defaults to 16pt, we can use math to make ems.
 // Found a function here: http://blog.poleteweb.com/pixel-to-em-math-using-sass
@@ -49,4 +50,23 @@ header {
     margin: 0px;
     padding: 0px;
   }
+}
+
+#error_explanation {
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  background-color: #ccc;
+}
+
+#notice, #error {
+  font-family: 'Copperplate', serif;
+  font-weight: normal;
+  @include pt-to-ems(font-size, 20pt);
+  text-align: center;
+  z-index: 999;
+  background-color: $notice-background-color;
+  padding: 8px 0;
 }

@@ -7,6 +7,8 @@ class Location < ActiveRecord::Base
   attr_accessible :address, :title
   has_many :triplocations, order: :position
   has_many :trips, through: :triplocations
+  validates :address, presence: true
+  validates :title, presence: true
 
   def uri_address
     URI.escape(self.address)
