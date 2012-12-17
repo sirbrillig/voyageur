@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :authenticate_user, except: [:new, :create]
+  before_filter :authenticate_user, except: [:new, :create, :login]
 
   def new
     @user = User.new
@@ -41,5 +41,31 @@ class UsersController < ApplicationController
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def login
+    if request.post?
+      user = User.find_by_email(params[:user][:email])
+      if user && user.authenticate(params[:user][:password])
+        session[:user_id] = user.id
+        redirect_to locations_path, :notice => "You are now logged in!"
+      else
+        flash.now[:error] = "Invalid email or password."
+        @user = User.new
+        respond_to do |format|
+          format.html
+        end
+      end
+    else
+      @user = User.new
+      respond_to do |format|
+        format.html
+      end
+    end
+  end
+
+  def logout
+    session[:user_id] = nil
+    redirect_to root_url, :notice => "You are now logged out."
   end
 end

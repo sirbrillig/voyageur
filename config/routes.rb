@@ -1,8 +1,13 @@
 Voyageur::Application.routes.draw do
-  resources :users
+  root :to => 'locations#index'
 
-
-  root :to => 'locations#index' #FIXME: a home page with login form
+  resources :users do
+    collection do
+      get 'login'
+      post 'login'
+      get 'logout'
+    end
+  end
 
   resources :locations
 

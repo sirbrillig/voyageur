@@ -8,9 +8,12 @@
 
   .field
     = f.label :email
-    = f.text_field :email
+    = f.text_field :email, autofocus: true
   .field
-    = f.label :password_digest
+    = f.label :password
     = f.text_field :password_digest
+  .field
+    = f.label :password_confirmation
+    = f.text_field :password_confirmation
   .actions
     = f.submit 'Save'

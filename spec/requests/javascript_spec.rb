@@ -7,7 +7,7 @@ describe "The Javascript" do
       @loc1 = FactoryGirl.create(:home_location, user: @user)
       @loc2 = FactoryGirl.create(:work_location, user: @user)
       @loc3 = FactoryGirl.create(:food_location, user: @user)
-      @trip1 = Trip.create(user: @user)
+      @trip1 = Trip.create(user_id: @user.id)
     end
 
     it "displays the login page for drag-to-append" do
@@ -30,14 +30,14 @@ describe "The Javascript" do
     before do
       @user = FactoryGirl.create(:user)
       visit root_url
-      fill_in('email', :with => @user.email) 
-      fill_in('password', :with => @user.password)
+      fill_in('user[email]', :with => @user.email) 
+      fill_in('user[password]', :with => @user.password)
       click_button('Log In')
 
       @loc1 = FactoryGirl.create(:home_location, user: @user)
       @loc2 = FactoryGirl.create(:work_location, user: @user)
       @loc3 = FactoryGirl.create(:food_location, user: @user)
-      @trip1 = Trip.create(user: @user)
+      @trip1 = Trip.create(user_id: @user.id)
     end
 
     context "of the drag-to-append" do

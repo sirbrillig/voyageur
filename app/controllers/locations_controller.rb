@@ -1,7 +1,9 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate_user
+  before_filter :authenticate_user, except: [:index]
 
   def index
+    return redirect_to login_users_url unless current_user
+
     @locations = current_user.locations
 
     # Right now each user has only 1 trip, but we're leaving our options open.
@@ -15,7 +17,7 @@ class LocationsController < ApplicationController
   end
 
   def show
-    @location = Location.where(id: params[:id], user_id: current_user.id)
+    @location = Location.where(id: params[:id], user_id: current_user.id).first
 
     respond_to do |format|
       format.json { render json: @location }
@@ -32,7 +34,7 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    @location = Location.where(id: params[:id], user_id: current_user.id)
+    @location = Location.where(id: params[:id], user_id: current_user.id).first
   end
 
   def create
@@ -51,7 +53,7 @@ class LocationsController < ApplicationController
   end
 
   def update
-    @location = Location.where(id: params[:id], user_id: current_user.id)
+    @location = Location.where(id: params[:id], user_id: current_user.id).first
 
     respond_to do |format|
       if @location.update_attributes(params[:location])
@@ -65,7 +67,7 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    @location = Location.where(id: params[:id], user_id: current_user.id)
+    @location = Location.where(id: params[:id], user_id: current_user.id).first
     @location.destroy
 
     respond_to do |format|

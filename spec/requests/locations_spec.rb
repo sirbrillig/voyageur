@@ -15,8 +15,8 @@ describe "The Location list page" do
     before do
       @user = FactoryGirl.create(:user)
       visit root_url
-      fill_in('email', :with => @user.email) 
-      fill_in('password', :with => @user.password)
+      fill_in('user[email]', :with => @user.email) 
+      fill_in('user[password]', :with => @user.password)
       click_button('Log In')
 
       @loc1 = FactoryGirl.create(:home_location, user: @user)
