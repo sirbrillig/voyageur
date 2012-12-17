@@ -7,6 +7,7 @@ class Location < ActiveRecord::Base
   attr_accessible :address, :title
   has_many :triplocations, order: :position
   has_many :trips, through: :triplocations
+  belongs_to :user
   validates :address, presence: true
   validates :title, presence: true
 

@@ -1,6 +1,7 @@
 class Trip < ActiveRecord::Base
   has_many :triplocations, order: :position
   has_many :locations, through: :triplocations, order: :position
+  belongs_to :user
 
   def distance
     total = 0

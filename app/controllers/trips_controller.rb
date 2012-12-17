@@ -1,6 +1,8 @@
 class TripsController < ApplicationController
+  before_filter :authenticate_user
+
   def remove
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     @trip.remove_location_at(params[:index].to_i)
 
@@ -11,7 +13,7 @@ class TripsController < ApplicationController
   end
 
   def clear
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     @trip.locations.clear
 
@@ -22,7 +24,7 @@ class TripsController < ApplicationController
   end
 
   def up
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     @trip.move_location_up(params[:index].to_i)
     @trip.save
@@ -34,7 +36,7 @@ class TripsController < ApplicationController
   end
 
   def down
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     @trip.move_location_down(params[:index].to_i)
     @trip.save
@@ -46,7 +48,7 @@ class TripsController < ApplicationController
   end
 
   def move
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     @trip.move_location(params[:location_index].to_i, to: params[:index].to_i)
     @trip.save
@@ -58,7 +60,7 @@ class TripsController < ApplicationController
   end
 
   def add
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
     @location = Location.find(params[:location_id])
     index = nil
     index = params[:index].to_i if params[:index]
@@ -72,7 +74,7 @@ class TripsController < ApplicationController
   end
 
   def show
-    @trip = Trip.find(params[:id])
+    @trip = Trip.where(id: params[:id], user_id: current_user.id)
 
     respond_to do |format|
       format.html { render partial: 'trip' }

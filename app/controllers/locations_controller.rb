@@ -1,7 +1,12 @@
 class LocationsController < ApplicationController
+  before_filter :authenticate_user
+
   def index
-    @locations = Location.all
-    @trip = Trip.find_or_create_by_id(1) # FIXME: hm. tie this to users.
+    @locations = current_user.locations
+
+    # Right now each user has only 1 trip, but we're leaving our options open.
+    @trip = current_user.trips.first
+    @trip = Trip.create(user_id: current_user.id) unless @trip
 
     respond_to do |format|
       format.html
@@ -10,7 +15,7 @@ class LocationsController < ApplicationController
   end
 
   def show
-    @location = Location.find(params[:id])
+    @location = Location.where(id: params[:id], user_id: current_user.id)
 
     respond_to do |format|
       format.json { render json: @location }
@@ -27,11 +32,12 @@ class LocationsController < ApplicationController
   end
 
   def edit
-    @location = Location.find(params[:id])
+    @location = Location.where(id: params[:id], user_id: current_user.id)
   end
 
   def create
     @location = Location.new(params[:location])
+    @location.user = current_user
 
     respond_to do |format|
       if @location.save
@@ -45,7 +51,7 @@ class LocationsController < ApplicationController
   end
 
   def update
-    @location = Location.find(params[:id])
+    @location = Location.where(id: params[:id], user_id: current_user.id)
 
     respond_to do |format|
       if @location.update_attributes(params[:location])
@@ -59,7 +65,7 @@ class LocationsController < ApplicationController
   end
 
   def destroy
-    @location = Location.find(params[:id])
+    @location = Location.where(id: params[:id], user_id: current_user.id)
     @location.destroy
 
     respond_to do |format|

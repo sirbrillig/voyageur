@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121210220326) do
+ActiveRecord::Schema.define(:version => 20121217214349) do
 
   create_table "distances", :force => true do |t|
     t.string   "origin"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20121210220326) do
     t.string   "address"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
   end
 
   create_table "triplocations", :force => true do |t|
@@ -37,6 +38,14 @@ ActiveRecord::Schema.define(:version => 20121210220326) do
   create_table "trips", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "user_id"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "email"
+    t.string   "password_digest"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end
