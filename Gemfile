@@ -23,6 +23,11 @@ gem 'haml-rails'
 
 gem 'acts_as_list'
 
+group :production do
+  gem 'pg'
+  gem 'thin'
+end
+
 group :development, :test do
   gem 'rspec-rails'
 end
