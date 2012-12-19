@@ -4,12 +4,17 @@
 @import "application.css.scss";
 
 $box-background-color: #e8e4d2;
+$box-padding: 2px;
+$box-side-padding: $box-padding * 3;
+$box-width: (300 - ($box-side-padding * 2));
 
 @mixin location-block {
   border: 1px solid #000;
   background-color: $box-background-color;
-  padding: 7px;
-  width: 286px; // 300px - padding
+  padding: $box-padding;
+  padding-left: $box-side-padding;
+  padding-right: $box-side-padding;
+  width: $box-width;
   margin-bottom: 5px;
 
   h1 {
@@ -64,6 +69,7 @@ $box-background-color: #e8e4d2;
 
     h1 {
       @include pt-to-ems(font-size, 24pt);
+      padding-top: 10px;
     }
   }
 
