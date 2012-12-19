@@ -29,7 +29,7 @@ body {
 
 h1 {
   @include pt-to-ems(font-size, 48pt);
-  font-family: 'Copperplate', serif;
+  font-family: 'Alegreya SC', sans-serif;
   font-weight: normal;
   padding: 0px;
   margin: 0px;
@@ -68,7 +68,7 @@ header {
 }
 
 #notice, #error {
-  font-family: 'Copperplate', serif;
+  font-family: 'Alegreya SC', serif;
   font-weight: normal;
   @include pt-to-ems(font-size, 20pt);
   text-align: center;
