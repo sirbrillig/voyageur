@@ -68,5 +68,18 @@ setup_dragging = () ->
   $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, receive: move_from_library, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
+
+load_map = () ->
+  mapOptions =
+    # FIXME: get the map location data.
+    center: new google.maps.LatLng(-34.397, 150.644),
+    zoom: 8,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+
+  canvas = $('#map_canvas')
+  if canvas.get(0)
+    map = new google.maps.Map canvas.get(0), mapOptions
+
 $ ->
   setup_dragging()
+  load_map()
