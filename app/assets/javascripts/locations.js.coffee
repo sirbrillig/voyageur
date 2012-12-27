@@ -8,12 +8,16 @@ location_id_from_ui = (ui) ->
   matches = ui.item[0].className.match(/location_(\d+)/)
   if matches
     return matches[1]
+  return null
 
 index_from_ui = (ui) ->
   ui.item.index() - 1
 
 get_trip_id = () ->
-  1 # FIXME: get the trip id
+  matches = $('.trip_locations').get(0).className.match(/trip_id_(\d+)/)
+  if matches
+    return matches[1]
+  return null
 
 reload_trip = () ->
   trip_id = get_trip_id()

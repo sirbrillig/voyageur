@@ -8,7 +8,7 @@
   .map
     = render('trips/map')
 
-%ul.trip_locations
+%ul.trip_locations{class: "trip_id_#{@trip.id}"}
   - if @trip
     %li.distance 
       %h1 Start of the Journey
