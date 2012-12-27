@@ -4,6 +4,12 @@
 
 from_library = false
 
+addresses_from_trip = () ->
+  addrs = []
+  for addr in $('.trip_locations p.address')
+    addrs.push(addr.textContent)
+  addrs
+
 location_id_from_ui = (ui) ->
   matches = ui.item[0].className.match(/location_(\d+)/)
   if matches
@@ -82,18 +88,19 @@ start_map = () ->
   directionsDisplay = new google.maps.DirectionsRenderer()
   chicago = new google.maps.LatLng(41.850033, -87.6500523)
   mapOptions =
-    zoom: 10,
+    zoom: 11,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
     center: chicago
   map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
   directionsDisplay.setMap(map)
 
 calc_route = () ->
-  # FIXME: get the route.
-  start = "10 Church Street, Burlington, VT, 05401"
-  end = "100 North Ave, Burlington, VT, 05401"
+  addrs = addresses_from_trip()
+  start = addrs.shift()
+  end = addrs.pop()
   waypts = []
-  waypts.push({location: '10 main street, winooski, vt', stopover: true})
+  for addr in addrs
+    waypts.push({location: addr, stopover: true})
   request = 
     origin: start,
     destination: end,

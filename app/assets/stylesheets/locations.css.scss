@@ -116,5 +116,5 @@ $box-width: (300 - ($box-side-padding * 2));
 
 #map_canvas { 
   @include location-block;
-  height: 100px;
+  height: 110px;
 }
