@@ -5,8 +5,10 @@
         =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
+  .map
+    = render('trips/map')
 
-%ul.trip_locations
+%ul.trip_locations{class: "trip_id_#{@trip.id}"}
   - if @trip
     %li.distance 
       %h1 Start of the Journey
@@ -18,7 +20,7 @@
             = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down")
             = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip")
           %h1= loc.title
-          %p= loc.address
+          %p.address= loc.address
         - unless (index + 1) >= @trip.locations.size
           .distance
             %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
