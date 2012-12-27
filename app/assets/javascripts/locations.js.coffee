@@ -85,8 +85,8 @@ directionsService = null
 map = null
 
 start_map = () ->
-  directionsDisplay = new google.maps.DirectionsRenderer()
-  chicago = new google.maps.LatLng(41.850033, -87.6500523)
+  directionsDisplay = new google.maps.DirectionsRenderer() unless directionsDisplay
+  chicago = new google.maps.LatLng(41.850033, -87.6500523) # FIXME: ideally start with the first location
   mapOptions =
     zoom: 11,
     mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -107,10 +107,10 @@ calc_route = () ->
     waypoints: waypts,
     travelMode: google.maps.TravelMode.DRIVING
   directionsService.route request, (result, status) ->
-    directionsDisplay.setDirections result  if status is google.maps.DirectionsStatus.OK
+    directionsDisplay.setDirections result if status is google.maps.DirectionsStatus.OK
 
 load_map = () ->
-  directionsService = new google.maps.DirectionsService()
+  directionsService = new google.maps.DirectionsService() unless directionsService
   start_map()
   calc_route()
 
