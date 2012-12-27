@@ -23,6 +23,7 @@ reload_trip = () ->
   trip_id = get_trip_id()
   $('.trip').load("/trips/#{trip_id}")
   setup_dragging()
+  calc_route()
 
 add_to_trip_at_index = (event, ui) -> 
   trip_id = get_trip_id()
@@ -72,18 +73,42 @@ setup_dragging = () ->
   $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag, receive: move_from_library, placeholder: "location-glow"})
   $('.library_locations .location').draggable(helper: "clone", opacity: 0.5, revert: "invalid", connectToSortable: ".trip")
 
+# These are for the map.
+directionsDisplay = null
+directionsService = null
+map = null
+
+start_map = () ->
+  directionsDisplay = new google.maps.DirectionsRenderer()
+  chicago = new google.maps.LatLng(41.850033, -87.6500523)
+  mapOptions =
+    zoom: 10,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: chicago
+  map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
+  directionsDisplay.setMap(map)
+
+calc_route = () ->
+  # FIXME: get the route.
+  start = "10 Church Street, Burlington, VT, 05401"
+  end = "100 North Ave, Burlington, VT, 05401"
+  waypts = []
+  waypts.push({location: '10 main street, winooski, vt', stopover: true})
+  request = 
+    origin: start,
+    destination: end,
+    waypoints: waypts,
+    travelMode: google.maps.TravelMode.DRIVING
+  directionsService.route request, (result, status) ->
+    directionsDisplay.setDirections result  if status is google.maps.DirectionsStatus.OK
 
 load_map = () ->
-  mapOptions =
-    # FIXME: get the map location data.
-    center: new google.maps.LatLng(-34.397, 150.644),
-    zoom: 8,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
-
-  canvas = $('#map_canvas')
-  if canvas.get(0)
-    map = new google.maps.Map canvas.get(0), mapOptions
+  directionsService = new google.maps.DirectionsService()
+  start_map()
+  calc_route()
 
 $ ->
   setup_dragging()
-  load_map()
+  canvas = $('#map_canvas')
+  if canvas.get(0)
+    load_map()
