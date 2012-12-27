@@ -29,7 +29,7 @@ reload_trip = () ->
   trip_id = get_trip_id()
   $('.trip').load("/trips/#{trip_id}")
   setup_dragging()
-  calc_route()
+  load_map() # FIXME re-write the map
 
 add_to_trip_at_index = (event, ui) -> 
   trip_id = get_trip_id()

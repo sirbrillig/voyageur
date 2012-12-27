@@ -5,8 +5,9 @@
         =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
-  .map
-    = render('trips/map')
+  - if @trip.locations.size > 1
+    .map
+      = render('trips/map')
 
 %ul.trip_locations{class: "trip_id_#{@trip.id}"}
   - if @trip
