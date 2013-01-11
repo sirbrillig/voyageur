@@ -94,6 +94,16 @@ $box-width: (300 - ($box-side-padding * 2));
       }
     }
 
+    .help_box {
+      @include location-block;
+      background-color: #ad7460;
+      text-align: center;
+
+      nav.actions {
+        float: right;
+      }
+    }
+
     .distance {
       @include location-block;
       background-color: darken($box-background-color, 10);
@@ -112,4 +122,9 @@ $box-width: (300 - ($box-side-padding * 2));
       height: 70px;
     }
   }
+}
+
+#map_canvas { 
+  @include location-block;
+  height: 110px;
 }

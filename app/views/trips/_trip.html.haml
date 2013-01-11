@@ -5,21 +5,36 @@
         =link_to(image_tag('clear_button.png'), clear_trip_path(@trip), :id => "clear_trip")
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
+  - if @trip.locations.size > 1
+    .map
+      = render('trips/map')
 
-%ul.trip_locations
+%ul.trip_locations{class: "trip_id_#{@trip.id}"}
   - if @trip
     %li.distance 
       %h1 Start of the Journey
-    - @trip.locations.each_with_index do |loc, index|
-      %li.location_block
-        .location{class: "location_#{loc.id} trip_location_#{index}"}
-          %nav.actions
-            = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up")
-            = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down")
-            = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip")
-          %h1= loc.title
-          %p= loc.address
-        - unless (index + 1) >= @trip.locations.size
-          .distance
-            %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
-
+    - if @trip.locations.size > 0
+      - @trip.locations.each_with_index do |loc, index|
+        %li.location_block
+          .location{class: "location_#{loc.id} trip_location_#{index}"}
+            %nav.actions
+              = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up", title: 'Move this location up one step in the trip.')
+              = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down", title: 'Move this location one step down in the trip.')
+              = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.')
+            %h1= loc.title
+            %p.address= loc.address
+          - unless (index + 1) >= @trip.locations.size
+            .distance
+              %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
+        - if @trip.locations.size == 1
+          .help_box
+            %h1 Add another location to this trip by dragging it over from the list on the left or clicking its arrow.
+    - elsif @locations and @locations.size > 1
+      .help_box
+        %h1 Add a location to this trip by dragging it over from the list on the left or clicking its arrow.
+    - elsif @locations and @locations.size == 1
+      .help_box
+        %h1 Add another location to the list on the left by clicking the #{link_to('Add Location', new_location_path)} button.
+    - elsif @locations and @locations.size == 0
+      .help_box
+        %h1 Add a location to the list on the left by clicking the #{link_to('Add Location', new_location_path)} button.
