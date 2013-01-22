@@ -22,6 +22,8 @@ gem 'haml-rails'
 
 gem 'acts_as_list'
 
+gem 'devise'
+
 group :production do
   gem 'pg'
   gem 'thin'

@@ -1,13 +1,9 @@
 Voyageur::Application.routes.draw do
+  devise_for :users
+
   root :to => 'locations#index'
 
-  resources :users do
-    collection do
-      get 'login'
-      post 'login'
-      get 'logout'
-    end
-  end
+  resources :users
 
   resources :locations
 

@@ -1,8 +1,8 @@
 class LocationsController < ApplicationController
-  before_filter :authenticate_user, except: [:index]
+  before_filter :authenticate_user!, except: [:index]
 
   def index
-    return redirect_to login_users_url unless current_user
+    return redirect_to new_user_session_path unless current_user
 
     @locations = current_user.locations
 

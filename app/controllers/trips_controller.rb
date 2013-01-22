@@ -1,5 +1,5 @@
 class TripsController < ApplicationController
-  before_filter :authenticate_user
+  before_filter :authenticate_user!
 
   def remove
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
