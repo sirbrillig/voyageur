@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '3.2.11'
-gem 'sqlite3'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
@@ -23,8 +22,14 @@ gem 'haml-rails'
 
 gem 'acts_as_list'
 
+group :production do
+  gem 'pg'
+  gem 'thin'
+end
+
 group :development, :test do
   gem 'rspec-rails'
+  gem 'sqlite3'
 end
 
 group :test do
