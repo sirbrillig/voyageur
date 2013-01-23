@@ -1,7 +1,8 @@
 .content_user
-  %h1 New user
+  .page-header
+    = link_to users_path, :class => 'btn' do
+      %i.icon-list-alt
+      Back
+    %h1 New user
 
   = render 'form'
-  .info
-    Already have an account?
-    = link_to 'Log In', sign_in_path

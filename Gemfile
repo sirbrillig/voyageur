@@ -20,6 +20,10 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'haml-rails'
 
+gem 'bootstrap-sass'
+gem 'bootstrap-generators', '~> 2.1'
+gem 'simple_form'
+
 gem 'acts_as_list'
 
 gem 'devise'

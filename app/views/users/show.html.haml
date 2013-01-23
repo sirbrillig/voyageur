@@ -1,12 +1,13 @@
-%p#notice= notice
+.content_user
+  .page-header
+    = link_to users_path, :class => 'btn' do
+      %i.icon-list-alt
+      Back
+    = link_to edit_user_path(@user), :class => 'btn btn-primary' do
+      %i.icon-pencil.icon-white
+      Edit
+    %h1 Listing users
 
-%p
-  %b Email:
-  = @user.email
-%p
-  %b Password digest:
-  = @user.password_digest
-
-= link_to 'Edit', edit_user_path(@user)
-\|
-= link_to 'Back', users_path
+  %dl
+    %dt Email
+    %dd= @user.email

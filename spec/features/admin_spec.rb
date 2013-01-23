@@ -1,6 +1,6 @@
 require 'spec_helper.rb'
 
-define "the users list" do
+describe "the users list" do
   context "without login" do
     before { visit users_path }
 

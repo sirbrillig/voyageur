@@ -1,19 +1,27 @@
-%h1 Listing users
+.content_user
+  .page-header
+    = link_to new_user_path, :class => 'btn btn-primary' do
+      %i.icon-plus.icon-white
+      New User
+    %h1 Listing users
 
-%table
-  %tr
-    %th Email
-    %th
-    %th
-    %th
+  %table.table.table-bordered.table-striped
+    %thead
+      %tr
+        %th Email
+        %th Confirmed
+        %th Last IP
+        %th 
+        %th 
+        %th 
 
-  - @users.each do |user|
-    %tr
-      %td= user.email
-      %td= link_to 'Show', user
-      %td= link_to 'Edit', edit_user_path(user)
-      %td= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' }
+    %tbody
+      - @users.each do |user|
+        %tr
+          %td= user.email
+          %td= user.confirmed_at
+          %td= user.current_sign_in_ip
+          %td= link_to 'Show', user
+          %td= link_to 'Edit', edit_user_path(user)
+          %td= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
 
-%br
-
-= link_to 'New User', new_user_path

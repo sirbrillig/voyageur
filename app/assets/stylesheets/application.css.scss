@@ -18,9 +18,13 @@ $browser-context: 16pt;
 
 .container {
   @include zen-grid-container;
+  margin: 0px;
+  width: 100%;
 }
 
 body {
+  font-size: 16px;
+  line-height: normal;
   margin: 0px;
   padding: 0px;
   width: 100%;
@@ -75,4 +79,9 @@ header {
   z-index: 999;
   background-color: $notice-background-color;
   padding: 8px 0;
+}
+
+p {
+  line-height: normal;
+  font-family: 'Times';
 }
