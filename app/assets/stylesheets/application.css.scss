@@ -15,6 +15,9 @@ $browser-context: 16pt;
   border: 1px dotted red;
 }
 
+.content {
+  padding: 0px;
+}
 
 .container {
   @include zen-grid-container;

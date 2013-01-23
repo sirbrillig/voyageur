@@ -1,0 +1,12 @@
+@import "application.css.scss";
+
+.content_home {
+  @import "bootstrap";
+
+  margin-top: 20px;
+
+  @include zen-grid-item(4, 5);
+  h1 {
+    @include pt-to-ems(font-size, 38pt);
+  }
+}
