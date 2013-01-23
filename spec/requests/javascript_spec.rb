@@ -32,7 +32,7 @@ describe "The Javascript" do
       visit root_url
       fill_in('user[email]', :with => @user.email) 
       fill_in('user[password]', :with => @user.password)
-      click_button('Log In')
+      click_button('Sign in')
 
       @loc1 = FactoryGirl.create(:home_location, user: @user)
       @loc2 = FactoryGirl.create(:work_location, user: @user)

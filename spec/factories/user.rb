@@ -1,14 +1,14 @@
 FactoryGirl.define do
   factory :user do
     email 'test@test.com'
-    password 'foobar'
-    password_confirmation 'foobar'
+    password 'foobarfoobar'
+    confirmed_at Time.now
   end
 
-  factory :admin do
+  factory :admin, class: User do
     email 'admin@test.com'
-    password 'foobar'
-    password_confirmation 'foobar'
+    password 'foobarfoobar'
     admin true
+    confirmed_at Time.now
   end
 end
