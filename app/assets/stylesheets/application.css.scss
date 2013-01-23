@@ -67,7 +67,7 @@ header {
   background-color: #ccc;
 }
 
-#notice, #error {
+#notice, #error, #alert, #info {
   font-family: 'Alegreya SC', serif;
   font-weight: normal;
   @include pt-to-ems(font-size, 20pt);
