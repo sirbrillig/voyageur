@@ -66,4 +66,13 @@ Voyageur::Application.configure do
   # config.active_record.auto_explain_threshold_in_seconds = 0.5
   
   config.action_mailer.default_url_options = { :host => 'voyageur.herokuapp.com' }
+
+  ActionMailer::Base.smtp_settings = {
+    :address  => "smtp.gmail.com",
+    :port  => 587,
+    :authentication  => :plain,
+    :domain => ENV['GMAIL_SMTP_USER'],
+    :user_name  => ENV['GMAIL_SMTP_USER'],
+    :password  => ENV['GMAIL_SMTP_PASSWORD']
+  }
 end
