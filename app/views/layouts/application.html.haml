@@ -15,14 +15,10 @@
         = link_to(image_tag('logo.png'), root_url)
         - if current_user
           %nav.actions
-            = link_to(image_tag('logout_button.png'), logout_users_path)
+            = link_to(image_tag('logout_button.png'), destroy_user_session_path, method: :delete)
 
-      - if flash[:notice]
-        #notice
-          = flash[:notice]
-      - if flash[:error]
-        #error
-          = flash[:error]
+      - flash.each do |key, message|
+        %div{id: key}= message
       - if @location and @location.errors.any?
         #error_explanation
           %h2= "#{pluralize(@location.errors.count, "error")} prohibited this location from being saved:"

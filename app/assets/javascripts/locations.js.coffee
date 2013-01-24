@@ -85,7 +85,7 @@ directionsService = null
 map = null
 
 start_map = () ->
-  directionsDisplay = new google.maps.DirectionsRenderer() unless directionsDisplay
+  directionsDisplay = new google.maps.DirectionsRenderer()
   chicago = new google.maps.LatLng(41.850033, -87.6500523) # FIXME: ideally start with the first location
   mapOptions =
     zoom: 11,
@@ -110,9 +110,11 @@ calc_route = () ->
     directionsDisplay.setDirections result if status is google.maps.DirectionsStatus.OK
 
 load_map = () ->
-  directionsService = new google.maps.DirectionsService() unless directionsService
+  $('#map_canvas').hide()
+  directionsService = new google.maps.DirectionsService()
   start_map()
   calc_route()
+  $('#map_canvas').show()
 
 $ ->
   setup_dragging()

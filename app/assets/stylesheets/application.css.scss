@@ -15,12 +15,19 @@ $browser-context: 16pt;
   border: 1px dotted red;
 }
 
+.content {
+  padding: 0px;
+}
 
 .container {
   @include zen-grid-container;
+  margin: 0px;
+  width: 100%;
 }
 
 body {
+  font-size: 16px;
+  line-height: normal;
   margin: 0px;
   padding: 0px;
   width: 100%;
@@ -67,7 +74,7 @@ header {
   background-color: #ccc;
 }
 
-#notice, #error {
+#notice, #error, #alert, #info {
   font-family: 'Alegreya SC', serif;
   font-weight: normal;
   @include pt-to-ems(font-size, 20pt);
@@ -75,4 +82,9 @@ header {
   z-index: 999;
   background-color: $notice-background-color;
   padding: 8px 0;
+}
+
+p {
+  line-height: normal;
+  font-family: 'Times';
 }

@@ -1,14 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
 
-  private
-  def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  end
+  helper_method :authenticate_admin
 
-  helper_method :current_user
+  protected 
 
-  def authenticate_user
-    return redirect_to root_url unless current_user
+  def authenticate_admin
+    unless user_signed_in? and current_user.admin?
+      redirect_to root_url, alert: 'You are not authorized for that action, sorry.'
+    end
   end
 end
