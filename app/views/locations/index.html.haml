@@ -11,6 +11,7 @@
               = link_to(image_tag('delete.png'), location_path(loc), :method => :delete, :id => "delete_location", title: 'Delete this location.', confirm: 'Are you sure you want to delete this location permanently?')
               = link_to(image_tag('arrow_right.png'), add_location_path(@trip, loc), :id => "add_to_trip", title: 'Add this location to the trip.') if @trip
             %h1{title: loc.address}= loc.title
+            %p.address= loc.address
 
   .trip
     = render('trips/trip')
