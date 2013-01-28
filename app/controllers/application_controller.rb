@@ -7,7 +7,11 @@ class ApplicationController < ActionController::Base
 
   def authenticate_admin
     unless user_signed_in? and current_user.admin?
-      redirect_to root_url, alert: 'You are not authorized for that action, sorry.'
+      if user_signed_in?
+        redirect_to locations_url, alert: 'You are not authorized for that action, sorry.'
+      else
+        redirect_to root_url, alert: 'You are not authorized for that action, sorry.'
+      end
     end
   end
 end
