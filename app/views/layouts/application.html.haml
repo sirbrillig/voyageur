@@ -5,18 +5,13 @@
     %title Voyageur
     = stylesheet_link_tag    "application", :media => "all"
     = javascript_include_tag "application"
-    != "<link href='http://fonts.googleapis.com/css?family=Alegreya+SC:400,700' rel='stylesheet' type='text/css'>"
+    != "<link href='http://fonts.googleapis.com/css?family=Alegreya+SC:400,700|Abel' rel='stylesheet' type='text/css'>"
     != "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBNDQ3-gE2fMeBUN_X1ELPoMxm8AQiYQOo&sensor=false'></script>"
     = csrf_meta_tags
   %body
     .container#container
       %header
-        %h1 Voyageur
-        = link_to(image_tag('logo.png'), root_url)
-        - if current_user
-          %nav.actions
-            = link_to(image_tag('logout_button.png'), destroy_user_session_path, method: :delete)
-
+        = render partial: 'layouts/header'
       - flash.each do |key, message|
         %div{id: key}= message
       - if @location and @location.errors.any?
