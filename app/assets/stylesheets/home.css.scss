@@ -5,8 +5,5 @@
 
   margin-top: 20px;
 
-  @include zen-grid-item(4, 5);
-  h1 {
-    @include pt-to-ems(font-size, 38pt);
-  }
+  @include zen-grid-item(8, 3);
 }
