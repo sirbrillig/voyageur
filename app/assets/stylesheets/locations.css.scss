@@ -4,7 +4,7 @@
 @import "application.css.scss";
 
 $box-background-color: #e8e4d2;
-$box-padding: 2px;
+$box-padding: 3px;
 $box-side-padding: $box-padding * 3;
 $box-width: (300 - ($box-side-padding * 2));
 
@@ -108,6 +108,10 @@ $box-width: (300 - ($box-side-padding * 2));
       @include location-block;
       background-color: darken($box-background-color, 10);
       text-align: center;
+
+      h1 {
+        @include pt-to-ems(font-size, 18pt);
+      }
     }
 
     .location {
@@ -126,5 +130,5 @@ $box-width: (300 - ($box-side-padding * 2));
 
 #map_canvas { 
   @include location-block;
-  height: 110px;
+  height: 90px;
 }
