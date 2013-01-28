@@ -20,6 +20,10 @@ $box-width: (300 - ($box-side-padding * 2));
   h1 {
     @include pt-to-ems(font-size, 24pt);
   }
+
+  p.address {
+    display: none;
+  }
 }
 
 @mixin location-images {
