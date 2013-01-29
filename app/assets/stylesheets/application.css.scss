@@ -12,6 +12,11 @@ $browser-context: 16pt;
   #{$prop}: #{$pixels/$context}em
 }
 
+@mixin default-font {
+  font-family: 'Alegreya SC', sans-serif;
+  font-weight: normal;
+}
+
 @mixin debug {
   border: 1px dotted red;
 }
@@ -37,8 +42,7 @@ body {
 
 h1 {
   @include pt-to-ems(font-size, 48pt);
-  font-family: 'Alegreya SC', sans-serif;
-  font-weight: normal;
+  @include default-font;
   padding: 0px;
   margin: 0px;
 }
@@ -79,7 +83,7 @@ header {
       background-color: #000;
       color: #fff;
       @include border-bottom-radius(15px);
-      font-family: 'Alegreya SC', sans-serif;
+      @include default-font;
       letter-spacing: 2px;
       @include pt-to-ems(font-size, 14pt);
 
@@ -101,7 +105,7 @@ header {
 }
 
 #notice, #error, #alert, #info {
-  font-family: 'Alegreya SC', serif;
+  @include default-font;
   font-weight: normal;
   @include pt-to-ems(font-size, 20pt);
   text-align: center;

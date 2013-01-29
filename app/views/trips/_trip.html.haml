@@ -21,8 +21,11 @@
               = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up", title: 'Move this location up one step in the trip.')
               = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down", title: 'Move this location one step down in the trip.')
               = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.')
-            %h1{title: loc.address}= loc.title
-            %p.address= loc.address
+            %h1{title: loc.address}
+              %a{:href => '#', 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}<
+                %i.icon-chevron-down
+              = loc.title
+            %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.address
           - unless (index + 1) >= @trip.locations.size
             .distance
               %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
