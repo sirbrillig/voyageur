@@ -4,25 +4,24 @@
 @import "application.css.scss";
 
 $box-background-color: #e8e4d2;
-$box-padding: 3px;
+$box-padding: 1px;
 $box-side-padding: $box-padding * 3;
 $box-width: (300 - ($box-side-padding * 2));
 
 @mixin location-block {
-  border: 1px solid #000;
-  background-color: $box-background-color;
   padding: $box-padding;
   padding-left: $box-side-padding;
   padding-right: $box-side-padding;
-  width: $box-width;
   margin-bottom: 5px;
+  background-color: $box-background-color;
+  border: 1px solid #000;
+  width: $box-width;
 
   h1 {
     @include pt-to-ems(font-size, 24pt);
-  }
-
-  p.address {
-    display: none;
+    @include default-font;
+    margin: 0px;
+    padding: 0px;
   }
 }
 
@@ -81,6 +80,8 @@ $box-width: (300 - ($box-side-padding * 2));
     @include zen-grid-item(4, 3);
 
     .location {
+      @import "bootstrap";
+
       @include location-block;
       @include location-images;
     }
@@ -119,6 +120,8 @@ $box-width: (300 - ($box-side-padding * 2));
     }
 
     .location {
+      @import "bootstrap";
+
       @include location-block;
       @include location-images;
     }

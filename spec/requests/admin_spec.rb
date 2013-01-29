@@ -6,7 +6,7 @@ describe "the users list" do
     before { visit users_path }
 
     it "denies access" do
-      page.should_not have_content user.email
+      page.should_not have_content "Confirmed"
     end
   end
 
@@ -22,7 +22,7 @@ describe "the users list" do
     end
 
     it "denies access" do
-      page.should_not have_content user.email
+      page.should_not have_content "Confirmed"
     end
   end
 
@@ -38,7 +38,7 @@ describe "the users list" do
     end
 
     it "lists the users" do
-      page.should have_content user.email
+      page.should have_content "Confirmed"
     end
   end
 end

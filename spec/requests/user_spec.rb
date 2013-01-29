@@ -22,13 +22,9 @@ describe "The user sign-up page" do
       page.should have_content "sent"
     end
 
-    it "brings you to the locations page" do
-      pending "since the model is confirmable, this will fail"
-      page.should have_link_to new_location_path
-    end
-
     it "creates the User" do
       User.find_by_email(@user.email).should_not be_nil
     end
+
   end
 end
