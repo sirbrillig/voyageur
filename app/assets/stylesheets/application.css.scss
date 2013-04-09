@@ -58,10 +58,18 @@ header {
     margin-bottom: -15px;
   }
 
-  img {
+  .logo {
+    background-image: url('logo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 210px;
+    height: 178px;
+    text-indent: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
-    margin: 0px;
-    padding: 0px;
     z-index: 1000;
   }
 
