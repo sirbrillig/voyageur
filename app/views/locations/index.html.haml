@@ -1,7 +1,7 @@
 .content_locations
 
   .library
-    =link_to(image_tag('add_location_button.png'), new_location_path)
+    .add_location_button=link_to('Add Location', new_location_path)
     %ul.library_locations
       - if @locations
         - @locations.each do |loc|

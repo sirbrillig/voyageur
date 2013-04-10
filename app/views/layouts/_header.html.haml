@@ -2,5 +2,5 @@
 .logo= link_to('Voyageur', root_url)
 - if current_user
   %ul.actions
-    %li= link_to(current_user.email, edit_user_path(current_user))
-    %li= link_to('Log Out', destroy_user_session_path, method: :delete)
+    %li.account= link_to(current_user.email, edit_user_path(current_user))
+    %li.logout= link_to('Log Out', destroy_user_session_path, method: :delete)
