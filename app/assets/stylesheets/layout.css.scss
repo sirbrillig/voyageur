@@ -12,6 +12,7 @@ body { padding-top: 60px; }
   color: #fff;
   font-family: 'Alegreya SC', sans-serif;
   font-size: 2.0em;
+  padding-bottom: 0px;
 }
 
 .navbar .brand:after {
@@ -23,4 +24,48 @@ body { padding-top: 60px; }
   margin-right: 8px;
   background-image: url('logo-tiny.png');
   background-repeat: no-repeat;
+}
+
+.navbar .nav li a {
+  text-shadow: none;
+  color: #fff;
+}
+
+#alert {
+  border: 1px solid;
+  padding: 4px;
+  padding-left: 8px;
+  margin-left: 0px;
+  margin-right: 0px;
+  background-color: #ffbaba;
+  color: #d8000c;
+}
+
+ul.library_locations {
+  padding-top: 1em;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+
+  li.location {
+    border: 1px solid #e3e3e3;
+    padding: 2px;
+    margin: 1px;
+    list-style-type: none;
+    background-color: #f5f5f5;
+
+    a, a:hover {
+      text-decoration: none;
+      color: #000;
+    }
+    
+    h1 {
+      font-size: 1.2em;
+      margin: 0px;
+    }
+
+    .actions {
+      float: right;
+    }
+  }
 }

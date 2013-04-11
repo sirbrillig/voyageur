@@ -1,7 +1,7 @@
 .content_locations
 
   .library
-    .add_location_button=link_to('Add Location', new_location_path)
+    =link_to(raw('<i class="icon-plus"></i> Add Location'), new_location_path, class: 'add_location_button btn btn-block')
     %ul.library_locations
       - if @locations
         - @locations.each do |loc|
@@ -13,7 +13,7 @@
             %h1{title: loc.address}
               %a{:href => '#', 'data-toggle' => 'collapse', 'data-target' => "#address_#{loc.id}"}<
                 %i.icon-chevron-down
-              = loc.title
+                = loc.title
             %p.address{id: "address_#{loc.id}", class:"collapse"}= loc.address
 
   .trip

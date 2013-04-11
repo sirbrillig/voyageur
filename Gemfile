@@ -38,12 +38,12 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-group :development do
-  gem 'rb-fsevent', '~> 0.9'
-  gem 'guard'
-  gem 'guard-livereload'
-  gem 'rack-livereload'
-end
+# group :development do
+#   gem 'rb-fsevent', '~> 0.9'
+#   gem 'guard'
+#   gem 'guard-livereload'
+#   gem 'rack-livereload'
+# end
 
 group :test do
   gem 'capybara'

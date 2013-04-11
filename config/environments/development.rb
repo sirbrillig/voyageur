@@ -46,9 +46,9 @@ Voyageur::Application.configure do
     :password  => ENV['GMAIL_SMTP_PASSWORD']
   }
 
-  config.middleware.insert_before(
-    Rack::Lock, Rack::LiveReload,
-    :min_delay => 200,
-    :max_delay => 1000,
-  )
+#   config.middleware.insert_before(
+#     Rack::Lock, Rack::LiveReload,
+#     :min_delay => 200,
+#     :max_delay => 1000,
+#   )
 end
