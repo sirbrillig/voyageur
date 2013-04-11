@@ -1,6 +1,0 @@
-%h1 Voyageur
-.logo= link_to('Voyageur', root_url)
-- if current_user
-  %ul.actions
-    %li.account= link_to(current_user.email, edit_user_path(current_user))
-    %li.logout= link_to('Log Out', destroy_user_session_path, method: :delete)

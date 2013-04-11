@@ -3,3 +3,24 @@ body { padding-top: 60px; }
 @import "bootstrap-responsive";
 @import "compass/css3/border-radius";
 
+.navbar-inner {
+  background: url('header.png');
+}
+
+.navbar .brand {
+  text-shadow: none;
+  color: #fff;
+  font-family: 'Alegreya SC', sans-serif;
+  font-size: 2.0em;
+}
+
+.navbar .brand:after {
+  float: left;
+  content: "";
+  width: 48px;
+  height: 40px;
+  margin-top: -8px;
+  margin-right: 8px;
+  background-image: url('logo-tiny.png');
+  background-repeat: no-repeat;
+}
