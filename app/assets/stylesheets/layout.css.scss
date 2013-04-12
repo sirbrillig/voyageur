@@ -135,3 +135,42 @@ ul.nav-tabs {
   @include location-block;
   height: 90px;
 }
+
+@media (min-width: 768px) {
+  .navbar-inner {
+    height: 8.5em;
+  }
+
+  .navbar .brand {
+    float: none;
+    width: 210px;
+    font-size: 3.8em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .navbar .brand:after {
+    width: 210px;
+    height: 178px;
+    margin-top: 15px;
+    background-image: url('logo.png');
+  }
+
+  #container {
+    margin-top: 115px;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 2em;
+    right: 4em;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .nav-links {
+    position: absolute;
+    top: 0em;
+    right: 4em;
+  }
+}
