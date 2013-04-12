@@ -9,9 +9,8 @@
     != "<script type='text/javascript' src='https://maps.googleapis.com/maps/api/js?key=AIzaSyBNDQ3-gE2fMeBUN_X1ELPoMxm8AQiYQOo&sensor=false'></script>"
     = csrf_meta_tags
   %body
+    = render partial: 'layouts/header'
     .container#container
-      %header
-        = render partial: 'layouts/header'
       - flash.each do |key, message|
         %div{id: key}= message
       - if @location and @location.errors.any?

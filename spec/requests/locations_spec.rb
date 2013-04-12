@@ -71,7 +71,9 @@ describe "The Location list page" do
     context "when the 'delete location' button is clicked" do
       before do
         within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-        within(:css, ".library .location_#{@loc1.id}") { click_link('delete_location') }
+        visit edit_location_path(@loc1.id)
+        click_link('delete_location')
+        visit locations_path
       end
 
       it "removes the location from the library" do
