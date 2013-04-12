@@ -28,9 +28,10 @@ gem 'acts_as_list'
 
 gem 'devise'
 
+gem 'thin'
+
 group :production do
   gem 'pg'
-  gem 'thin'
 end
 
 group :development, :test do
