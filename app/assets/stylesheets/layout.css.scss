@@ -31,14 +31,23 @@ body { padding-top: 60px; }
   color: #fff;
 }
 
-#alert {
+#alert, #notice {
   border: 1px solid;
   padding: 4px;
   padding-left: 8px;
   margin-left: 0px;
   margin-right: 0px;
-  background-color: #ffbaba;
+  margin-bottom: 2px;
+}
+
+#alert {
   color: #d8000c;
+  background-color: #ffbaba;
+}
+
+#notice {
+  color: #00529b;
+  background-color: #bde5f8;
 }
 
 ul.library_locations {
@@ -50,6 +59,8 @@ ul.library_locations {
   li.location {
     border: 1px solid #e3e3e3;
     padding: 2px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     margin: 1px;
     list-style-type: none;
     background-color: #f5f5f5;
@@ -60,8 +71,9 @@ ul.library_locations {
     }
     
     h1 {
-      font-size: 1.2em;
+      font-size: 1.1em;
       margin: 0px;
+      line-height: 1em;
     }
 
     .actions {

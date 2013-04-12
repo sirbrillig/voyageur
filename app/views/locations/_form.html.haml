@@ -6,4 +6,7 @@
     = f.label :address
     = f.text_field :address
   .actions
-    = f.submit
+    - if @location.new_record?
+      = f.button(raw('<i class="icon-ok-sign"></i> Save Location'), class: 'btn btn-primary')
+    - else
+      = f.button(raw('<i class="icon-ok-sign"></i> Update Location'), class: 'btn btn-primary')

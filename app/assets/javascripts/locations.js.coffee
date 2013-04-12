@@ -31,7 +31,7 @@ reload_trip = () ->
   setup_dragging()
   load_map() # FIXME re-write the map
 
-add_to_trip_at_index = (event, ui) -> 
+add_to_trip_at_index = (event, ui) ->
   trip_id = get_trip_id()
   id = location_id_from_ui(ui)
   index = index_from_ui(ui)
@@ -68,7 +68,7 @@ is_from_trip_list = (event, ui) ->
 stop_drag = (event, ui) ->
   if is_from_trip_list(event, ui)
     move_location(event, ui)
-  else 
+  else
     add_to_trip_at_index(event, ui)
   from_library = false
 
@@ -101,7 +101,7 @@ calc_route = () ->
   waypts = []
   for addr in addrs
     waypts.push({location: addr, stopover: true})
-  request = 
+  request =
     origin: start,
     destination: end,
     waypoints: waypts,

@@ -2,7 +2,7 @@
   .summary
     - unless @trip.locations.empty?
       %nav.actions
-        .clear_button=link_to('Clear', clear_trip_path(@trip), :id => "clear_trip")
+        =link_to(raw('<i class="icon-asterisk"></i> Clear Trip'), clear_trip_path(@trip), :id => "clear_trip", class: 'btn btn-warning btn-block')
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
   - if @trip.locations.size > 1

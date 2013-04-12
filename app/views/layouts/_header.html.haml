@@ -10,11 +10,8 @@
       = link_to('Voyageur', root_url, class: 'brand')
       .nav-collapse.collapse
         %ul.nav
-          %li.active
-            =link_to('Home', root_url)
+          %li.active=link_to(raw('<i class="icon-home icon-white"></i> Home'), root_url)
           - if current_user
-            %li
-              =link_to('Account', edit_user_path(current_user))
-            %li
-              =link_to('Log Out', destroy_user_session_path, method: :delete)
+            %li=link_to(raw('<i class="icon-user icon-white"></i> Account'), edit_user_path(current_user))
+            %li=link_to(raw('<i class="icon-hand-left icon-white"></i> Log Out'), destroy_user_session_path, method: :delete)
 
