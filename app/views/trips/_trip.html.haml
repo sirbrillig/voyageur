@@ -2,7 +2,7 @@
   .summary
     - unless @trip.locations.empty?
       %nav.actions
-        =link_to(raw('<i class="icon-asterisk"></i> Clear Trip'), clear_trip_path(@trip), :id => "clear_trip", class: 'btn btn-warning btn-block')
+        =link_to(raw('<i class="icon-asterisk"></i> Clear Trip'), clear_trip_path(@trip), :id => "clear_trip", class: 'btn btn-warning')
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
   - if @trip.locations.size > 1
@@ -11,8 +11,6 @@
 
 %ul.trip_locations{class: "trip_id_#{@trip.id}"}
   - if @trip
-    %li.distance 
-      %h1 Start of the Journey
     - if @trip.locations.size > 0
       - @trip.locations.each_with_index do |loc, index|
         %li.location_block
@@ -21,9 +19,8 @@
               = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up", title: 'Move this location up one step in the trip.')
               = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down", title: 'Move this location one step down in the trip.')
               = link_to(image_tag('remove.png'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.')
-            %h1{title: loc.address}
-              %a{:href => '#', 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}<
-                %i.icon-chevron-down
+            %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
+              %i.icon-resize-full
               = loc.title
             %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.address
           - unless (index + 1) >= @trip.locations.size
