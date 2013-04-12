@@ -116,7 +116,22 @@ load_map = () ->
   calc_route()
   $('#map_canvas').show()
 
+enable_tabs = () ->
+  $('#library').removeClass('active') # allows graceful degrading
+  $('#trip_tab').click(
+   (e) =>
+     e.preventDefault()
+     $(this).tab('show')
+  )
+  $('#library_tab').click(
+   (e) =>
+     e.preventDefault()
+     $(this).tab('show')
+  )
+
+
 $ ->
+  enable_tabs()
   setup_dragging()
   canvas = $('#map_canvas')
   if canvas.get(0)

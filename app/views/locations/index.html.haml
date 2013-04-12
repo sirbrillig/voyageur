@@ -1,18 +1,22 @@
 .content_locations
 
-  .library
-    =link_to(raw('<i class="icon-plus"></i> Add Location'), new_location_path, class: 'add_location_button btn btn-block btn-success')
-    %ul.library_locations
-      - if @locations
-        - @locations.each do |loc|
-          %li.location{class: "location_#{loc.id}"}
-            %nav.actions
-              = link_to(raw('<i class="icon-edit"></i> Edit'), edit_location_path(loc), title: 'Edit this location.', class: 'btn btn-small')
-              = link_to(raw('<i class="icon-road"></i> Add'), add_location_path(@trip, loc), :id => "add_to_trip", class: 'btn btn-small btn-primary', title: 'Add this location to the trip.') if @trip
-            %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#address_#{loc.id}"}
-              %i.icon-resize-full
-              = loc.title
-            %p.address{id: "address_#{loc.id}", class:"collapse"}= loc.address
+  %ul.nav.nav-tabs
+    %li=link_to('Locations', '#library', id: 'library_tab', 'data-toggle' => 'tab')
+    %li.active=link_to('Trip', '#trip', id: 'trip_tab', 'data-toggle' => 'tab')
+  .tab-content
+    #library.library.tab-pane.active
+      =link_to(raw('<i class="icon-plus"></i> Add Location'), new_location_path, class: 'add_location_button btn btn-success btn-block')
+      %ul.library_locations
+        - if @locations
+          - @locations.each do |loc|
+            %li.location{class: "location_#{loc.id}"}
+              %nav.actions
+                = link_to(raw('<i class="icon-edit"></i> Edit'), edit_location_path(loc), title: 'Edit this location.', class: 'btn btn-small')
+                = link_to(raw('<i class="icon-road"></i> Add'), add_location_path(@trip, loc), :id => "add_to_trip", class: 'btn btn-small btn-primary', title: 'Add this location to the trip.') if @trip
+              %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#address_#{loc.id}"}
+                %i.icon-resize-full
+                = loc.title
+              %p.address{id: "address_#{loc.id}", class:"collapse"}= loc.address
 
-  .trip
-    = render('trips/trip')
+    #trip.trip.tab-pane.active
+      = render('trips/trip')
