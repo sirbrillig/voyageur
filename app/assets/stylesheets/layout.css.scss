@@ -140,6 +140,11 @@ ul.nav-tabs {
   padding-left: 0px;
 }
 
+form span.error {
+  @extend .text-error;
+  margin-left: 1em;
+}
+
 @media (min-width: 768px) {
   .navbar-inner {
     height: 8.5em;
