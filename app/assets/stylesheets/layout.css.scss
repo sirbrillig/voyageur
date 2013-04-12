@@ -130,3 +130,8 @@ ul.nav-tabs {
     line-height: 1.1em;
   }
 }
+
+#map_canvas { 
+  @include location-block;
+  height: 90px;
+}
