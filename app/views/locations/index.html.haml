@@ -3,8 +3,8 @@
   %ul.nav.nav-tabs
     %li=link_to('Locations', '#library', id: 'library_tab', 'data-toggle' => 'tab')
     %li.active=link_to('Trip', '#trip', id: 'trip_tab', 'data-toggle' => 'tab')
-  .tab-content
-    #library.library.tab-pane.active
+  .tab-content.row
+    #library.library.tab-pane.active.span6
       =link_to(raw('<i class="icon-plus"></i> Add Location'), new_location_path, class: 'add_location_button btn btn-success btn-block')
       %ul.library_locations
         - if @locations
@@ -18,5 +18,5 @@
                 = loc.title
               %p.address{id: "address_#{loc.id}", class:"collapse"}= loc.address
 
-    #trip.trip.tab-pane.active
+    #trip.trip.tab-pane.active.span6
       = render('trips/trip')
