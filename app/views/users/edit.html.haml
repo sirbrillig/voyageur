@@ -1,11 +1,13 @@
 .content_user
   .page-header
-    = link_to users_path, :class => 'btn' do
-      %i.icon-list-alt
-      Back
-    = link_to @user, :class => 'btn btn-primary' do
-      %i.icon-info-sign.icon-white
-      Show
+    - if current_user.admin
+      = link_to users_path, :class => 'btn' do
+        %i.icon-list-alt
+        Back
+      = link_to @user, :class => 'btn btn-primary' do
+        %i.icon-info-sign.icon-white
+        Show
     %h1 Editing user
 
   = render 'form'
+  = link_to(raw('<i class="icon-remove-sign"></i> Cancel'), locations_path, class: 'btn')

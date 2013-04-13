@@ -1,6 +1,19 @@
-%h1 Voyageur
-= link_to(image_tag('logo.png'), root_url)
-- if current_user
-  %ul.actions
-    %li= link_to(current_user.email, edit_user_path(current_user))
-    %li= link_to('Log Out', destroy_user_session_path, method: :delete)
+%header.navbar.navbar-fixed-top
+  %nav.navbar-inner
+    .container
+      :plain
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+      = link_to('Voyageur', root_url, class: 'brand')
+      .nav-links.nav-collapse.collapse
+        %ul.nav
+          %li=link_to(raw('<i class="icon-home icon-white"></i> Home'), root_url)
+          - if current_user
+            - if current_user.admin
+              %li=link_to(raw('<i class="icon-user icon-white"></i> Users'), users_path)
+            %li=link_to(raw('<i class="icon-user icon-white"></i> Account'), edit_user_path(current_user))
+            %li=link_to(raw('<i class="icon-hand-left icon-white"></i> Log Out'), destroy_user_session_path, method: :delete)
+

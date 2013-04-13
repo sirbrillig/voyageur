@@ -1,9 +1,0 @@
-@import "application.css.scss";
-
-.content_home {
-  @import "bootstrap";
-
-  margin-top: 20px;
-
-  @include zen-grid-item(8, 3);
-}
