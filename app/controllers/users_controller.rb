@@ -94,4 +94,8 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def audits
+    @object = User.find(params[:id])
+  end
 end

@@ -5,7 +5,11 @@ Voyageur::Application.routes.draw do
 
   root :to => 'home#index'
 
-  resources :users
+  resources :users do
+    member do
+      get 'audits'
+    end
+  end
 
   resources :locations
 

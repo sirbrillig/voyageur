@@ -1,0 +1,15 @@
+.content_user
+  - @object.audits.descending.each do |audit|
+    %h3= "Version #{audit.version}"
+    %table.table.table-striped.table-bordered
+      %thead
+        %tr
+          %th Field
+          %th Old Value
+          %th New Value
+      %tbody
+        - audit.audited_changes.each do |field,value|
+          %tr
+            %td= field
+            %td= value.class == Array ? value[0] : ''
+            %td= value.class == Array ? value[1] : value

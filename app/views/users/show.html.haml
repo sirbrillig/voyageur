@@ -11,3 +11,7 @@
   %dl
     %dt Email
     %dd= @user.email
+
+  %dl
+    %dt Audits
+    %dd= link_to 'Audit Log', audits_user_url(@user)
