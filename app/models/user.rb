@@ -11,4 +11,12 @@ class User < ActiveRecord::Base
   has_many :locations, :dependent => :destroy
   has_many :trips, :dependent => :destroy
   audited
+
+  def confirm
+    self.confirmed_at = Time.now
+  end
+
+  def unconfirm
+    self.confirmed_at = nil
+  end
 end

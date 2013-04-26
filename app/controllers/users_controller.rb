@@ -69,6 +69,14 @@ class UsersController < ApplicationController
       @user = current_user
     end
 
+    if current_user.admin and params[:confirm]
+      if params[:confirm] == 'true'
+        @user.confirm
+      else
+        @user.unconfirm
+      end
+    end
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         if @user == current_user
