@@ -1,5 +1,10 @@
 .content_user
-  %h1 Audit Log for #{@object.email}
+  .page-header
+    = link_to users_path, :class => 'btn' do
+      %i.icon-list-alt
+      Back
+    %h1 Audit Log for #{@object.email}
+
   %table.table.table-striped.table-bordered
     %thead
       %tr
