@@ -11,7 +11,11 @@ Voyageur::Application.routes.draw do
     end
   end
 
-  resources :locations
+  resources :locations do
+    member do
+      get 'audits'
+    end
+  end
 
   resources :trips do
     member do
