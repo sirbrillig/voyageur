@@ -30,6 +30,8 @@ gem 'devise'
 
 gem 'thin'
 
+gem 'audited-activerecord', '~> 3.0'
+
 group :production do
   gem 'pg'
 end
