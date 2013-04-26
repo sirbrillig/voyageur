@@ -145,6 +145,10 @@ form span.error {
   margin-left: 1em;
 }
 
+td.small {
+  @extend small;
+}
+
 @media (min-width: 768px) {
   .navbar-inner {
     height: 8.5em;
