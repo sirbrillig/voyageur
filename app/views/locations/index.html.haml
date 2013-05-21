@@ -12,7 +12,7 @@
             %li.location{class: "location_#{loc.id}"}
               %nav.actions
                 = link_to(raw('<i class="icon-edit"></i> Edit'), edit_location_path(loc), title: 'Edit this location.', class: 'btn btn-small')
-                = link_to(raw('<i class="icon-road"></i> Add'), add_location_path(@trip, loc), :id => "add_to_trip", class: 'btn btn-small btn-primary', title: 'Add this location to the trip.') if @trip
+                = link_to(raw('<i class="icon-road"></i> Add'), add_location_path(@trip, loc), :id => "add_to_trip", class: 'btn btn-small btn-custom', title: 'Add this location to the trip.') if @trip
               %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#address_#{loc.id}"}
                 %i.icon-resize-full
                 = loc.title
