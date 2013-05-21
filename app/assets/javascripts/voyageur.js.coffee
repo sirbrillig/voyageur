@@ -3,7 +3,7 @@ window.Voyageur =
   Collections: {}
   Views: {}
   Routers: {}
-  initialize: -> alert 'Hello from Backbone!'
+  initialize: ->
 
 $(document).ready ->
   Voyageur.initialize()
