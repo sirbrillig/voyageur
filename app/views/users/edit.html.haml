@@ -11,3 +11,8 @@
 
   = render 'form'
   = link_to(raw('<i class="icon-remove-sign"></i> Cancel'), locations_path, class: 'btn')
+  - if current_user.admin 
+    - unless @user.confirmed_at
+      = link_to(raw('<i class="icon-thumbs-up"></i> Confirm'), user_path(@user, confirm: true), :method => :put, class: 'btn btn-warning')
+    - else
+      = link_to(raw('<i class="icon-thumbs-down"></i> Unconfirm'), user_path(@user, confirm: false), :method => :put, class: 'btn btn-danger')

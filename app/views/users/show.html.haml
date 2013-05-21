@@ -11,3 +11,15 @@
   %dl
     %dt Email
     %dd= @user.email
+
+  %dl
+    %dt Confirmed
+    %dd 
+      - if @user.confirmed_at
+        %span.text-success= @user.confirmed_at
+      - else
+        %span.text-warning Not Confirmed
+
+  %dl
+    %dt Audits
+    %dd= link_to 'Audit Log', audits_user_url(@user)

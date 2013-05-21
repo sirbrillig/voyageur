@@ -3,3 +3,5 @@
   = render 'form'
   = link_to(raw('<i class="icon-remove-sign"></i> Cancel'), locations_path, class: 'btn')
   = link_to(raw('<i class="icon-trash"></i> Delete'), location_path(@location), :method => :delete, :id => "delete_location", title: 'Delete this location.', confirm: 'Are you sure you want to delete this location permanently?', class: 'btn btn-danger')
+  - if current_user.admin?
+    = link_to(raw('<i class="icon-tasks"></i> Audits'), audits_location_path(@location), class: 'btn btn-info')

@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :authenticate_user!, except: [:new, :create]
   before_filter :authenticate_admin, except: [:edit, :update]
 
   # GET /users
@@ -68,6 +69,14 @@ class UsersController < ApplicationController
       @user = current_user
     end
 
+    if current_user.admin and params[:confirm]
+      if params[:confirm] == 'true'
+        @user.confirm
+      else
+        @user.unconfirm
+      end
+    end
+
     respond_to do |format|
       if @user.update_attributes(params[:user])
         if @user == current_user
@@ -93,5 +102,9 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url }
       format.json { head :no_content }
     end
+  end
+
+  def audits
+    @object = User.find(params[:id])
   end
 end
