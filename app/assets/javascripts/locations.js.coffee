@@ -71,6 +71,17 @@ stop_drag = (event, ui) ->
 setup_dragging = () ->
   $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: start_drag, stop: stop_drag })
 
+# Set up each Add Location To Trip button with ajax functionality.
+setup_adding = () ->
+  $('.location a.add-button').click (e) ->
+      e.preventDefault()
+      $.ajax
+        url: @
+        type: "GET"
+        datatype: "json"
+        success: (data) ->
+          reload_trip()
+
 # These are for the map.
 directionsDisplay = null
 directionsService = null
@@ -125,6 +136,7 @@ enable_tabs = () ->
 $ ->
   enable_tabs()
   setup_dragging()
+  setup_adding()
   canvas = $('#map_canvas')
   if canvas.get(0)
     load_map()
