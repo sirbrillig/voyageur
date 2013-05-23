@@ -3,8 +3,6 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 class LocationList
-  from_library: false
-
   addresses_from_trip: () =>
     addrs = []
     for addr in $('.trip_locations p.address')
@@ -84,6 +82,21 @@ class LocationList
           success: (data) ->
             self.reload_trip()
 
+class VoyageurLayout
+  enable_tabs: () =>
+    $('#library').removeClass('active') # allows graceful degrading
+    $('#trip_tab').click(
+     (e) =>
+       e.preventDefault()
+       $(this).tab('show')
+    )
+    $('#library_tab').click(
+     (e) =>
+       e.preventDefault()
+       $(this).tab('show')
+    )
+
+class TripMap
   # These are for the map.
   directionsDisplay: null
   directionsService: null
@@ -99,8 +112,7 @@ class LocationList
     map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
     @.directionsDisplay.setMap(map)
 
-  calc_route: () =>
-    addrs = @.addresses_from_trip()
+  calc_route: (addrs) =>
     start = addrs.shift()
     end = addrs.pop()
     waypts = []
@@ -114,32 +126,21 @@ class LocationList
     @.directionsService.route request, (result, status) =>
       @.directionsDisplay.setDirections result if status is google.maps.DirectionsStatus.OK
 
-  load_map: () =>
+  load_map: (addrs) =>
     $('#map_canvas').hide()
     @.directionsService = new google.maps.DirectionsService()
     @.start_map()
-    @.calc_route()
+    @.calc_route(addrs)
     $('#map_canvas').show()
-
-  enable_tabs: () =>
-    $('#library').removeClass('active') # allows graceful degrading
-    $('#trip_tab').click(
-     (e) =>
-       e.preventDefault()
-       $(this).tab('show')
-    )
-    $('#library_tab').click(
-     (e) =>
-       e.preventDefault()
-       $(this).tab('show')
-    )
 
 
 $ ->
   location_list = new LocationList
-  location_list.enable_tabs()
+  layout = new VoyageurLayout
+  map = new TripMap
+  layout.enable_tabs()
   location_list.setup_dragging()
   location_list.setup_adding()
   canvas = $('#map_canvas')
   if canvas.get(0)
-    location_list.load_map()
+    map.load_map(location_list.addresses_from_trip())
