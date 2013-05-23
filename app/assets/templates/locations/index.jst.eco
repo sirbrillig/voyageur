@@ -1,0 +1,6 @@
+<%= @collection.each (item) ->: %>
+  <li class="location backbone-model">
+    <h1><%= item.get('title') %></h1>
+    <p class="address"><%= item.get('address') %></p>
+  </li>
+<% end %>

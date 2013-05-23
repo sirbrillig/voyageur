@@ -75,12 +75,13 @@ class LocationList
     self = this # hack to get around losing references in nested call
     $('.location a.add-button').click (e) ->
         e.preventDefault()
-        $.ajax
-          url: @
-          type: "GET"
-          datatype: "json"
-          success: (data) ->
-            self.reload_trip()
+        $.getJSON @ + '.json', (data) ->
+          loc_collection = new Voyageur.Collections.Locations
+          $.each $.parseJSON(data.trip).locations, (index, loc) ->
+            loc_model = new Voyageur.Models.Location title: loc.title, address: loc.address, id: loc.id
+            loc_collection.add loc_model
+          loc_view = new Voyageur.Views.LocationsIndex collection: loc_collection
+          $('.trip').html loc_view.render().el
 
 class VoyageurLayout
   enable_tabs: () =>
