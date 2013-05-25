@@ -1,4 +1,9 @@
-- @collection.each (item) ->
-  %li.location.backbone-model
-    %h1= item.get('title')
-    %p.address= item.get('address')
+%ul.trip_locations{class: "trip_id_FIXME"}
+  - @collection.each (loc, index) ->
+    %li.location_block{class: "location_#{loc.get('location_id')} trip_location_#{index}"}
+      .location
+        %nav.actions
+        %h1{title: loc.get('address'), 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
+          %i.icon-resize-full
+          = loc.get('title')
+        %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.get('address')

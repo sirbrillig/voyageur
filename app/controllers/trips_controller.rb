@@ -71,7 +71,9 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip.to_json(include: :locations) } } 
+      # Return the locations with the triplocation IDs to allow duplicates.
+      # FIXME: This is a complicated way to get the locations. Is there an easier way?
+      format.json { render json: { trip: @trip.to_json( include: { triplocations: { include: :location } } ) } } 
     end
   end
 

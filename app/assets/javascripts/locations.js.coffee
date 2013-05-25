@@ -77,8 +77,11 @@ class LocationList
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
           loc_collection = new Voyageur.Collections.Locations
-          $.each $.parseJSON(data.trip).locations, (index, loc) ->
-            loc_model = new Voyageur.Models.Location title: loc.title, address: loc.address, id: loc.id
+          console.log data
+          console.log "loading trip"
+          $.each $.parseJSON(data.trip).triplocations, (index, loc) ->
+            console.log loc
+            loc_model = new Voyageur.Models.Location title: loc.location.title, address: loc.location.address, id: loc.id, location_id: loc.location.id
             loc_collection.add loc_model
           loc_view = new Voyageur.Views.LocationsIndex collection: loc_collection
           $('.trip').html loc_view.render().el
