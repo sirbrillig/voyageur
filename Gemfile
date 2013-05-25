@@ -10,6 +10,8 @@ group :assets do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'backbone-on-rails'
+  gem 'haml_coffee_assets'
+  gem 'execjs'
 end
 
 # To use ActiveModel has_secure_password

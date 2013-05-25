@@ -1,0 +1,4 @@
+- @collection.each (item) ->
+  %li.location.backbone-model
+    %h1= item.get('title')
+    %p.address= item.get('address')

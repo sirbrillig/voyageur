@@ -16,6 +16,7 @@
 //= require bootstrap
 //= require underscore
 //= require backbone
+//= require hamlcoffee
 //= require voyageur
 //= require_tree ../templates
 //= require_tree ./models
