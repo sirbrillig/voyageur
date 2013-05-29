@@ -1,5 +1,11 @@
+.summary
+  - if @triplocations.length > 0
+    %nav.actions
+      clear trip 
+  %h1 This Trip
+
 %ul.trip_locations{class: "trip_id_FIXME"}
-  - @collection.each (loc, index) ->
+  - @triplocations.each (loc, index) ->
     %li.location_block{class: "location_#{loc.get('location_id')} trip_location_#{index}"}
       .location
         %nav.actions

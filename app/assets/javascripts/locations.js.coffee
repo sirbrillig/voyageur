@@ -86,7 +86,7 @@ class LocationList
             loc_model = new Voyageur.Models.Location title: loc.title, address: loc.address, id: triploc.id, location_id: loc.id
             loc_collection.add loc_model
           loc_view = new Voyageur.Views.LocationsIndex collection: loc_collection
-          $('.trip').html loc_view.render().el
+          $('.trip').html loc_view.render(data.locations).el
 
 class VoyageurLayout
   enable_tabs: () ->

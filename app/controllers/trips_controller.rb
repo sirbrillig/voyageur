@@ -71,7 +71,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: { trip: @trip, locations: @locations } }
     end
   end
 
