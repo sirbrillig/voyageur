@@ -76,12 +76,14 @@ class LocationList
     $('.location a.add-button').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
+          # FIXME: move this to a separate function
           loc_collection = new Voyageur.Collections.Locations
           console.log data
           console.log "loading trip"
-          $.each $.parseJSON(data.trip).triplocations, (index, loc) ->
+          $.each data.trip.triplocations, (index, triploc) ->
+            loc = triploc.location
             console.log loc
-            loc_model = new Voyageur.Models.Location title: loc.location.title, address: loc.location.address, id: loc.id, location_id: loc.location.id
+            loc_model = new Voyageur.Models.Location title: loc.title, address: loc.address, id: triploc.id, location_id: loc.id
             loc_collection.add loc_model
           loc_view = new Voyageur.Views.LocationsIndex collection: loc_collection
           $('.trip').html loc_view.render().el

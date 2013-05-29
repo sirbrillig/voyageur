@@ -47,6 +47,12 @@ class Trip < ActiveRecord::Base
     self.triplocations[index].move_lower if index < self.triplocations.size
   end
 
+  def as_json(options={})
+    # FIXME: it would be nice if we could move half of this to
+    # Triplocation#as_json, but that doesn't work for some reason.
+    super(include: { :triplocations => { include: :location } } )
+  end
+
   private
   # Find the (1-based) acts_as_list position for a 0-based index value.
   def position_for_index(index)
