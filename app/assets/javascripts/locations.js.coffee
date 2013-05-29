@@ -3,28 +3,28 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 class LocationList
-  addresses_from_trip: () =>
+  addresses_from_trip: () ->
     addrs = []
     for addr in $('.trip_locations p.address')
       addrs.push(addr.textContent)
     addrs
 
-  location_id_from_ui: (ui) =>
+  location_id_from_ui: (ui) ->
     matches = ui.item[0].className.match(/location_(\d+)/)
     if matches
       return matches[1]
     return null
 
-  trip_index_from_ui: (ui) =>
+  trip_index_from_ui: (ui) ->
     matches = ui.item[0].className.match(/trip_location_(\d+)/)
     if matches
       return matches[1]
     return null
 
-  index_from_ui: (ui) =>
+  index_from_ui: (ui) ->
     ui.item.index()
 
-  get_trip_id: () =>
+  get_trip_id: () ->
     matches = $('.trip_locations').get(0).className.match(/trip_id_(\d+)/)
     if matches
       return matches[1]
@@ -87,15 +87,15 @@ class LocationList
           $('.trip').html loc_view.render().el
 
 class VoyageurLayout
-  enable_tabs: () =>
+  enable_tabs: () ->
     $('#library').removeClass('active') # allows graceful degrading
     $('#trip_tab').click(
-     (e) =>
+     (e) ->
        e.preventDefault()
        $(this).tab('show')
     )
     $('#library_tab').click(
-     (e) =>
+     (e) ->
        e.preventDefault()
        $(this).tab('show')
     )
