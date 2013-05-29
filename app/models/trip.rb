@@ -4,6 +4,7 @@ class Trip < ActiveRecord::Base
   has_many :locations, through: :triplocations, order: :position
   belongs_to :user
 
+  # FIXME: save this as an attribute that is updated when the list changes
   def distance
     total = 0
     self.locations.each_with_index do |loc, index|

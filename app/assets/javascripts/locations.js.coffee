@@ -80,13 +80,9 @@ class LocationList
           loc_collection = new Voyageur.Collections.Locations
           console.log data
           console.log "loading trip"
-          $.each data.trip.triplocations, (index, triploc) ->
-            loc = triploc.location
-            console.log loc
-            loc_model = new Voyageur.Models.Location title: loc.title, address: loc.address, id: triploc.id, location_id: loc.id
-            loc_collection.add loc_model
-          loc_view = new Voyageur.Views.LocationsIndex collection: loc_collection
-          $('.trip').html loc_view.render(data.locations).el
+          trip = new Voyageur.Models.Trip triplocations: data.trip.triplocations, id: data.trip.id, user_id: data.trip.user_id, distance: data.trip.distance
+          trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
+          trip_view.render()
 
 class VoyageurLayout
   enable_tabs: () ->
