@@ -70,16 +70,29 @@ class LocationList
   setup_dragging: () =>
     $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @.start_drag, stop: @.stop_drag })
 
+  populate_trip: (tripdata) =>
+    loc_collection = new Voyageur.Collections.Locations
+    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance
+    trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
+    trip_view.render()
+    this.setup_removing(trip)
+
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
     self = this # hack to get around losing references in nested call
-    $('.location a.add-button').click (e) ->
+    $('.location a.add-button', 'ul.library_locations').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
-          loc_collection = new Voyageur.Collections.Locations
-          trip = new Voyageur.Models.Trip triplocations: data.trip.triplocations, id: data.trip.id, user_id: data.trip.user_id, distance: data.trip.distance
-          trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
-          trip_view.render()
+          self.populate_trip(data.trip)
+
+  # Set up the Remove Location button on each Trip location with ajax
+  # functionality.
+  setup_removing: () =>
+    self = this # hack to get around losing references in nested call
+    $('.location a.remove-button', '#trip').click (e) ->
+        e.preventDefault()
+        $.getJSON @ + '.json', (data) ->
+          self.populate_trip(data.trip)
 
 class VoyageurLayout
   enable_tabs: () ->

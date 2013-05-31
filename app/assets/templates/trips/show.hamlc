@@ -14,7 +14,7 @@
     %li.location_block{class: "location_#{loc.location.id} trip_location_#{index}"}
       .location
         %nav.actions
-          %a#remove_from_trip.btn.btn-small{href: "/trips/#{@trip.id}/remove/#{index}", title: 'Remove this location from the Trip'}
+          %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@trip.id}/remove/#{index}", title: 'Remove this location from the Trip'}
             %i.icon-minus-sign
             Remove
         %h1{title: loc.location.address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
