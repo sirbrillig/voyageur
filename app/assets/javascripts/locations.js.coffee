@@ -75,6 +75,7 @@ class LocationList
     trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance
     trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
     trip_view.render()
+    this.setup_clear()
     this.setup_removing(trip)
 
   # Set up each Add Location To Trip button with ajax functionality.
@@ -90,6 +91,14 @@ class LocationList
   setup_removing: () =>
     self = this # hack to get around losing references in nested call
     $('.location a.remove-button', '#trip').click (e) ->
+        e.preventDefault()
+        $.getJSON @ + '.json', (data) ->
+          self.populate_trip(data.trip)
+
+  # Set up the Clear Trip button to use ajax.
+  setup_clear: () =>
+    self = this # hack to get around losing references in nested call
+    $('a.clear-trip', '#trip').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
           self.populate_trip(data.trip)

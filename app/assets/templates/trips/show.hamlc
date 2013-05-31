@@ -1,7 +1,7 @@
 .summary
   - if @trip.get('triplocations').length > 0
     %nav.actions
-      %a.btn.btn-warning{href: "/trips/#{@trip.id}/clear"}
+      %a.btn.btn-warning.clear-trip{href: "/trips/#{@trip.id}/clear"}
         %i.icon-asterisk
         Clear Trip
   %h1 This Trip
