@@ -76,7 +76,7 @@ class LocationList
     trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
     trip_view.render()
     this.setup_clear()
-    this.setup_removing(trip)
+    this.setup_removing()
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
@@ -162,6 +162,8 @@ $ ->
   layout.enable_tabs()
   location_list.setup_dragging()
   location_list.setup_adding()
+  location_list.setup_clear()
+  location_list.setup_removing()
   canvas = $('#map_canvas')
   if canvas.get(0)
     map.load_map(location_list.addresses_from_trip())
