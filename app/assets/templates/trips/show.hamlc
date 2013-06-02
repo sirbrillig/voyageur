@@ -25,3 +25,16 @@
     .help_box
       %i.icon-bell
       %h1 Add another location to this trip from your Locations.
+  - else if @trip.get('triplocations').length == 0
+    - if @trip.get('all_locations').length > 1
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to this trip from your Locations.
+    - else if @trip.get('all_locations').length == 1
+      .help_box
+        %i.icon-bell
+        %h1 Add another location to the list by clicking the 'Add Location' button.
+    - else if @trip.get('all_locations').length == 0
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to the list by clicking the 'Add Location' button.

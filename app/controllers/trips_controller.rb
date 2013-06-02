@@ -3,6 +3,7 @@ class TripsController < ApplicationController
 
   def remove
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
+    @locations = current_user.locations
 
     @trip.remove_location_at(params[:index].to_i)
 
@@ -14,6 +15,7 @@ class TripsController < ApplicationController
 
   def clear
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
+    @locations = current_user.locations
 
     @trip.locations.clear
 

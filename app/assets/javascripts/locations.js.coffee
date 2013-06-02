@@ -70,9 +70,9 @@ class LocationList
   setup_dragging: () =>
     $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @.start_drag, stop: @.stop_drag })
 
-  populate_trip: (tripdata) =>
+  populate_trip: (tripdata, locations=[]) =>
     loc_collection = new Voyageur.Collections.Locations
-    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance
+    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance, all_locations: locations
     trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
     trip_view.render()
     this.setup_clear()
@@ -84,7 +84,7 @@ class LocationList
     $('.location a.add-button', 'ul.library_locations').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip)
+          self.populate_trip(data.trip, data.locations)
 
   # Set up the Remove Location button on each Trip location with ajax
   # functionality.
@@ -93,7 +93,7 @@ class LocationList
     $('.location a.remove-button', '#trip').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip)
+          self.populate_trip(data.trip, data.locations)
 
   # Set up the Clear Trip button to use ajax.
   setup_clear: () =>
@@ -101,7 +101,7 @@ class LocationList
     $('a.clear-trip', '#trip').click (e) ->
         e.preventDefault()
         $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip)
+          self.populate_trip(data.trip, data.locations)
 
 class VoyageurLayout
   enable_tabs: () ->
