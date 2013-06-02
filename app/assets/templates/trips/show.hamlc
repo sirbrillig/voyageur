@@ -5,7 +5,7 @@
         %i.icon-asterisk
         Clear Trip
   %h1 This Trip
-  %h1= "#{@trip.get('distance')} meters total"
+  %h1= "#{@distance} miles total"
 - if @trip.get('triplocations').length > 1
   .map
 
