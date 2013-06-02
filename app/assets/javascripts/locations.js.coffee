@@ -30,6 +30,7 @@ class LocationList
       return matches[1]
     return null
 
+  # Deprecated. Use populate_trip instead.
   reload_trip: () =>
     trip_id = @.get_trip_id()
     $('.trip').load("/trips/#{trip_id}")
@@ -77,6 +78,8 @@ class LocationList
     trip_view.render()
     this.setup_clear()
     this.setup_removing()
+    map = new TripMap
+    map.load_map(tripdata.triplocations.map (loc) -> loc.location.address)
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
@@ -118,20 +121,22 @@ class VoyageurLayout
     )
 
 class TripMap
-  # These are for the map.
+  # Reference:
+  # https://developers.google.com/maps/documentation/javascript/reference
+
   directionsDisplay: null
   directionsService: null
   map: null
 
   start_map: () =>
-    @.directionsDisplay = new google.maps.DirectionsRenderer()
-    chicago = new google.maps.LatLng(41.850033, -87.6500523) # FIXME: ideally start with the first location
+    @.directionsDisplay = new google.maps.DirectionsRenderer() unless @.directionsDisplay
+    start_point = new google.maps.LatLng(41.850033, -87.6500523) # FIXME: ideally start with the first location
     mapOptions =
       zoom: 11,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      center: chicago
-    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions)
-    @.directionsDisplay.setMap(map)
+      center: start_point
+    @.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions) unless @.map
+    @.directionsDisplay.setMap(@.map)
 
   calc_route: (addrs) =>
     start = addrs.shift()
@@ -148,11 +153,11 @@ class TripMap
       @.directionsDisplay.setDirections result if status is google.maps.DirectionsStatus.OK
 
   load_map: (addrs) =>
-    $('#map_canvas').hide()
-    @.directionsService = new google.maps.DirectionsService()
-    @.start_map()
+    canvas = $('#map_canvas')
+    return unless canvas.get(0)
+    @.directionsService = new google.maps.DirectionsService() unless @.directionsService
+    @.start_map() unless @.directionsDisplay
     @.calc_route(addrs)
-    $('#map_canvas').show()
 
 
 $ ->
@@ -164,6 +169,4 @@ $ ->
   location_list.setup_adding()
   location_list.setup_clear()
   location_list.setup_removing()
-  canvas = $('#map_canvas')
-  if canvas.get(0)
-    map.load_map(location_list.addresses_from_trip())
+  map.load_map(location_list.addresses_from_trip())
