@@ -8,7 +8,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: @trip }
     end
   end
 
@@ -19,7 +19,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: @trip }
     end
   end
 
@@ -56,7 +56,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: @trip }
     end
   end
 
@@ -70,7 +70,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: @trip }
     end
   end
 
@@ -79,7 +79,7 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { render partial: 'trip' }
-      format.json { render json: { trip: @trip } }
+      format.json { render json: @trip }
     end
   end
 end

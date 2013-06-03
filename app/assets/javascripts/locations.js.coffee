@@ -50,17 +50,17 @@ class LocationList
 
   load_trip_from: (url) =>
     $.getJSON url + '.json', (data) =>
-      @populate_trip(data.trip)
+      @populate_trip(data.id)
 
-  populate_trip: (tripdata) =>
-    loc_collection = new Voyageur.Collections.Locations
-    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance, num_avail_locations: tripdata.num_avail_locations
-    trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
-    trip_view.render()
-    this.setup_clear()
-    this.setup_removing()
-    map = new TripMap
-    map.load_map(tripdata.triplocations.map (loc) -> loc.location.address)
+  populate_trip: (id) =>
+    trip = new Voyageur.Models.Trip id: id
+    trip.fetch success: (trip) =>
+      trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
+      trip_view.render()
+      @setup_clear()
+      @setup_removing()
+      map = new TripMap
+      map.load_map(trip.get('triplocations').map (loc) -> loc.location.address)
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
