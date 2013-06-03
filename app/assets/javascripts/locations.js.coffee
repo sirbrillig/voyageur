@@ -57,30 +57,11 @@ class LocationList
     trip.fetch success: (trip) =>
       trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
       trip_view.render()
-      @setup_clear()
-      @setup_removing()
-      map = new TripMap
-      map.load_map(trip.get('triplocations').map (loc) -> loc.location.address)
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
     self = this # hack to get around losing references in nested call
     $('.location a.add-button', 'ul.library_locations').click (e) ->
-        e.preventDefault()
-        self.load_trip_from @
-
-  # Set up the Remove Location button on each Trip location with ajax
-  # functionality.
-  setup_removing: () =>
-    self = this # hack to get around losing references in nested call
-    $('.location a.remove-button', '#trip').click (e) ->
-        e.preventDefault()
-        self.load_trip_from @
-
-  # Set up the Clear Trip button to use ajax.
-  setup_clear: () =>
-    self = this # hack to get around losing references in nested call
-    $('a.clear-trip', '#trip').click (e) ->
         e.preventDefault()
         self.load_trip_from @
 
@@ -98,58 +79,10 @@ class VoyageurLayout
        $(this).tab('show')
     )
 
-class TripMap
-  # Reference:
-  # https://developers.google.com/maps/documentation/javascript/reference
-
-  directionsDisplay: null
-  directionsService: null
-  map: null
-
-  start_map: () =>
-    @.directionsDisplay = new google.maps.DirectionsRenderer() unless @.directionsDisplay
-    mapOptions =
-      zoom: 11,
-      mapTypeId: google.maps.MapTypeId.ROADMAP,
-      overviewMapControl: false,
-      scaleControl: false,
-      streetViewControl: false,
-      zoomControl: false,
-      mapTypeControl: false
-    @.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions) unless @.map
-    @.directionsDisplay.setMap(@.map)
-
-  calc_route: (addrs) =>
-    start = addrs.shift()
-    end = addrs.pop()
-    waypts = []
-    for addr in addrs
-      waypts.push({location: addr, stopover: true})
-    request =
-      origin: start,
-      destination: end,
-      waypoints: waypts,
-      travelMode: google.maps.TravelMode.DRIVING
-    @.directionsService.route request, (result, status) =>
-      if status is google.maps.DirectionsStatus.OK
-        @.directionsDisplay.setDirections result
-      # FIXME: display any google errors
-
-  load_map: (addrs) =>
-    canvas = $('#map_canvas')
-    return unless canvas.get(0)
-    @.directionsService = new google.maps.DirectionsService() unless @.directionsService
-    @.start_map() unless @.directionsDisplay
-    @.calc_route(addrs)
-
-
 $ ->
   location_list = new LocationList
   layout = new VoyageurLayout
-  map = new TripMap
   layout.enable_tabs()
   location_list.setup_dragging()
   location_list.setup_adding()
-  location_list.setup_clear()
-  location_list.setup_removing()
-  map.load_map(location_list.addresses_from_trip())
+  location_list.populate_trip(location_list.get_trip_id())
