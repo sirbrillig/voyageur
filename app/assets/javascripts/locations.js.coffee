@@ -50,11 +50,11 @@ class LocationList
 
   load_trip_from: (url) =>
     $.getJSON url + '.json', (data) =>
-      @populate_trip(data.trip, data.locations)
+      @populate_trip(data.trip)
 
-  populate_trip: (tripdata, locations=[]) =>
+  populate_trip: (tripdata) =>
     loc_collection = new Voyageur.Collections.Locations
-    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance, all_locations: locations
+    trip = new Voyageur.Models.Trip triplocations: tripdata.triplocations, id: tripdata.id, user_id: tripdata.user_id, distance: tripdata.distance, num_avail_locations: tripdata.num_avail_locations
     trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
     trip_view.render()
     this.setup_clear()

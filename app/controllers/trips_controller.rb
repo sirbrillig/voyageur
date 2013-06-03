@@ -3,25 +3,23 @@ class TripsController < ApplicationController
 
   def remove
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    @locations = current_user.locations
 
     @trip.remove_location_at(params[:index].to_i)
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip, locations: @locations } }
+      format.json { render json: { trip: @trip } }
     end
   end
 
   def clear
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    @locations = current_user.locations
 
     @trip.locations.clear
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip, locations: @locations } }
+      format.json { render json: { trip: @trip } }
     end
   end
 
@@ -51,7 +49,6 @@ class TripsController < ApplicationController
 
   def move
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    @locations = current_user.locations
 
     @trip.move_location(params[:location_index].to_i, to: params[:index].to_i)
     @trip.save
@@ -59,14 +56,13 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: {trip: @trip, locations: @locations} } 
+      format.json { render json: { trip: @trip } }
     end
   end
 
   def add
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
     @location = Location.find(params[:location_id])
-    @locations = current_user.locations
     index = nil
     index = params[:index].to_i if params[:index]
 
@@ -74,17 +70,16 @@ class TripsController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to locations_url }
-      format.json { render json: { trip: @trip, locations: @locations } }
+      format.json { render json: { trip: @trip } }
     end
   end
 
   def show
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    @locations = current_user.locations
 
     respond_to do |format|
       format.html { render partial: 'trip' }
-      format.json { render json: {trip: @trip, locations: @locations} } 
+      format.json { render json: { trip: @trip } }
     end
   end
 end
