@@ -23,9 +23,9 @@
               %i.icon-resize-full
               = loc.title
             %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.address
-          - unless (index + 1) >= @trip.locations.size
-            .distance
-              %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
+          -#- unless (index + 1) >= @trip.locations.size
+          -# .distance
+          -#   %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
         - if @trip.locations.size == 1
           .help_box
             %i.icon-bell

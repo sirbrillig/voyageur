@@ -130,11 +130,14 @@ class TripMap
 
   start_map: () =>
     @.directionsDisplay = new google.maps.DirectionsRenderer() unless @.directionsDisplay
-    start_point = new google.maps.LatLng(41.850033, -87.6500523) # FIXME: ideally start with the first location
     mapOptions =
       zoom: 11,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-      center: start_point
+      overviewMapControl: false,
+      scaleControl: false,
+      streetViewControl: false,
+      zoomControl: false,
+      mapTypeControl: false
     @.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions) unless @.map
     @.directionsDisplay.setMap(@.map)
 
@@ -150,7 +153,9 @@ class TripMap
       waypoints: waypts,
       travelMode: google.maps.TravelMode.DRIVING
     @.directionsService.route request, (result, status) =>
-      @.directionsDisplay.setDirections result if status is google.maps.DirectionsStatus.OK
+      if status is google.maps.DirectionsStatus.OK
+        @.directionsDisplay.setDirections result
+      # FIXME: display any google errors
 
   load_map: (addrs) =>
     canvas = $('#map_canvas')
