@@ -55,6 +55,7 @@ class TripsController < ApplicationController
 
     @trip.move_location(params[:location_index].to_i, to: params[:index].to_i)
     @trip.save
+    @trip.reload
 
     respond_to do |format|
       format.html { redirect_to locations_url }

@@ -52,12 +52,7 @@ class LocationList
     trip_id = @.get_trip_id()
     index = @.index_from_ui(ui)
     start_index = ui.item.start_index
-    $.ajax
-      url: "/trips/#{trip_id}/move/#{start_index}/to/#{index}"
-      type: "GET"
-      dataType: "html"
-      success: (data) =>
-        @.reload_trip()
+    @load_trip_from "/trips/#{trip_id}/move/#{start_index}/to/#{index}"
 
   save_index: (event, ui) =>
     ui.item.start_index = @.trip_index_from_ui(ui)
@@ -70,6 +65,10 @@ class LocationList
 
   setup_dragging: () =>
     $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @.start_drag, stop: @.stop_drag })
+
+  load_trip_from: (url) =>
+    $.getJSON url + '.json', (data) =>
+      @populate_trip(data.trip, data.locations)
 
   populate_trip: (tripdata, locations=[]) =>
     loc_collection = new Voyageur.Collections.Locations
@@ -86,8 +85,7 @@ class LocationList
     self = this # hack to get around losing references in nested call
     $('.location a.add-button', 'ul.library_locations').click (e) ->
         e.preventDefault()
-        $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip, data.locations)
+        self.load_trip_from @
 
   # Set up the Remove Location button on each Trip location with ajax
   # functionality.
@@ -95,16 +93,14 @@ class LocationList
     self = this # hack to get around losing references in nested call
     $('.location a.remove-button', '#trip').click (e) ->
         e.preventDefault()
-        $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip, data.locations)
+        self.load_trip_from @
 
   # Set up the Clear Trip button to use ajax.
   setup_clear: () =>
     self = this # hack to get around losing references in nested call
     $('a.clear-trip', '#trip').click (e) ->
         e.preventDefault()
-        $.getJSON @ + '.json', (data) ->
-          self.populate_trip(data.trip, data.locations)
+        self.load_trip_from @
 
 class VoyageurLayout
   enable_tabs: () ->
