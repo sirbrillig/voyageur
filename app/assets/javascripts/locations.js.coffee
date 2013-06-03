@@ -30,24 +30,6 @@ class LocationList
       return matches[1]
     return null
 
-  # Deprecated. Use populate_trip instead.
-  reload_trip: () =>
-    trip_id = @.get_trip_id()
-    $('.trip').load("/trips/#{trip_id}")
-    @.setup_dragging()
-    @.load_map() # FIXME re-write the map
-
-  add_to_trip_at_index: (event, ui) =>
-    trip_id = @.get_trip_id()
-    id = @.location_id_from_ui(ui)
-    index = @.index_from_ui(ui)
-    $.ajax
-      url: "/trips/#{trip_id}/add/#{id}/at/#{index}"
-      type: "GET"
-      dataType: "json"
-      success: (data) =>
-        @.reload_trip()
-
   move_location: (event, ui) =>
     trip_id = @.get_trip_id()
     index = @.index_from_ui(ui)
