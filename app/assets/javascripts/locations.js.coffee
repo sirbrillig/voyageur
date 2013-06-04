@@ -55,7 +55,7 @@ class LocationList
   populate_trip: (id) =>
     trip = new Voyageur.Models.Trip id: id
     trip.fetch success: (trip) =>
-      new Voyageur.Views.Trip el: $('.trip'), model: trip
+      new Voyageur.Views.Trip el: $('.trip'), model: trip # FIXME: why can't we put the el selector in the View?
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>

@@ -45,7 +45,7 @@ class Voyageur.Views.Trip extends Backbone.View
     map: null
 
     start_map: () =>
-      @.directionsDisplay = new google.maps.DirectionsRenderer() unless @.directionsDisplay
+      @directionsDisplay = new google.maps.DirectionsRenderer() unless @directionsDisplay
       mapOptions =
         zoom: 11,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -54,8 +54,8 @@ class Voyageur.Views.Trip extends Backbone.View
         streetViewControl: false,
         zoomControl: false,
         mapTypeControl: false
-      @.map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions) unless @.map
-      @.directionsDisplay.setMap(@.map)
+      @map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions) unless @map
+      @directionsDisplay.setMap(@.map)
 
     calc_route: (addrs) =>
       start = addrs.shift()
@@ -68,15 +68,15 @@ class Voyageur.Views.Trip extends Backbone.View
         destination: end,
         waypoints: waypts,
         travelMode: google.maps.TravelMode.DRIVING
-      @.directionsService.route request, (result, status) =>
+      @directionsService.route request, (result, status) =>
         if status is google.maps.DirectionsStatus.OK
-          @.directionsDisplay.setDirections result
+          @directionsDisplay.setDirections result
         # FIXME: display any google errors
 
     load_map: (addrs) =>
       canvas = $('#map_canvas')
       return unless canvas.get(0)
-      @.directionsService = new google.maps.DirectionsService() unless @.directionsService
-      @.start_map() unless @.directionsDisplay
-      @.calc_route(addrs)
+      @directionsService = new google.maps.DirectionsService() unless @directionsService
+      @start_map() unless @directionsDisplay
+      @calc_route(addrs)
 
