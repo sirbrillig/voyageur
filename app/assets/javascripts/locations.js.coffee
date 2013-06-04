@@ -55,8 +55,7 @@ class LocationList
   populate_trip: (id) =>
     trip = new Voyageur.Models.Trip id: id
     trip.fetch success: (trip) =>
-      trip_view = new Voyageur.Views.Trip el: $('.trip'), model: trip
-      trip_view.render()
+      new Voyageur.Views.Trip el: $('.trip'), model: trip
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>

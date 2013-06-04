@@ -8,6 +8,9 @@ class Voyageur.Views.Trip extends Backbone.View
 #    'click a.clear-trip #trip': 'clear_trip'
     'click a.clear-trip, #trip': 'clear_trip'
 
+  initialize: =>
+    @render()
+
   render: =>
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     @render_map()
