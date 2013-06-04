@@ -25,9 +25,12 @@ class LocationList
     ui.item.index()
 
   get_trip_id: () ->
-    matches = $('.trip_locations').get(0).className.match(/trip_id_(\d+)/)
-    if matches
-      return matches[1]
+    trip_locations = $('.trip_locations')
+    if trip_locations
+      return trip_locations.prop('trip-id')
+#      matches = trip_locations.className.match(/trip_id_(\d+)/)
+#      if matches
+#        return matches[1]
     return null
 
   move_location: (event, ui) =>

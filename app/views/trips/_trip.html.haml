@@ -9,7 +9,7 @@
     .map
       = render('trips/map')
 
-%ul.trip_locations{class: "trip_id_#{@trip.id}"}
+%ul.trip_locations{class: "trip_id_#{@trip.id}", "trip-id" => @trip.id}
   - if @trip
     - if @trip.locations.size > 0
       - @trip.locations.each_with_index do |loc, index|

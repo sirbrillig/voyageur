@@ -10,7 +10,7 @@
   .map
     #map_canvas
 
-%ul.trip_locations{class: "trip_id_#{@trip.id}"}
+%ul.trip_locations{class: "trip_id_#{@trip.id}", "trip-id": @trip.id}
   - $.each @trip.get('triplocations'), (index, loc) =>
     %li.location_block{class: "location_#{loc.location.id} trip_location_#{index}"}
       .location
