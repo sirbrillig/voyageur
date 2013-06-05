@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "Without Javascript" do
+describe "With Javascript", js: true do
   describe "The Location list page" do
     context "when not logged-in" do
       before do
