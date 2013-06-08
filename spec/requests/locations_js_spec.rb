@@ -99,26 +99,30 @@ describe "With Javascript", js: true do
       end
 
       context "when the 'move up' button is clicked on a trip location" do
-        before do
-          within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-          within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-          within(:css, ".trip .location_#{@loc2.id}") { click_link('move_up') }
-        end
+        pending "move up has been removed" do
+          before do
+            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+            within(:css, ".trip .location_#{@loc2.id}") { click_link('move_up') }
+          end
 
-        it "moves the location up in the list" do
-          page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
+          it "moves the location up in the list" do
+            page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
+          end
         end
       end
 
       context "when the 'move down' button is clicked on a trip location" do
-        before do
-          within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-          within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-          within(:css, ".trip .location_#{@loc1.id}") { click_link('move_down') }
-        end
+        pending "move down has been removed" do
+          before do
+            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+            within(:css, ".trip .location_#{@loc1.id}") { click_link('move_down') }
+          end
 
-        it "moves the location down in the list" do
-          page.should have_css(".trip .trip_location_1.location_#{@loc1.id}")
+          it "moves the location down in the list" do
+            page.should have_css(".trip .trip_location_1.location_#{@loc1.id}")
+          end
         end
       end
     end
