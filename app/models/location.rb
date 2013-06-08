@@ -10,6 +10,7 @@ class Location < ActiveRecord::Base
   belongs_to :user
   validates :address, presence: true
   validates :title, presence: true
+  audited
 
   def uri_address
     URI.escape(self.address)

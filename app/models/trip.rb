@@ -12,6 +12,10 @@ class Trip < ActiveRecord::Base
     total
   end
 
+  def num_avail_locations
+    self.user.locations.size
+  end
+
   def location_at(index)
     self.locations.find_by_id(self.triplocations[index].location_id)
   end
@@ -45,6 +49,12 @@ class Trip < ActiveRecord::Base
 
   def move_location_down(index)
     self.triplocations[index].move_lower if index < self.triplocations.size
+  end
+
+  def as_json(options={})
+    # FIXME: it would be nice if we could move half of this to
+    # Triplocation#as_json, but that doesn't work for some reason.
+    super( include: { :triplocations => { include: :location } }, methods: [ :distance, :num_avail_locations ] )
   end
 
   private

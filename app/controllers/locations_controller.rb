@@ -1,5 +1,6 @@
 class LocationsController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :authenticate_admin, only: :audits
 
   def index
     @locations = current_user.locations
@@ -72,5 +73,9 @@ class LocationsController < ApplicationController
       format.html { redirect_to locations_url }
       format.json { head :no_content }
     end
+  end
+
+  def audits
+    @object = Location.where(id: params[:id]).first
   end
 end

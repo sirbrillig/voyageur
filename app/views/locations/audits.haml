@@ -1,0 +1,28 @@
+.page-header
+  = link_to edit_location_url(@object), :class => 'btn' do
+    %i.icon-list-alt
+    Back
+  %h1 Audit Log for #{@object.title}
+
+%table.table.table-striped.table-bordered
+  %thead
+    %tr
+      %th When
+      %th Who
+      %th Where
+      %th What
+      %th Details
+  - @object.audits.descending.each do |audit|
+    %tbody
+      - audit.audited_changes.each do |field,value|
+        %tr
+          %td= audit.created_at
+          %td= link_to(User.find(audit.user_id).email, user_url(audit.user_id))
+          %td= audit.remote_address
+          %td= field
+          %td.small
+            %span.label old 
+            #{value.class == Array ? value[0] : ''}<br/>
+            %span.label.label-success new
+            #{value.class == Array ? value[1] : value}
+

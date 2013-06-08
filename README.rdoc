@@ -2,3 +2,10 @@
 
 A website for storing locations (addresses) and calculating the driving distance
 between them in varying order. Uses Google Maps API for calculations.
+
+=== TODO
+
+* Ability to set a default starting location (eg: Home)
+* Background adding locations to trips so no page refresh is required.
+* Multiple trips with an easy way to organize and clear them all.
+

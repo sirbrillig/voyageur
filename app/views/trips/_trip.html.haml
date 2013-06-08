@@ -2,14 +2,14 @@
   .summary
     - unless @trip.locations.empty?
       %nav.actions
-        =link_to(raw('<i class="icon-asterisk"></i> Clear Trip'), clear_trip_path(@trip), :id => "clear_trip", class: 'btn btn-warning')
+        =link_to(raw('<i class="icon-asterisk"></i> Clear Trip'), clear_trip_path(@trip), :id => "clear_trip", class: 'btn btn-warning clear-trip')
     %h1 This Trip
     %h1= "#{meters_to_miles @trip.distance} miles total"
   - if @trip.locations.size > 1
     .map
       = render('trips/map')
 
-%ul.trip_locations{class: "trip_id_#{@trip.id}"}
+%ul.trip_locations{class: "trip_id_#{@trip.id}", "trip-id" => @trip.id}
   - if @trip
     - if @trip.locations.size > 0
       - @trip.locations.each_with_index do |loc, index|
@@ -18,14 +18,14 @@
             %nav.actions
               = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up", title: 'Move this location up one step in the trip.')
               = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down", title: 'Move this location one step down in the trip.')
-              = link_to(raw('<i class="icon-minus-sign"></i> Remove'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.', class: 'btn btn-small')
+              = link_to(raw('<i class="icon-minus-sign"></i> Remove'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.', class: 'btn btn-small remove-button')
             %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
               %i.icon-resize-full
               = loc.title
             %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.address
-          - unless (index + 1) >= @trip.locations.size
-            .distance
-              %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
+          -#- unless (index + 1) >= @trip.locations.size
+          -# .distance
+          -#   %h1= "#{meters_to_miles loc.distance_to(@trip.locations[index + 1])} miles to"
         - if @trip.locations.size == 1
           .help_box
             %i.icon-bell
