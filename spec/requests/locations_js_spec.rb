@@ -147,44 +147,35 @@ describe "With Javascript", js: true do
         end
 
         context "when a trip location is dragged up one place" do
-          before do
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-            within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-            within(:css, ".library .location_#{@loc3.id}") { click_link('add_to_trip') }
-          end
-
-          it "moves the location up in the list" do
-            page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
-          end
-        end
-
-        context "when the 'move up' button is clicked on a trip location" do
-          pending "move up has been removed" do
+          pending "selenium drag-and-drop does not work" do
             before do
               within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
               within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-              within(:css, ".trip .location_#{@loc2.id}") { click_link('move_up') }
+              within(:css, ".library .location_#{@loc3.id}") { click_link('add_to_trip') }
+              wait_for_ajax
+
+              element = page.first(:css, ".trip .trip_location_1")
+              target = page.first(:css, ".trip .trip_location_0")
+              element.drag_to(target)
+              wait_for_ajax
             end
 
             it "moves the location up in the list" do
               page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
             end
-          end
-        end
 
-        context "when the 'move down' button is clicked on a trip location" do
-          pending "move down has been removed" do
-            before do
-              within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-              within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-              within(:css, ".trip .location_#{@loc1.id}") { click_link('move_down') }
-            end
+            context "when reloaded" do
+              before do
+                visit locations_path
+              end
 
-            it "moves the location down in the list" do
-              page.should have_css(".trip .trip_location_1.location_#{@loc1.id}")
+              it "has still moved the location up in the list" do
+                page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
+              end
             end
           end
         end
+
       end
     end
   end
