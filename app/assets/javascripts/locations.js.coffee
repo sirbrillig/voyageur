@@ -27,7 +27,9 @@ class LocationList
   get_trip_id: () ->
     trip_locations = $('.trip_locations')
     if trip_locations
-      return trip_locations.prop('trip-id')
+      return trip_locations.attr('trip-id')
+    else
+      console.log 'Error: unable to find .trip_locations class to get trip ID.'
     return null
 
   move_location: (event, ui) =>
@@ -52,8 +54,11 @@ class LocationList
     $.getJSON url + '.json', (data) =>
       @populate_trip(data.id)
 
-  populate_trip: (id) =>
-    trip = new Voyageur.Models.Trip id: id
+  populate_trip: (trip_id) =>
+    unless trip_id
+      console.log 'Error populating trip: no trip ID found.'
+      return
+    trip = new Voyageur.Models.Trip id: trip_id
     trip.fetch success: (trip) =>
       new Voyageur.Views.Trip el: $('.trip'), model: trip # FIXME: why can't we put the el selector in the View?
 
