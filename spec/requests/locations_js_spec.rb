@@ -74,6 +74,7 @@ describe "With Javascript", js: true do
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
           visit edit_location_path(@loc1.id)
           click_link('delete_location')
+          page.driver.browser.switch_to.alert.accept
           visit locations_path
         end
 
