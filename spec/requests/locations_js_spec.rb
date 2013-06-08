@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe "With Javascript", js: true do
+
+  def wait_for_ajax
+    start_time = Time.now
+    page.evaluate_script('jQuery.isReady&&jQuery.active==0').class.should_not eql(String) until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + 5.seconds) < Time.now do
+      sleep 1
+    end
+  end
+
   describe "The Location list page" do
     context "when not logged-in" do
       before do
@@ -37,6 +45,7 @@ describe "With Javascript", js: true do
         before do
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
           within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+          wait_for_ajax
         end
 
         it "shows the location in the trip" do
@@ -53,6 +62,7 @@ describe "With Javascript", js: true do
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
           within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+          wait_for_ajax
           within(:css, ".trip .trip_location_0.location_#{@loc1.id}") { click_link('remove_from_trip') }
         end
 
@@ -72,6 +82,7 @@ describe "With Javascript", js: true do
       context "when the 'delete location' button is clicked" do
         before do
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+          wait_for_ajax
           visit edit_location_path(@loc1.id)
           click_link('delete_location')
           page.driver.browser.switch_to.alert.accept
@@ -90,7 +101,9 @@ describe "With Javascript", js: true do
       context "when the 'clear trip' button is clicked" do
         before do
           within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+          wait_for_ajax
           click_link('clear_trip')
+          wait_for_ajax
         end
 
         it "removes all locations in the trip" do
