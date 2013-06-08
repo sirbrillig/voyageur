@@ -1,0 +1,41 @@
+.summary
+  - if @trip.get('triplocations').length > 0
+    %nav.actions
+      %a#clear_trip.btn.btn-warning.clear-trip{href: "/trips/#{@trip.id}/clear"}
+        %i.icon-asterisk
+        Clear Trip
+  %h1 This Trip
+  %h1= "#{@distance} miles total"
+- if @trip.get('triplocations').length > 1
+  .map
+    #map_canvas
+
+%ul.trip_locations{class: "trip_id_#{@trip.id}", "trip-id": @trip.id}
+  - $.each @trip.get('triplocations'), (index, loc) =>
+    %li.location_block{class: "location_#{loc.location.id} trip_location_#{index}"}
+      .location
+        %nav.actions
+          %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@trip.id}/remove/#{index}", title: 'Remove this location from the Trip'}
+            %i.icon-minus-sign
+            Remove
+        %h1{title: loc.location.address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
+          %i.icon-resize-full
+          = loc.location.title
+        %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.location.address
+  - if @trip.get('triplocations').length == 1
+    .help_box
+      %i.icon-bell
+      %h1 Add another location to this trip from your Locations.
+  - else if @trip.get('triplocations').length == 0
+    - if @trip.get('num_avail_locations') > 1
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to this trip from your Locations.
+    - else if @trip.get('num_avail_locations') == 1
+      .help_box
+        %i.icon-bell
+        %h1 Add another location to the list by clicking the 'Add Location' button.
+    - else if @trip.get('num_avail_locations') == 0
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to the list by clicking the 'Add Location' button.

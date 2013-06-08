@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "The Javascript" do
+describe "The REST API" do
   context "when not logged-in" do
     before do
       @user = FactoryGirl.create(:user)
