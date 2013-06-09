@@ -1,5 +1,7 @@
 class Voyageur.Views.Trip extends Backbone.View
 
+  el: '.trip'
+
   template: JST['trips/show']
 
   events: ->
@@ -9,7 +11,10 @@ class Voyageur.Views.Trip extends Backbone.View
     'click a.clear-trip, #trip': 'clear_trip'
 
   initialize: =>
-    @render()
+    trip = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
+    trip.fetch success: (trip_data) =>
+      @model = trip_data
+      @render()
 
   render: =>
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )

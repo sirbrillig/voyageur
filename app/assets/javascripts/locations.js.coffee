@@ -40,56 +40,28 @@ class LocationList
       console.log 'Error: cannot load trip from blank URL.'
       return
     $.getJSON url + '.json', (data) =>
-      @populate_trip(data.id)
-
-  populate_trip: (trip_id) =>
-    unless trip_id
-      console.log 'Error populating trip: no trip ID found.'
-      return
-    trip = new Voyageur.Models.Trip id: trip_id
-    trip.fetch success: (trip) =>
-      new Voyageur.Views.Trip el: $('.trip'), model: trip # FIXME: why can't we put the el selector in the View?
-
-  # Set up each Add Location To Trip button with ajax functionality.
-  setup_adding: () =>
-    # FIXME: not working on Backbone-loaded stuff
-    $('.location a.add-button', 'ul.library_locations').click (e) =>
-      e.preventDefault()
-      url = $(e.target).attr('href')
-      url = $(e.target).parent().attr('href') unless url
-      this.load_trip_from url
+      new Voyageur.Views.Trip
 
   setup_spinner: () ->
     trip = $('.trip')
     trip.ajaxStart -> trip.spin()
     trip.ajaxComplete -> trip.stop()
 
-  populate_locations: () =>
-    locations = new Voyageur.Collections.Locations
-    locations.fetch success: =>
-      locations_view = new Voyageur.Views.LocationsIndex collection: locations, trip_id: @get_trip_id()
-      locations_view.render()
-
 class VoyageurLayout
   enable_tabs: () ->
-    $('#library').removeClass('active') # allows graceful degrading
-    $('#trip_tab').click(
-     (e) ->
-       e.preventDefault()
-       $(this).tab('show')
-    )
-    $('#library_tab').click(
-     (e) ->
-       e.preventDefault()
-       $(this).tab('show')
-    )
+    $('#library').removeClass 'active' # allows graceful degrading
+    $('#trip_tab').click (e) ->
+      e.preventDefault()
+      $(this).tab('show')
+    $('#library_tab').click (e) ->
+      e.preventDefault()
+      $(this).tab('show')
 
 $ ->
   location_list = new LocationList
   layout = new VoyageurLayout
   layout.enable_tabs()
-  location_list.populate_locations()
-  location_list.setup_dragging()
-  location_list.setup_adding()
+  new Voyageur.Views.LocationsIndex
   location_list.setup_spinner()
-  location_list.populate_trip(location_list.get_trip_id())
+  new Voyageur.Views.Trip
+  location_list.setup_dragging()
