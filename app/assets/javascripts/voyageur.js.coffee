@@ -7,8 +7,8 @@ window.Voyageur =
   initialize: ->
     @enable_tabs()
     @setup_spinner()
-    new Voyageur.Views.LocationsIndex
-    new Voyageur.Views.Trip
+    trip_view = new Voyageur.Views.Trip
+    new Voyageur.Views.LocationsIndex(trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
   setup_spinner: () ->
     trip = $('.trip')

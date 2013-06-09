@@ -6,15 +6,17 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
   events:
     'click a.add-button': 'add_location_to_trip'
 
-  initialize: =>
-    locations = new Voyageur.Collections.Locations
-    locations.fetch success: =>
-      @collection = locations
-      @trip_id = Voyageur.get_trip_id()
-      @render()
+  trip: null
 
-  render: () ->
-    # FIXME: can we have each Location render itself?
+  initialize: (trip) =>
+    @trip = trip
+    @collection = new Voyageur.Collections.Locations
+    @trip_id = Voyageur.get_trip_id()
+    @collection.on 'sync', @render
+    @collection.fetch()
+
+  render: () =>
+    # NOTE: can we have each Location render itself?
     @$el.html @template({locations: @collection, trip_id: @trip_id})
     this
 
@@ -26,4 +28,4 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
       console.log 'Error: cannot load trip from blank URL.'
       return
     $.getJSON url + '.json', (data) =>
-      new Voyageur.Views.Trip
+      @trip.fetch()

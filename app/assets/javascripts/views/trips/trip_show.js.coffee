@@ -13,11 +13,10 @@ class Voyageur.Views.Trip extends Backbone.View
     'click a.clear-trip, #trip': 'clear_trip'
 
   initialize: =>
-    trip = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
-    trip.fetch success: (trip_data) =>
-      @model = trip_data
-      @render()
-      $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
+    @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
+    @model.on 'sync', @render
+    $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
+    @model.fetch()
 
   start_drag: (event, ui) =>
     @start_index = ui.item.index()
