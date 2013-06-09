@@ -51,6 +51,9 @@ class LocationList
     $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @.start_drag, stop: @.stop_drag })
 
   load_trip_from: (url) =>
+    unless url
+      console.log 'Error: cannot load trip from blank URL.'
+      return
     $.getJSON url + '.json', (data) =>
       @populate_trip(data.id)
 
