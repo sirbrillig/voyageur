@@ -69,6 +69,11 @@ class LocationList
         e.preventDefault()
         self.load_trip_from @
 
+  setup_spinner: () ->
+    trip = $('.trip')
+    trip.ajaxStart -> trip.spin()
+    trip.ajaxComplete -> trip.stop()
+
 class VoyageurLayout
   enable_tabs: () ->
     $('#library').removeClass('active') # allows graceful degrading
@@ -89,4 +94,5 @@ $ ->
   layout.enable_tabs()
   location_list.setup_dragging()
   location_list.setup_adding()
+  location_list.setup_spinner()
   location_list.populate_trip(location_list.get_trip_id())
