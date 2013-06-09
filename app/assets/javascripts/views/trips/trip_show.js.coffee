@@ -4,6 +4,8 @@ class Voyageur.Views.Trip extends Backbone.View
 
   template: JST['trips/show']
 
+  start_index: null
+
   events: ->
 #    'click #trip .location a.remove-button': 'remove_location'
     'click a.remove-button': 'remove_location'
@@ -15,6 +17,18 @@ class Voyageur.Views.Trip extends Backbone.View
     trip.fetch success: (trip_data) =>
       @model = trip_data
       @render()
+      $('.trip').sortable({items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
+
+  start_drag: (event, ui) =>
+    @start_index = ui.item.index()
+
+  stop_drag: (event, ui) =>
+    trip_id = Voyageur.get_trip_id()
+    index = ui.item.index()
+    url = "/trips/#{trip_id}/move/#{@start_index}/to/#{index}"
+    $.getJSON url + '.json', (data) =>
+      @model.fetch success: =>
+        @render()
 
   render: =>
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
