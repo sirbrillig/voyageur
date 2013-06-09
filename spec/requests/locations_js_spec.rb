@@ -64,7 +64,7 @@ describe "With Javascript", js: true do
 
         context "when the 'add to trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
           end
 
@@ -74,7 +74,7 @@ describe "With Javascript", js: true do
 
           context "for two locations" do
             before do
-              within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
+              within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
               wait_for_ajax
             end
 
@@ -90,9 +90,9 @@ describe "With Javascript", js: true do
 
         context "when the 'remove from trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-            within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
             within(:css, ".trip .trip_location_0.location_#{@loc1.id}") { click_link('remove_from_trip') }
           end
@@ -112,7 +112,7 @@ describe "With Javascript", js: true do
 
         context "when the 'delete location' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
             visit edit_location_path(@loc1.id)
             click_link('delete_location')
@@ -131,7 +131,7 @@ describe "With Javascript", js: true do
 
         context "when the 'clear trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
             click_link('clear_trip')
             wait_for_ajax
@@ -149,9 +149,9 @@ describe "With Javascript", js: true do
         context "when a trip location is dragged up one place" do
           pending "selenium drag-and-drop does not work" do
             before do
-              within(:css, ".library .location_#{@loc1.id}") { click_link('add_to_trip') }
-              within(:css, ".library .location_#{@loc2.id}") { click_link('add_to_trip') }
-              within(:css, ".library .location_#{@loc3.id}") { click_link('add_to_trip') }
+              within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+              within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
+              within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
               wait_for_ajax
 
               element = page.first(:css, ".trip .trip_location_1")
