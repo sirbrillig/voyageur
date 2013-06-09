@@ -52,16 +52,23 @@ class LocationList
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
+    # FIXME: not working on Backbone-loaded stuff
     $('.location a.add-button', 'ul.library_locations').click (e) =>
-        e.preventDefault()
-        url = $(e.target).attr('href')
-        url = $(e.target).parent().attr('href') unless url
-        this.load_trip_from url
+      e.preventDefault()
+      url = $(e.target).attr('href')
+      url = $(e.target).parent().attr('href') unless url
+      this.load_trip_from url
 
   setup_spinner: () ->
     trip = $('.trip')
     trip.ajaxStart -> trip.spin()
     trip.ajaxComplete -> trip.stop()
+
+  populate_locations: () =>
+    locations = new Voyageur.Collections.Locations
+    locations.fetch success: =>
+      locations_view = new Voyageur.Views.LocationsIndex collection: locations, trip_id: @get_trip_id()
+      locations_view.render()
 
 class VoyageurLayout
   enable_tabs: () ->
@@ -81,6 +88,7 @@ $ ->
   location_list = new LocationList
   layout = new VoyageurLayout
   layout.enable_tabs()
+  location_list.populate_locations()
   location_list.setup_dragging()
   location_list.setup_adding()
   location_list.setup_spinner()
