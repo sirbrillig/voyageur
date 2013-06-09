@@ -3,23 +3,8 @@
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
 class LocationList
-  addresses_from_trip: () ->
-    addrs = []
-    for addr in $('.trip_locations p.address')
-      addrs.push(addr.textContent)
-    addrs
-
-  location_id_from_ui: (ui) ->
-    matches = ui.item[0].className.match(/location_(\d+)/)
-    if matches
-      return matches[1]
-    return null
-
   trip_index_from_ui: (ui) ->
-    matches = ui.item[0].className.match(/trip_location_(\d+)/)
-    if matches
-      return matches[1]
-    return null
+    return $(ui.item).attr('trip-index')
 
   index_from_ui: (ui) ->
     ui.item.index()
