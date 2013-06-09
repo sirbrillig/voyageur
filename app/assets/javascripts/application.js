@@ -13,6 +13,7 @@
 //= require jquery
 //= require jquery.ui.all
 //= require jquery_ujs
+//= require spin.min
 //= require bootstrap
 //= require underscore
 //= require backbone
