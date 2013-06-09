@@ -69,7 +69,9 @@ class LocationList
   setup_adding: () =>
     $('.location a.add-button', 'ul.library_locations').click (e) =>
         e.preventDefault()
-        this.load_trip_from e.target
+        url = $(e.target).attr('href')
+        url = $(e.target).parent().attr('href') unless url
+        this.load_trip_from url
 
   setup_spinner: () ->
     trip = $('.trip')

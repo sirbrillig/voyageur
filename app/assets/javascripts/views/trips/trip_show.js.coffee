@@ -26,13 +26,23 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault()
-    $.getJSON e.target.href + '.json', (data) =>
+    url = $(e.target).attr('href')
+    url = $(e.target).parent().attr('href') unless url
+    unless url
+      console.log 'Error: cannot clear trip from blank URL.'
+      return
+    $.getJSON url + '.json', (data) =>
       @model.fetch success: =>
         @render()
 
   remove_location: (e) =>
     e.preventDefault()
-    $.getJSON e.target.href + '.json', (data) =>
+    url = $(e.target).attr('href')
+    url = $(e.target).parent().attr('href') unless url
+    unless url
+      console.log 'Error: cannot remove location from blank URL.'
+      return
+    $.getJSON url + '.json', (data) =>
       @model.fetch success: =>
         @render()
 
