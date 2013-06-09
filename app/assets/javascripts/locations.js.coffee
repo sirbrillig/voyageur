@@ -67,10 +67,9 @@ class LocationList
 
   # Set up each Add Location To Trip button with ajax functionality.
   setup_adding: () =>
-    self = this # hack to get around losing references in nested call
-    $('.location a.add-button', 'ul.library_locations').click (e) ->
+    $('.location a.add-button', 'ul.library_locations').click (e) =>
         e.preventDefault()
-        self.load_trip_from @
+        this.load_trip_from e.target
 
   setup_spinner: () ->
     trip = $('.trip')
