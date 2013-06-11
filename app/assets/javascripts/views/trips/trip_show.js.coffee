@@ -36,7 +36,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   render_map: =>
     # FIXME: map doesn't look so good at small width
-    @setup_map() # FIXME: why can't this be in the constructor?
+    @setup_map()
     @calc_route(@model.get('triplocations').map (loc) -> loc.location.address)
 
   meters_to_miles: (meters) ->
@@ -45,14 +45,8 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault()
-    url = $(e.target).attr('href')
-    url = $(e.target).parent().attr('href') unless url
-    unless url
-      console.log 'Error: cannot clear trip from blank URL.'
-      return
-    $.getJSON url + '.json', (data) =>
-      @model.fetch success: =>
-        @render()
+    @model.set('triplocations', [])
+    @model.save()
 
   remove_location: (e) =>
     e.preventDefault()

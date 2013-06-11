@@ -1,5 +1,5 @@
 class Trip < ActiveRecord::Base
-  attr_accessible :user_id
+  attr_accessible :user_id, :triplocations
   has_many :triplocations, order: :position
   has_many :locations, through: :triplocations, order: :position
   belongs_to :user

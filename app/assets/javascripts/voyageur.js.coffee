@@ -14,6 +14,9 @@ window.Voyageur =
     trip = $('.trip')
     trip.ajaxStart -> trip.spin()
     trip.ajaxComplete -> trip.stop()
+    $(document).ajaxError ->
+      $('.spinner').html('') # Not sure why, but calling stop does not work here.
+      alert "A server error occurred. Sorry about that. Maybe try again?"
 
   enable_tabs: () ->
     $('#library').removeClass 'active' # allows graceful degrading
