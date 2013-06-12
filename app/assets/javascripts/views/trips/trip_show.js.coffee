@@ -7,10 +7,8 @@ class Voyageur.Views.Trip extends Backbone.View
   start_index: null
 
   events: ->
-#    'click #trip .location a.remove-button': 'remove_location'
     'click a.remove-button': 'remove_location'
-#    'click a.clear-trip #trip': 'clear_trip'
-    'click a.clear-trip, #trip': 'clear_trip'
+    'click a.clear-trip': 'clear_trip'
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
