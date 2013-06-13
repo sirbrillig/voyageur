@@ -1,4 +1,6 @@
 class Voyageur.Models.Trip extends Backbone.Model
+  name: 'trip'
+
   urlRoot: '/trips'
 
   defaults:

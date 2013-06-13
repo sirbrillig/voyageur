@@ -87,8 +87,8 @@ class TripsController < ApplicationController
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
 
     respond_to do |format|
-      params[:triplocations] = [] if params[:triplocations].nil? # NOTE: this is a hack because somewhere between backbone and here [] becomes nil
-      if @trip.update_attributes(params.slice(*Trip.accessible_attributes))
+      params[:trip][:triplocations] = [] if params[:trip][:triplocations].nil? # NOTE: this is a hack because somewhere between backbone and here [] becomes nil
+      if @trip.update_attributes(params[:trip].slice(*Trip.accessible_attributes))
         format.html { redirect_to locations_url, notice: 'Trip was successfully updated.' }
         format.json { head :no_content }
       else
