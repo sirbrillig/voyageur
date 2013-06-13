@@ -10,9 +10,8 @@ describe Triplocation do
 
   context "when locations are added to a Trip" do
     before do
-      @trip.add_location @loc1
+      @triploc1 = @trip.add_location @loc1
       @trip.add_location @loc2
-      @triploc1 = @trip.triplocations.first
     end
 
     it "the Triplocations are created" do

@@ -28,14 +28,14 @@ class Trip < ActiveRecord::Base
   end
 
   def add_location(location, index=nil)
+    trip = self
+    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip }
     if index
       position = position_for_index(index)
-      tloc = Triplocation.create(location: location, trip: self)
       tloc.insert_at(position)
-      save
-    else
-      self.locations << location
+      save # FIXME: necessary?
     end
+    tloc
   end
 
   def remove_location_at(index)
