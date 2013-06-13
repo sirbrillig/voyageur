@@ -30,8 +30,7 @@ class Trip < ActiveRecord::Base
   def add_location(location, index=nil)
     if index
       position = position_for_index(index)
-      self.locations << location
-      tloc = self.triplocations.where(location_id: location.id, trip_id: self.id).last
+      tloc = Triplocation.create(location: location, trip: self)
       tloc.insert_at(position)
       save
     else
