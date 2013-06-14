@@ -2,7 +2,7 @@
   - @locations.each (loc, index) =>
     %li.location{class: "location_#{loc.id}"}
       %nav.actions
-        %a.btn.btn-small{title: 'Edit this location.', href: "/locations/#{loc.id}/edit"}
+        %a.btn.btn-small.edit-button{title: 'Edit this location.', href: "/locations/#{loc.id}/edit"}
           %i.icon-edit 
           Edit
         - if @trip_id

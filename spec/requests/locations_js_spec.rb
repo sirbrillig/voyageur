@@ -13,6 +13,7 @@ describe "With Javascript", js: true do
     context "when not logged-in" do
       before do
         visit locations_path
+        wait_for_ajax
       end
 
       it "displays the login page" do
@@ -39,6 +40,7 @@ describe "With Javascript", js: true do
         before do
           FactoryGirl.create(:home_location, user: @user)
           visit locations_path
+          wait_for_ajax
         end
 
         it "shows the help box with 'Add another location to the list'" do
@@ -52,6 +54,7 @@ describe "With Javascript", js: true do
           @loc2 = FactoryGirl.create(:work_location, user: @user)
           @loc3 = FactoryGirl.create(:food_location, user: @user)
           visit locations_path
+          wait_for_ajax
         end
 
         it "shows locations" do
@@ -114,10 +117,10 @@ describe "With Javascript", js: true do
           before do
             within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
-            visit edit_location_path(@loc1.id)
+            within(:css, ".library .location_#{@loc1.id}") { find('.edit-button').click }
             click_link('delete_location')
             page.driver.browser.switch_to.alert.accept
-            visit locations_path
+            wait_for_ajax
           end
 
           it "removes the location from the library" do
@@ -167,6 +170,7 @@ describe "With Javascript", js: true do
             context "when reloaded" do
               before do
                 visit locations_path
+                wait_for_ajax
               end
 
               it "has still moved the location up in the list" do
