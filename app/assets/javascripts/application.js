@@ -19,6 +19,7 @@
 //= require backbone
 //= require backbone_sync_hack
 //= require hamlcoffee
+//= require backbone-relational
 //= require voyageur
 //= require_tree ../templates
 //= require_tree ./models

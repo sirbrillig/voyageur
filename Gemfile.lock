@@ -40,6 +40,8 @@ GEM
       ejs
       jquery-rails
       rails (>= 3.1)
+    backbone-relational-rails (0.8.5)
+      railties (~> 3.1)
     bcrypt-ruby (3.0.1)
     bootstrap-generators (2.2.1)
       railties (~> 3.1)
@@ -229,6 +231,7 @@ DEPENDENCIES
   acts_as_list
   audited-activerecord (~> 3.0)
   backbone-on-rails
+  backbone-relational-rails
   bcrypt-ruby (~> 3.0.0)
   bootstrap-generators (~> 2.1)
   bootstrap-sass
