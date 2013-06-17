@@ -6,8 +6,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   start_index: null
 
-  events: ->
-    'click a.remove-button': 'remove_location'
+  events:
     'click a.clear-trip': 'clear_trip'
 
   initialize: =>
@@ -15,6 +14,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.on 'sync', @render
     $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
     @model.fetch()
+    console.log "fetched trip: ", @model
 
   start_drag: (event, ui) =>
     @start_index = ui.item.index()
@@ -29,7 +29,8 @@ class Voyageur.Views.Trip extends Backbone.View
 
   render: =>
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
-    @render_map()
+    new Voyageur.Views.Triplocation collection: @model.get('triplocations')
+#    @render_map()
     this
 
   render_map: =>
@@ -45,17 +46,6 @@ class Voyageur.Views.Trip extends Backbone.View
     e.preventDefault()
     @model.set('triplocations', [])
     @model.save()
-
-  remove_location: (e) =>
-    e.preventDefault()
-    url = $(e.target).attr('href')
-    url = $(e.target).parent().attr('href') unless url
-    unless url
-      console.log 'Error: cannot remove location from blank URL.'
-      return
-    $.getJSON url + '.json', (data) =>
-      @model.fetch success: =>
-        @render()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null
