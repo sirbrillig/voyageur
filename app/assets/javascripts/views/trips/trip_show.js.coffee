@@ -29,7 +29,9 @@ class Voyageur.Views.Trip extends Backbone.View
 
   render: =>
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
-    new Voyageur.Views.Triplocation collection: @model.get('triplocations')
+    @model.get('triplocations').each (triploc) =>
+      triploc_view = new Voyageur.Views.Triplocation model: triploc
+      $('.trip_locations').append triploc_view.render().el
 #    @render_map()
     this
 

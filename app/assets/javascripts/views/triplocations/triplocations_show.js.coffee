@@ -1,8 +1,5 @@
 class Voyageur.Views.Triplocation extends Backbone.View
-  #FIXME: this needs to render its models inside the trip list and do its
-  #binding to that list as well
-
-  el: '.trip_locations'
+  tagName: 'li' # FIXME: this renders the view in an li, but the view *is* an li, so you get two.
 
   template: JST['triplocations/show']
 
@@ -10,11 +7,10 @@ class Voyageur.Views.Triplocation extends Backbone.View
     'click a.remove-button': 'remove_location'
 
   initialize: =>
-    console.log "triplocations: ", @collection
-    @render()
+    console.log "triplocation: ", @model
 
   render: =>
-    @$el.html @template({triplocations: @collection})
+    @$el.html @template({triplocation: @model})
     this
 
   remove_location: (e) =>

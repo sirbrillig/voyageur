@@ -1,13 +1,11 @@
-- @triplocations.each (loc, index) ->
-  - console.log loc
-  %li.location_block{class: "location_#{loc.get('location').id} trip_location_#{index}", 'trip-index':index}
-    .location
-      %nav.actions
-        - if @trip.length > 0
-          %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@trip.id}/remove/#{index}", title: 'Remove this location from the Trip'}
-            %i.icon-minus-sign
-            Remove
-      %h1{title: loc.get('location').address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
-        %i.icon-resize-full
-        = loc.get('location').title
-      %p.address{id: "trip_address_#{loc.id}", class:"collapse"}= loc.get('location').address
+%li.location_block{class: "location_#{@triplocation.get('location').id} trip_location_#{@triplocation.get('position')}", 'trip-index':@triplocation.get('position')}
+  .location
+    %nav.actions
+      - if @trip and @trip.length > 0
+        %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@trip.id}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
+          %i.icon-minus-sign
+          Remove
+    %h1{title: @triplocation.get('location').address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{@triplocation.id}"}
+      %i.icon-resize-full
+      = @triplocation.get('location').title
+    %p.address{id: "trip_address_#{@triplocation.id}", class:"collapse"}= @triplocation.get('location').address
