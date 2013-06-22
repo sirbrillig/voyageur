@@ -16,10 +16,8 @@
   - $.each @trip.get('triplocations'), (index, loc) =>
     - if ( ! loc )
       - console.log "Error listing triplocations: triplocation at index '#{index}' does not exist."
-      - continue
     - if ( ! loc.location )
       - console.log "Error listing triplocations: at index '#{index}' does not exist (belongs to triplocation '#{loc}')"
-      - continue
     %li.location_block{class: "location_#{loc.location.id} trip_location_#{index}", 'trip-index':index}
       .location
         %nav.actions

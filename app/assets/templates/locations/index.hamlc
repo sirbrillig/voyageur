@@ -2,7 +2,6 @@
   - @locations.each (loc, index) =>
     - if ( ! loc )
       - console.log "Error while listing available locations: location at index '#{index}' does not exist."
-      - continue
     %li.location{class: "location_#{loc.id}"}
       %nav.actions
         %a.btn.btn-small{title: 'Edit this location.', href: "/locations/#{loc.id}/edit"}
