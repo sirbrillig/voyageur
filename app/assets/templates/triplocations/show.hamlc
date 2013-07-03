@@ -1,8 +1,8 @@
 %li.location_block{class: "location_#{@triplocation.get('location').id} trip_location_#{@triplocation.get('position')}", 'trip-index':@triplocation.get('position')}
   .location
     %nav.actions
-      - if @trip and @trip.length > 0
-        %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@trip.id}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
+      - if @triplocation.get('trip') and @triplocation.get('num_triplocations') > 0
+        %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@triplocation.get('trip').id}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
           %i.icon-minus-sign
           Remove
     %h1{title: @triplocation.get('location').address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{@triplocation.id}"}

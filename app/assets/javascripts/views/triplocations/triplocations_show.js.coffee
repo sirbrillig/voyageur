@@ -8,6 +8,7 @@ class Voyageur.Views.Triplocation extends Backbone.View
 
   initialize: =>
     console.log "triplocation: ", @model
+    @model.bind 'remove', => @model.destroy()
 
   render: =>
     @$el.html @template({triplocation: @model})
@@ -15,4 +16,12 @@ class Voyageur.Views.Triplocation extends Backbone.View
 
   remove_location: (e) =>
     e.preventDefault()
-    # FIXME: do this
+    url = 'triplocations/' + @model.id + '.json'
+    console.log url
+    $.ajax url,
+      type: 'DELETE',
+      success: (data) =>
+        console.log data
+        # FIXME: trigger an update of the whole list
+        # FIXME: update the distance
+    @remove() # no need to wait

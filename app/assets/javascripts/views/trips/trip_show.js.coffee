@@ -32,7 +32,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       $('.trip_locations').append triploc_view.render().el
-#    @render_map()
+#    @render_map() # FIXME: disabled map for the moment
     this
 
   render_map: =>

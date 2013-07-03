@@ -15,4 +15,8 @@ class Triplocation < ActiveRecord::Base
   def set_user
     self.user = self.trip.user
   end
+
+  def num_triplocations
+    self.trip.locations.size
+  end
 end

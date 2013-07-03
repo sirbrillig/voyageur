@@ -12,11 +12,16 @@ window.Voyageur =
 
   setup_spinner: () ->
     trip = $('.trip')
-    trip.ajaxStart -> trip.spin()
-    trip.ajaxComplete -> trip.stop()
+    trip.ajaxStart => trip.spin()
+    trip.ajaxComplete =>
+      @stop_spinner()
     $(document).ajaxError (event, jqxhr, settings, exception) ->
-      $('.spinner').html('') # Not sure why, but calling stop does not work here.
+      @stop_spinner()
       alert "A server error occurred trying to access '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that. Maybe try again?"
+
+  stop_spinner: () ->
+    #$('.trip').stop()
+    $('.spinner').html('') # Not sure why, but calling trip.stop does not work here.
 
   enable_tabs: () ->
     $('#library').removeClass 'active' # allows graceful degrading
