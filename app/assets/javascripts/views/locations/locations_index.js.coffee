@@ -21,6 +21,7 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
     this
 
   add_location_to_trip: (e) =>
+    # FIXME: do this right through JS and update the list in the background
     e.preventDefault()
     url = $(e.target).attr('href')
     url = $(e.target).parent().attr('href') unless url

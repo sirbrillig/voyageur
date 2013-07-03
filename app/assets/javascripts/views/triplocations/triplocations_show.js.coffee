@@ -20,8 +20,7 @@ class Voyageur.Views.Triplocation extends Backbone.View
     console.log url
     $.ajax url,
       type: 'DELETE',
-      success: (data) =>
-        console.log data
-        # FIXME: trigger an update of the whole list
-        # FIXME: update the distance
+      success: () =>
+        # FIXME: refresh the whole list only if the data differs from our version?
+        @model.get('trip').fetch() # trigger an update of the whole list
     @remove() # no need to wait

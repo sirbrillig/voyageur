@@ -14,4 +14,6 @@ class Voyageur.Models.Trip extends Backbone.RelationalModel
     key: 'triplocations'
     relatedModel: 'Voyageur.Models.Triplocation'
     collectionType: 'Voyageur.Collections.Triplocations'
+    reverseRelation:
+      key: 'trip'
   ]

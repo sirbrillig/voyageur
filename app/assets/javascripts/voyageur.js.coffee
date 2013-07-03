@@ -11,16 +11,17 @@ window.Voyageur =
     new Voyageur.Views.LocationsIndex(trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
   setup_spinner: () ->
-    trip = $('.trip')
+    trip = $('.trip .summary') #FIXME: move this to the distance box only
     trip.ajaxStart => trip.spin()
     trip.ajaxComplete =>
       @stop_spinner()
-    $(document).ajaxError (event, jqxhr, settings, exception) ->
+    $(document).ajaxError (event, jqxhr, settings, exception) =>
+      error = "A server error occurred trying to access '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that. Maybe try again?"
+      console.log error
+      alert error
       @stop_spinner()
-      alert "A server error occurred trying to access '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that. Maybe try again?"
 
   stop_spinner: () ->
-    #$('.trip').stop()
     $('.spinner').html('') # Not sure why, but calling trip.stop does not work here.
 
   enable_tabs: () ->
