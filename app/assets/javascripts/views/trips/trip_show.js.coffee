@@ -33,13 +33,13 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       $('.trip_locations').append triploc_view.render().el
-#    @render_map() # FIXME: disabled map for the moment
+    @render_map()
     this
 
   render_map: =>
     # FIXME: map doesn't look so good at small width
     @setup_map()
-    @calc_route(@model.get('triplocations').map (loc) -> loc.location.address)
+    @calc_route(@model.get('triplocations').map (triploc) -> triploc.get('location').address)
 
   meters_to_miles: (meters) ->
     miles_per_meter = 0.000621371
