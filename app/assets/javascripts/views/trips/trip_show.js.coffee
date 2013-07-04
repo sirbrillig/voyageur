@@ -14,7 +14,6 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.on 'sync', @render
     $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
     @model.fetch()
-    console.log "fetched trip: ", @model
 
   start_drag: (event, ui) =>
     #FIXME: drag-drop is not working anymore
@@ -25,10 +24,10 @@ class Voyageur.Views.Trip extends Backbone.View
     index = ui.item.index()
     url = "/trips/#{trip_id}/move/#{@start_index}/to/#{index}"
     $.getJSON url + '.json', (data) =>
-      @model.fetch success: =>
-        @render()
+      @model.fetch() #FIXME: this is rendering stale data
 
   render: =>
+    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     @model.get('triplocations').each (triploc) =>
