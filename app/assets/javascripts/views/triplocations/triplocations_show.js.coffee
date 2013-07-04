@@ -16,7 +16,7 @@ class Voyageur.Views.Triplocation extends Backbone.View
 
   remove_location: (e) =>
     e.preventDefault()
-    url = 'triplocations/' + @model.id + '.json'
+    url = 'triplocations/' + @model.id
     console.log url
     $.ajax url,
       type: 'DELETE',

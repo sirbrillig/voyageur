@@ -62,7 +62,14 @@ class TripsController < ApplicationController
 
   def add
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    @location = Location.find(params[:location_id])
+    @location = Location.where(id: params[:location_id], user_id: current_user.id).first
+    unless @trip and @location
+      Rails.logger.warn "Add called on trip '#{params[:id]}', for location '#{@location}' but no such trip or location was found or they were not owned by user ID '#{current_user.id}'."
+      respond_to do |format|
+        format.html { redirect_to locations_url }
+        format.json { render json: {} }
+      end
+    end
     index = nil
     index = params[:index].to_i if params[:index]
 

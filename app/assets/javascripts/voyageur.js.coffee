@@ -4,11 +4,13 @@ window.Voyageur =
   Views: {}
   Routers: {}
 
+  trip_view: null
+
   initialize: ->
     @enable_tabs()
     @setup_spinner()
-    trip_view = new Voyageur.Views.Trip
-    new Voyageur.Views.LocationsIndex(trip_view.model) # NOTE: not sure this is the best way to bind the views together
+    @trip_view = new Voyageur.Views.Trip
+    new Voyageur.Views.LocationsIndex(@trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
   setup_spinner: () ->
     doc = $(document)
