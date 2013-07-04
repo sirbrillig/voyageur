@@ -140,6 +140,7 @@ ul.nav-tabs {
 .help_box {
   @extend .alert;
   @extend .alert-info;
+  margin-bottom: 2px;
 
   h1 {
     display: inline;
