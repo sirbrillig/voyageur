@@ -1,5 +1,5 @@
 class Voyageur.Views.Triplocation extends Backbone.View
-  tagName: 'li' # FIXME: this renders the view in an li, but the view *is* an li, so you get two.
+  tagName: 'li'
 
   template: JST['triplocations/show']
 
@@ -11,7 +11,7 @@ class Voyageur.Views.Triplocation extends Backbone.View
     @model.bind 'remove', => @model.destroy()
 
   render: =>
-    @$el.html @template({triplocation: @model})
+    @setElement @template({triplocation: @model})
     this
 
   remove_location: (e) =>
