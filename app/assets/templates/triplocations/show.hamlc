@@ -1,4 +1,4 @@
-%li.location_block{class: "location_#{@triplocation.get('location').id} trip_location_#{@triplocation.get('position')}", 'trip-index':@triplocation.get('position')}
+%li.location_block{data-triplocation-id: @triplocation.id, data-location-id: @triplocation.get('location').id, data-trip-position: @triplocation.get('position'), class: "location_#{@triplocation.get('location').id} trip_location_#{@triplocation.get('position')}"}
   .location
     %nav.actions
       - if @triplocation.get('trip') and @triplocation.get('num_triplocations') > 0

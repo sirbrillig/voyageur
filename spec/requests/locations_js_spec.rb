@@ -82,11 +82,11 @@ describe "With Javascript", js: true do
             end
 
             it "shows the location in the trip" do
-              page.should have_css(".trip .location_#{@loc1.id}")
+              page.should have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
             end
 
             it "shows the location at the end of the trip" do
-              page.should have_css(".trip .trip_location_1.location_#{@loc2.id}")
+              page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc2.id}']")
             end
           end
         end
@@ -97,19 +97,20 @@ describe "With Javascript", js: true do
             within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
             within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
-            within(:css, ".trip .trip_location_0.location_#{@loc1.id}") { click_link('remove_from_trip') }
+            within(:css, ".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']") { click_link('remove_from_trip') }
+            wait_for_ajax
           end
 
           it "removes the location from the trip" do
-            page.should_not have_css(".trip .trip_location_0.location_#{@loc1.id}")
+            page.should_not have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']")
           end
 
           it "does not affect the other trip locations" do
-            page.should have_css(".trip .location_#{@loc2.id}")
+            page.should have_css(".trip .location_block[data-location-id='#{@loc2.id}']")
           end
 
           it "does not remove duplicate locations from the trip" do
-            page.should have_css(".trip .location_#{@loc1.id}")
+            page.should have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
           end
         end
 
@@ -141,7 +142,7 @@ describe "With Javascript", js: true do
           end
 
           it "removes all locations in the trip" do
-            page.should_not have_css(".trip .location_#{@loc1.id}")
+            page.should_not have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
           end
 
           it "shows the help box with 'Add a location'" do
@@ -157,14 +158,14 @@ describe "With Javascript", js: true do
               within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
               wait_for_ajax
 
-              element = page.first(:css, ".trip .trip_location_1")
-              target = page.first(:css, ".trip .trip_location_0")
+              element = page.first(:css, ".trip .location_block[data-trip-position='2']")
+              target = page.first(:css, ".trip .location_block[data-trip-position='1']")
               element.drag_to(target)
               wait_for_ajax
             end
 
             it "moves the location up in the list" do
-              page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
+              page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
             end
 
             context "when reloaded" do
@@ -174,7 +175,7 @@ describe "With Javascript", js: true do
               end
 
               it "has still moved the location up in the list" do
-                page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
+                page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
               end
             end
           end
