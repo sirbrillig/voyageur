@@ -17,6 +17,7 @@ class Voyageur.Views.Trip extends Backbone.View
     console.log "fetched trip: ", @model
 
   start_drag: (event, ui) =>
+    #FIXME: drag-drop is not working anymore
     @start_index = ui.item.index()
 
   stop_drag: (event, ui) =>
@@ -28,11 +29,11 @@ class Voyageur.Views.Trip extends Backbone.View
         @render()
 
   render: =>
-    # FIXME: make sure we're destroying everything in the collection first
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
+    triplocation_area = $('.trip_locations')
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
-      $('.trip_locations').append triploc_view.render().el
+      triplocation_area.append triploc_view.render().el
     @render_map()
     this
 
