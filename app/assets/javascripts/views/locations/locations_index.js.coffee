@@ -3,12 +3,8 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
 
   template: JST['locations/index']
 
-  trip: null
-
   initialize: (trip) =>
-    @trip = trip # FIXME: let's get rid of this
     @collection = new Voyageur.Collections.Locations
-    @trip_id = Voyageur.get_trip_id()
     @collection.on 'sync', @render
     @collection.fetch()
 
@@ -17,5 +13,5 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
     location_area = $('.locations')
     @collection.each (loc) =>
       location_view = new Voyageur.Views.Location model: loc
-      location_area.append location_view.render(@trip_id).el
+      location_area.append location_view.render().el
     this
