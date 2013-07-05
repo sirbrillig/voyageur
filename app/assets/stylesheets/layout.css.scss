@@ -1,5 +1,12 @@
 @import "bootstrap";
 body { padding-top: 60px; }
+// This should not be necessary, but the icon paths are broken for some reason
+[class^="icon-"], [class*=" icon-"] {
+  background-image: asset-url("glyphicons-halflings.png", image);
+}
+.icon-white {
+  background-image: asset-url("glyphicons-halflings-white.png", image);
+}
 @import "bootstrap-responsive";
 
 $location-background-color: #f5f5f5;
@@ -140,6 +147,7 @@ ul.nav-tabs {
 .help_box {
   @extend .alert;
   @extend .alert-info;
+  margin-bottom: 2px;
 
   h1 {
     display: inline;

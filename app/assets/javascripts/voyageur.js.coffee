@@ -4,16 +4,25 @@ window.Voyageur =
   Views: {}
   Routers: {}
 
+  trip_view: null
+
   initialize: ->
     @enable_tabs()
     @setup_spinner()
-    trip_view = new Voyageur.Views.Trip
-    new Voyageur.Views.LocationsIndex(trip_view.model) # NOTE: not sure this is the best way to bind the views together
+    @trip_view = new Voyageur.Views.Trip
+    new Voyageur.Views.LocationsIndex(@trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
   setup_spinner: () ->
-    trip = $('.trip')
-    trip.ajaxStart -> trip.spin()
-    trip.ajaxComplete -> trip.stop()
+    doc = $(document)
+    doc.ajaxStart =>
+      $('.trip .summary').html '<br/>'
+      $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
+    doc.ajaxComplete => $('.trip .summary').spin(false)
+    doc.ajaxError (event, jqxhr, settings, exception) =>
+      error = "A server error occurred trying to access '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that. Maybe try again?"
+      console.log error
+      alert error
+      $('.trip .summary').spin(false)
 
   enable_tabs: () ->
     $('#library').removeClass 'active' # allows graceful degrading
@@ -34,4 +43,4 @@ window.Voyageur =
 
 
 $(document).ready ->
-  Voyageur.initialize()
+  Voyageur.initialize() if ( $('.trip').length > 0 )

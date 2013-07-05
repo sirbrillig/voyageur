@@ -5,7 +5,7 @@ require 'json'
 class Location < ActiveRecord::Base
   attr_reader :query_sent
   attr_accessible :address, :title, :user_id
-  has_many :triplocations, order: :position
+  has_many :triplocations, order: :position, dependent: :destroy
   has_many :trips, through: :triplocations, order: :position
   belongs_to :user
   validates :address, presence: true

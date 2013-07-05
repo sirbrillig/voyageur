@@ -10,6 +10,7 @@ group :assets do
   gem 'jquery-rails'
   gem 'jquery-ui-rails'
   gem 'backbone-on-rails'
+  gem 'backbone-relational-rails'
   gem 'haml_coffee_assets'
   gem 'execjs'
 end
@@ -39,6 +40,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
+  gem 'selenium-webdriver'
   gem 'konacha'
   gem 'phantomjs'
 end
