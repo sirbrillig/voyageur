@@ -4,8 +4,8 @@ describe Triplocation do
   before do
     @user = FactoryGirl.create(:user)
     @trip = Trip.create { |trip| trip.user = @user }
-    @loc1 = FactoryGirl.create(:home_location)
-    @loc2 = FactoryGirl.create(:work_location)
+    @loc1 = FactoryGirl.create(:home_location, user: @user)
+    @loc2 = FactoryGirl.create(:work_location, user: @user)
   end
 
   context "when locations are added to a Trip" do
