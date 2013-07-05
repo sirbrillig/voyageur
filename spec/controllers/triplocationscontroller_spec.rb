@@ -7,8 +7,8 @@ describe TriplocationsController do
       sign_in @user
 
       @trip = Trip.create { |trip| trip.user = @user }
-      @loc1 = FactoryGirl.create(:home_location)
-      @loc2 = FactoryGirl.create(:work_location)
+      @loc1 = FactoryGirl.create(:home_location, user: @user)
+      @loc2 = FactoryGirl.create(:work_location, user: @user)
       @triploc1 = @trip.add_location @loc1
     end
 
