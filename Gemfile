@@ -40,6 +40,7 @@ end
 group :development, :test do
   gem 'rspec-rails'
   gem 'sqlite3'
+  gem 'selenium-webdriver'
   gem 'konacha'
   gem 'phantomjs'
 end
