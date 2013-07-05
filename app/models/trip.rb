@@ -1,5 +1,5 @@
 class Trip < ActiveRecord::Base
-  attr_accessible :user_id
+  attr_accessible :user_id, :triplocations
   has_many :triplocations, order: :position
   has_many :locations, through: :triplocations, order: :position
   belongs_to :user
@@ -17,7 +17,7 @@ class Trip < ActiveRecord::Base
   end
 
   def location_at(index)
-    self.locations.find_by_id(self.triplocations[index].location_id)
+    self.locations.find(self.triplocations[index].location_id)
   end
 
   def move_location(index, options={})
@@ -28,15 +28,15 @@ class Trip < ActiveRecord::Base
   end
 
   def add_location(location, index=nil)
+    raise "Error adding location '#{location}' to trip: no user is assigned to that location." unless location and location.user
+    trip = self
+    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip; triploc.user = location.user }
     if index
       position = position_for_index(index)
-      self.locations << location
-      tloc = self.triplocations.where(location_id: location.id, trip_id: self.id).last
       tloc.insert_at(position)
-      save
-    else
-      self.locations << location
+      save # FIXME: necessary?
     end
+    tloc
   end
 
   def remove_location_at(index)
@@ -54,7 +54,7 @@ class Trip < ActiveRecord::Base
   def as_json(options={})
     # FIXME: it would be nice if we could move half of this to
     # Triplocation#as_json, but that doesn't work for some reason.
-    super( include: { :triplocations => { include: :location } }, methods: [ :distance, :num_avail_locations ] )
+    super( include: { :triplocations => { include: [ :location, :trip ], methods: :num_triplocations } }, methods: [ :distance, :num_avail_locations ] )
   end
 
   private

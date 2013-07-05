@@ -1,15 +1,1 @@
-- if @locations
-  - @locations.each (loc, index) =>
-    %li.location{class: "location_#{loc.id}"}
-      %nav.actions
-        %a.btn.btn-small{title: 'Edit this location.', href: "/locations/#{loc.id}/edit"}
-          %i.icon-edit 
-          Edit
-        - if @trip_id
-          %a.btn.btn-small.add-button.btn-custom{title: 'Add this location to the trip.', href: "/trips/#{@trip_id}/add/#{loc.id}"}
-            %i.icon-road
-            Add
-      %h1{title: loc.get('address'), 'data-toggle' => 'collapse', 'data-target' => "#address_#{loc.id}"}
-        %i.icon-resize-full
-        = loc.get('title')
-      %p.address{id: "address_#{loc.id}", class:"collapse"}= loc.get('address')
+.locations

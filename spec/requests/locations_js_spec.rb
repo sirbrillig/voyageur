@@ -13,6 +13,7 @@ describe "With Javascript", js: true do
     context "when not logged-in" do
       before do
         visit locations_path
+        wait_for_ajax
       end
 
       it "displays the login page" do
@@ -39,6 +40,7 @@ describe "With Javascript", js: true do
         before do
           FactoryGirl.create(:home_location, user: @user)
           visit locations_path
+          wait_for_ajax
         end
 
         it "shows the help box with 'Add another location to the list'" do
@@ -52,6 +54,7 @@ describe "With Javascript", js: true do
           @loc2 = FactoryGirl.create(:work_location, user: @user)
           @loc3 = FactoryGirl.create(:food_location, user: @user)
           visit locations_path
+          wait_for_ajax
         end
 
         it "shows locations" do
@@ -79,11 +82,11 @@ describe "With Javascript", js: true do
             end
 
             it "shows the location in the trip" do
-              page.should have_css(".trip .location_#{@loc1.id}")
+              page.should have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
             end
 
             it "shows the location at the end of the trip" do
-              page.should have_css(".trip .trip_location_1.location_#{@loc2.id}")
+              page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc2.id}']")
             end
           end
         end
@@ -94,19 +97,20 @@ describe "With Javascript", js: true do
             within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
             within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
-            within(:css, ".trip .trip_location_0.location_#{@loc1.id}") { click_link('remove_from_trip') }
+            within(:css, ".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']") { click_link('remove_from_trip') }
+            wait_for_ajax
           end
 
           it "removes the location from the trip" do
-            page.should_not have_css(".trip .trip_location_0.location_#{@loc1.id}")
+            page.should_not have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']")
           end
 
           it "does not affect the other trip locations" do
-            page.should have_css(".trip .location_#{@loc2.id}")
+            page.should have_css(".trip .location_block[data-location-id='#{@loc2.id}']")
           end
 
           it "does not remove duplicate locations from the trip" do
-            page.should have_css(".trip .location_#{@loc1.id}")
+            page.should have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
           end
         end
 
@@ -114,10 +118,10 @@ describe "With Javascript", js: true do
           before do
             within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
-            visit edit_location_path(@loc1.id)
+            within(:css, ".library .location_#{@loc1.id}") { find('.edit-button').click }
             click_link('delete_location')
             page.driver.browser.switch_to.alert.accept
-            visit locations_path
+            wait_for_ajax
           end
 
           it "removes the location from the library" do
@@ -138,7 +142,7 @@ describe "With Javascript", js: true do
           end
 
           it "removes all locations in the trip" do
-            page.should_not have_css(".trip .location_#{@loc1.id}")
+            page.should_not have_css(".trip .location_block[data-location-id='#{@loc1.id}']")
           end
 
           it "shows the help box with 'Add a location'" do
@@ -147,31 +151,36 @@ describe "With Javascript", js: true do
         end
 
         context "when a trip location is dragged up one place" do
-          pending "selenium drag-and-drop does not work" do
+          before do
+            pending "drag-and-drop in selenium doesn't work"
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
+            wait_for_ajax
+
+            element = page.first(:css, ".trip .location_block[data-trip-position='2']")
+            target = page.first(:css, ".trip .location_block[data-trip-position='1']")
+            element.drag_to(target)
+            wait_for_ajax
+            wait_for_ajax
+          end
+
+          it "moves the location up in the list" do
+            page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
+          end
+
+          it "moves the replaced location down in the list" do
+            page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc1.id}']")
+          end
+
+          context "when reloaded" do
             before do
-              within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
-              within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
-              within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
-              wait_for_ajax
-
-              element = page.first(:css, ".trip .trip_location_1")
-              target = page.first(:css, ".trip .trip_location_0")
-              element.drag_to(target)
+              visit locations_path
               wait_for_ajax
             end
 
-            it "moves the location up in the list" do
-              page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
-            end
-
-            context "when reloaded" do
-              before do
-                visit locations_path
-              end
-
-              it "has still moved the location up in the list" do
-                page.should have_css(".trip .trip_location_0.location_#{@loc2.id}")
-              end
+            it "has still moved the location up in the list" do
+              page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
             end
           end
         end

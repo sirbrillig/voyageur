@@ -3,9 +3,13 @@ require 'spec_helper'
 describe Trip do
   before do
     @trip = Trip.create
+    @user = FactoryGirl.create(:user)
     @loc1 = FactoryGirl.create(:home_location)
     @loc2 = FactoryGirl.create(:work_location)
     @loc3 = FactoryGirl.create(:food_location)
+    @loc1.user = @user
+    @loc2.user = @user
+    @loc3.user = @user
   end
 
   context "when adding a Location" do
