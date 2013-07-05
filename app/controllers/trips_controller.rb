@@ -83,7 +83,6 @@ class TripsController < ApplicationController
 
   def show
     @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-    Rails.logger.warn "Show trip: #{@trip.locations.inspect}"
 
     respond_to do |format|
       format.html { render partial: 'trip' }

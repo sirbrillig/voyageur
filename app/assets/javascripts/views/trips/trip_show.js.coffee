@@ -16,28 +16,20 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.fetch()
 
   start_drag: (event, ui) =>
-    #FIXME: drag-drop is not working anymore
     @start_index = ui.item.index()
 
   stop_drag: (event, ui) =>
     trip_id = Voyageur.get_trip_id()
     index = ui.item.index()
-    url = "/trips/#{trip_id}/move/#{@start_index}/to/#{index}"
-    console.log "first model=", @model.get('triplocations').models[0].get('location')
-    $.getJSON url + '.json', (data) => # FIXME!!
-      # here, the update on the server has completed and should match the
-      # current state of the local list as well (since the drag-and-drop
-      # actually changed the order of those elements except for their position
-      # attributes) at least as far as ui.index is concerned. The model,
-      # however, still holds the old order.
-      console.log "pre model=", @model.get('triplocations').models[0].get('location')
-      @model.fetch success: =>
-        # here, the model *should* have the new order returned by the server,
-        # but for some reason it does not.
-        console.log "post model=", @model.get('triplocations').models[0].get('location')
+    moved_loc = @model.get('triplocations').models[@start_index]
+    @model.get('triplocations').remove(moved_loc)
+    moved_loc.set({'position': index})
+    @model.get('triplocations').add(moved_loc, at: index)
+    @model.get('triplocations').at(index).save()
+    @render()
 
   render: =>
-    console.log "rendering trip: ", @model
+#    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     @model.get('triplocations').each (triploc) =>

@@ -7,8 +7,7 @@ class Voyageur.Views.Location extends Backbone.View
     'click a.add-button': 'add_location_to_trip'
 
   initialize: =>
-    console.log "location: ", @model
-    @model.bind 'remove', => @model.destroy()
+#    console.log "location: ", @model
 
   render: =>
     @setElement @template({location: @model, trip_id: Voyageur.get_trip_id()})
@@ -20,7 +19,6 @@ class Voyageur.Views.Location extends Backbone.View
     # location (and no ID!) and that's not a simple thing.
     e.preventDefault()
     url = 'trips/' + Voyageur.get_trip_id() + '/add/' + @model.id
-    console.log url
     $.ajax url,
       type: 'GET',
       success: ->
