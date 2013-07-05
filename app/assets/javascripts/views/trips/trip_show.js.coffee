@@ -23,8 +23,18 @@ class Voyageur.Views.Trip extends Backbone.View
     trip_id = Voyageur.get_trip_id()
     index = ui.item.index()
     url = "/trips/#{trip_id}/move/#{@start_index}/to/#{index}"
-    $.getJSON url + '.json', (data) =>
-      @model.fetch() #FIXME: this is rendering stale data
+    console.log "first model=", @model.get('triplocations').models[0].get('location')
+    $.getJSON url + '.json', (data) => # FIXME!!
+      # here, the update on the server has completed and should match the
+      # current state of the local list as well (since the drag-and-drop
+      # actually changed the order of those elements except for their position
+      # attributes) at least as far as ui.index is concerned. The model,
+      # however, still holds the old order.
+      console.log "pre model=", @model.get('triplocations').models[0].get('location')
+      @model.fetch success: =>
+        # here, the model *should* have the new order returned by the server,
+        # but for some reason it does not.
+        console.log "post model=", @model.get('triplocations').models[0].get('location')
 
   render: =>
     console.log "rendering trip: ", @model
