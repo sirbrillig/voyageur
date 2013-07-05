@@ -17,7 +17,7 @@ class Trip < ActiveRecord::Base
   end
 
   def location_at(index)
-    self.locations.find_by_id(self.triplocations[index].location_id)
+    self.locations.find(self.triplocations[index].location_id)
   end
 
   def move_location(index, options={})
@@ -28,8 +28,9 @@ class Trip < ActiveRecord::Base
   end
 
   def add_location(location, index=nil)
+    raise "Error adding location '#{location}' to trip: no user is assigned to that location." unless location and location.user
     trip = self
-    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip }
+    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip; triploc.user = location.user }
     if index
       position = position_for_index(index)
       tloc.insert_at(position)
