@@ -151,32 +151,36 @@ describe "With Javascript", js: true do
         end
 
         context "when a trip location is dragged up one place" do
-          pending "selenium drag-and-drop does not work" do
+          before do
+            pending "drag-and-drop in selenium doesn't work"
+            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
+            within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
+            wait_for_ajax
+
+            element = page.first(:css, ".trip .location_block[data-trip-position='2']")
+            target = page.first(:css, ".trip .location_block[data-trip-position='1']")
+            element.drag_to(target)
+            wait_for_ajax
+            wait_for_ajax
+          end
+
+          it "moves the location up in the list" do
+            page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
+          end
+
+          it "moves the replaced location down in the list" do
+            page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc1.id}']")
+          end
+
+          context "when reloaded" do
             before do
-              within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
-              within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
-              within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
-              wait_for_ajax
-
-              element = page.first(:css, ".trip .location_block[data-trip-position='2']")
-              target = page.first(:css, ".trip .location_block[data-trip-position='1']")
-              element.drag_to(target)
+              visit locations_path
               wait_for_ajax
             end
 
-            it "moves the location up in the list" do
+            it "has still moved the location up in the list" do
               page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
-            end
-
-            context "when reloaded" do
-              before do
-                visit locations_path
-                wait_for_ajax
-              end
-
-              it "has still moved the location up in the list" do
-                page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
-              end
             end
           end
         end
