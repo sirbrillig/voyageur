@@ -2,7 +2,7 @@
   .location
     %nav.actions
       - if @triplocation.get('trip') and @triplocation.get('num_triplocations') > 0
-        %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{@triplocation.get('trip').id}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
+        %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{Voyageur.get_trip_id()}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
           %i.icon-minus-sign
           Remove
     %h1{title: @triplocation.get('location').address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{@triplocation.id}"}
