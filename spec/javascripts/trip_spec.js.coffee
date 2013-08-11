@@ -21,13 +21,18 @@ describe "Trip", ->
     beforeEach () ->
       @server = sinon.fakeServer.create()
       @callback = sinon.spy()
+      @server.respondWith("GET", "/trips/1", [ 200, { "Content-Type": "application/json" }, '{"id": 1, "distance": 100 }' ])
+      trip.bind 'change', @callback
 
     afterEach () ->
       @server.restore()
 
     it "triggers the object's changed event", () ->
-      @server.respondWith("GET", "/trips/1", [ 200, { "Content-Type": "application/json" }, '{"id": 1, "distance": 100 }' ])
-      trip.bind 'change', @callback
       trip.fetch()
       @server.respond()
       expect(@callback.called).to.be.true
+
+    it "updates the model", () ->
+      trip.fetch()
+      @server.respond()
+      expect(trip.get('distance')).to.equal(100)
