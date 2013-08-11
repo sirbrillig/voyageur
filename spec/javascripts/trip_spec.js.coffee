@@ -25,10 +25,9 @@ describe "Trip", ->
     afterEach () ->
       @server.restore()
 
-    it "returns the trip", (done) ->
+    it "triggers the object's changed event", () ->
       @server.respondWith("GET", "/trips/1", [ 200, { "Content-Type": "application/json" }, '{"id": 1, "distance": 100 }' ])
       trip.bind 'change', @callback
       trip.fetch()
       @server.respond()
       expect(@callback.called).to.be.true
-      done()
