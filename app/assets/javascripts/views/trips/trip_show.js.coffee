@@ -48,7 +48,7 @@ class Voyageur.Views.Trip extends Backbone.View
     (meters * miles_per_meter).toFixed(1)
 
   clear_trip: (e) =>
-    e.preventDefault()
+    e.preventDefault() if e
     @model.set('triplocations', [])
     @model.save()
 
