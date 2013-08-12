@@ -30,9 +30,9 @@ describe TriplocationsController do
 
     describe "PUT #update" do
       before do
-        temp = @triploc1.dup
-        temp.position = 2
-        put :update, format: :json, id: @triploc1.id, triplocation: temp.attributes
+        temp = @triploc1.attributes
+        temp['position'] = 2
+        put :update, format: :json, id: @triploc1.id, triplocation: temp
         @triploc1.reload
       end
 
