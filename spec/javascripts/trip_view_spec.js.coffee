@@ -17,8 +17,8 @@ describe "Voyageur.Views.Trip", ->
 
   describe "#clear_trip", ->
 
-    beforeEach ->
-      @view.trigger('click a.clear-trip') # FIXME: that's not right. may need to refactor the code itself to allow for a spy
+    before ->
+      @view.clear_trip()
 
     it "empties the model's collection of triplocations", ->
       expect(@view.model.get('triplocations').models).to.be.empty
