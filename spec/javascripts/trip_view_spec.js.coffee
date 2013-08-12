@@ -22,3 +22,8 @@ describe "Voyageur.Views.Trip", ->
 
     it "empties the model's collection of triplocations", ->
       expect(@view.model.get('triplocations').models).to.be.empty
+
+  describe "#meters_to_miles", ->
+
+    it "converts 1 meter to 1 mile", ->
+      expect(@view.meters_to_miles(1609.34)).to.equal('1.0')
