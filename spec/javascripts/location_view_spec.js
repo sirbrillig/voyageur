@@ -21,15 +21,15 @@ describe('Voyageur.Views.Location', function() {
     });
 
     it('assigns the location id to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('location_id', this.model.id));
+      expect(this.triplocation_spy.returned(sinon.match.has('location_id', this.model.id)));
     });
 
     it('assigns the location to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('location', this.model));
+      expect(this.triplocation_spy.returned(sinon.match.has('location', this.model))).to.be.true;
     });
 
     it('assigns the trip id to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('trip_id', this.trip.id));
+      expect(this.triplocation_spy.returned(sinon.match.has('trip_id', this.trip.id))).to.be.true;
     });
 
     it('adds the new triplocation to the trip collection', function() {
@@ -37,7 +37,7 @@ describe('Voyageur.Views.Location', function() {
     });
 
     it('sets the new triplocation position to the end of the list', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('position', 2));
+      expect(this.triplocation_spy.returned(sinon.match.has('position', 2))).to.be.true;
     });
 
     it('sends the trip model to the server');
