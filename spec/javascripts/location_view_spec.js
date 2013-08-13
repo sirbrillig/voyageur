@@ -8,12 +8,23 @@ describe('Voyageur.Views.Location', function() {
 
   describe('#add_location_to_trip', function() {
     before(function() {
-      tloc = new Voyageur.Models.Triplocation({ 'id': 4, 'position': 1 });
+      this.server = sinon.fakeServer.create();
+      this.server.respondWith("PUT", "/trips/1",
+        [ 200,
+        { "Content-Type": "application/json" },
+        '{"id": 1, "distance": 100, "triplocations": [ { "id": 101, "location_id": 1, "position": 1, "trip_id": 1, "user_id": 1 } ] }' ]);
+
+      var tloc = new Voyageur.Models.Triplocation({ 'id': 4, 'position': 1 });
       this.trip = new Voyageur.Models.Trip({ 'id': 2, 'triplocations': [ tloc ] });
       this.model = new Voyageur.Models.Location({ 'address': '10 Main Street, Burlington VT', 'title': 'Location One', 'id': 5 });
       this.view = new Voyageur.Views.Location({ 'model': this.model });
+
       this.triplocation_spy = sinon.spy(Voyageur.Models, 'Triplocation');
+      this.ajax_triplocation_spy = sinon.spy(jQuery, 'ajax');
+
       this.view.add_location_to_trip();
+
+      this.server.respond();
     });
     
     it('creates a new triplocation', function() {
@@ -40,9 +51,17 @@ describe('Voyageur.Views.Location', function() {
       expect(this.triplocation_spy.returned(sinon.match.has('position', 2))).to.be.true;
     });
 
-    it('sends the trip model to the server');
-    it('updates the new triplocation with the id from the server');
-    it('updates the trip distance from the server');
+    it('sends the trip model to the server', function() {
+      expect(this.ajax_triplocation_spy.calledWith(sinon.match.has('trip_id', this.trip.id))).to.be.true;
+    });
+
+    it('updates the new triplocation with the id from the server', function() {
+      expect(this.triplocation.get('id')).to.be.above(0);
+    });
+
+    it('updates the trip distance from the server', function() {
+      expect(this.triplocation.get('distance')).to.be.above(0);
+    });
 
   });
 
