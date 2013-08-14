@@ -19,7 +19,7 @@ describe('Voyageur.Views.Location', function() {
       this.model = new Voyageur.Models.Location({ 'address': '10 Main Street, Burlington VT', 'title': 'Location One', 'id': 5 });
       this.view = new Voyageur.Views.Location({ 'model': this.model });
 
-      this.triplocation_spy = sinon.spy(Voyageur.Models, 'Triplocation');
+      this.triplocation_spy = sinon.spy(this.model, 'create_triplocation');
       this.ajax_triplocation_spy = sinon.spy(jQuery, 'ajax');
 
       this.view.add_location_to_trip();
@@ -32,15 +32,15 @@ describe('Voyageur.Views.Location', function() {
     });
 
     it('assigns the location id to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('location_id', this.model.id)));
+      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('location_id', this.model.get('id'));
     });
 
     it('assigns the location to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('location', this.model))).to.be.true;
+      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('location', this.model);
     });
 
     it('assigns the trip id to the new triplocation', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('trip_id', this.trip.id))).to.be.true;
+      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('trip_id', this.trip.get('id'));
     });
 
     it('adds the new triplocation to the trip collection', function() {
@@ -48,11 +48,11 @@ describe('Voyageur.Views.Location', function() {
     });
 
     it('sets the new triplocation position to the end of the list', function() {
-      expect(this.triplocation_spy.returned(sinon.match.has('position', 2))).to.be.true;
+      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('position', 2);
     });
 
     it('sends the trip model to the server', function() {
-      expect(this.ajax_triplocation_spy.calledWith(sinon.match.has('trip_id', this.trip.id))).to.be.true;
+      expect(this.ajax_triplocation_spy.calledWith(sinon.match.has('trip_id', this.trip.get('id')))).to.be.true;
     });
 
     it('updates the new triplocation with the id from the server', function() {
