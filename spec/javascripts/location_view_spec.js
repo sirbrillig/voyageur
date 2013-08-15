@@ -19,6 +19,7 @@ describe('Voyageur.Views.Location', function() {
       this.model = new Voyageur.Models.Location({ 'address': '10 Main Street, Burlington VT', 'title': 'Location One', 'id': 5 });
       this.view = new Voyageur.Views.Location({ 'model': this.model });
 
+      this.trip_stub = sinon.stub(Voyageur, 'get_trip_id').returns(this.trip.get('id'));
       this.triplocation_spy = sinon.spy(this.model, 'create_triplocation');
       this.ajax_triplocation_spy = sinon.spy(jQuery, 'ajax');
 
