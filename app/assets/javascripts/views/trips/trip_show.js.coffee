@@ -28,6 +28,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').at(index).save()
 
   add_triplocation: (triploc) =>
+    triploc.set({'position': @model.get('triplocations').length + 1})
     @model.get('triplocations').add(triploc)
     # FIXME: save the collection or have the model do it
 
