@@ -31,9 +31,7 @@ class Voyageur.Views.Trip extends Backbone.View
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length + 1
     @model.get('triplocations').create(data)
-    # NOTE: should we be saving here, or have the model do it on change?
-#    @model.save()
-#    @model.fetch()
+    @model.fetch()
     #NOTE: render?
 
   render: =>

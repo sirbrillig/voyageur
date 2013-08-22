@@ -39,11 +39,10 @@ describe "Voyageur.Views.Trip", ->
 
     beforeEach ->
       @server = sinon.fakeServer.create()
-      @server.respondWith("PUT", "/trips/1",
+      @server.respondWith("GET", "/trips/1",
         [ 200,
         { "Content-Type": "application/json" },
-        '{"id": 1, "distance": 100, "triplocations": [ { "id": 101, "location_id": 1, "position": 1, "trip_id": 1, "user_id": 1 } ] }' ])
-      @server.autoRespond = true
+        '{"id": 1, "distance": 100, "triplocations": [ { "id": 102, "location_id": 1, "position": 1, "trip_id": 1, "user_id": 1 } ] }' ])
 
       @location_data = { 'location': { 'address': '10 Main Street, Burlington VT', 'title': 'Location One' }, 'location_id': 5 }
       @view.add_location(@location_data)
@@ -62,4 +61,7 @@ describe "Voyageur.Views.Trip", ->
       last_triplocation = @trip.get('triplocations').models[@trip.get('triplocations').length - 1]
       expect(last_triplocation.attributes).to.have.property('position', 2)
 
-    it 'updates the triplocation with an ID from the server'
+    it 'updates the new triplocation with an ID from the server', ->
+      @server.respond()
+      last_triplocation = @trip.get('triplocations').models[@trip.get('triplocations').length - 1]
+      expect(last_triplocation.attributes).to.have.property('id', 102)
