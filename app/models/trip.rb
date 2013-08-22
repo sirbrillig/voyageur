@@ -30,7 +30,7 @@ class Trip < ActiveRecord::Base
   def add_location(location, index=nil)
     raise "Error adding location '#{location}' to trip: no user is assigned to that location." unless location and location.user
     trip = self
-    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip; triploc.user = location.user }
+    tloc = Triplocation.create!(location: location, trip: trip)
     if index
       position = position_for_index(index)
       tloc.insert_at(position)

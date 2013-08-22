@@ -1,5 +1,5 @@
 class Triplocation < ActiveRecord::Base
-  attr_accessible :position, :trip_id, :location_id
+  attr_accessible :position, :trip_id, :location_id, :location, :trip
   belongs_to :trip
   belongs_to :location
   belongs_to :user
@@ -14,6 +14,7 @@ class Triplocation < ActiveRecord::Base
   end
 
   def set_user
+    return unless self.user.nil?
     self.user = self.trip.user
   end
 
