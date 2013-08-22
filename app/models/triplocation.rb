@@ -1,10 +1,10 @@
 class Triplocation < ActiveRecord::Base
-  attr_accessible :position
+  attr_accessible :position, :trip_id, :location_id
   belongs_to :trip
   belongs_to :location
   belongs_to :user
   acts_as_list scope: :trip
-  before_create :set_user
+  before_validation :set_user
   validates :user, :trip, :location, presence: true
 
   # A front-end to insert_at from acts_as_list in order to compensate for the

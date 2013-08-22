@@ -9,6 +9,13 @@ class TriplocationsController < ApplicationController
     end
   end
 
+  def create
+    @triplocation = Triplocation.create!(params[:triplocation].slice(:trip_id, :location_id))
+    respond_to do |format|
+      format.json { head :no_content }
+    end
+  end
+
   def update
     @triplocation = Triplocation.where(id: params[:id], user_id: current_user.id).first
 
