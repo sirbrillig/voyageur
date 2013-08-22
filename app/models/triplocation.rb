@@ -5,6 +5,7 @@ class Triplocation < ActiveRecord::Base
   belongs_to :user
   acts_as_list scope: :trip
   before_create :set_user
+  validates :user, :trip, :location, presence: true
 
   # A front-end to insert_at from acts_as_list in order to compensate for the
   # index starting at 1.
