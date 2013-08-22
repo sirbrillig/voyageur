@@ -15,12 +15,5 @@ class Voyageur.Views.Location extends Backbone.View
 
   add_location_to_trip: (e) =>
     e.preventDefault() if e
-    triploc = @model.create_triplocation()
     # NOTE: is there a way to avoid keeping the trip view reference like this?
-    Voyageur.trip_view.add_triplocation(triploc)
-
-    url = 'trips/' + Voyageur.get_trip_id() + '/add/' + @model.id
-    $.ajax url,
-      type: 'GET',
-      success: ->
-        Voyageur.trip_view.model.fetch()
+    Voyageur.trip_view.add_location(@model.triplocation_json())

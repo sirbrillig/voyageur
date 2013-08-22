@@ -8,63 +8,38 @@ describe('Voyageur.Views.Location', function() {
 
   describe('#add_location_to_trip', function() {
     before(function() {
-      this.server = sinon.fakeServer.create();
-      this.server.respondWith("PUT", "/trips/1",
-        [ 200,
-        { "Content-Type": "application/json" },
-        '{"id": 1, "distance": 100, "triplocations": [ { "id": 101, "location_id": 1, "position": 1, "trip_id": 1, "user_id": 1 } ] }' ]);
-
       this.trip_stub = sinon.stub(Voyageur, 'get_trip_id').returns(2);
 
-      var tloc = new Voyageur.Models.Triplocation({ 'id': 4, 'position': 1 });
       Voyageur.trip_view = new Voyageur.Views.Trip();
-      Voyageur.trip_view.add_triplocation(tloc);
+      Voyageur.trip_view.add_location({ 'id': 4, 'position': 1});
       this.trip = Voyageur.trip_view.model;
       this.model = new Voyageur.Models.Location({ 'address': '10 Main Street, Burlington VT', 'title': 'Location One', 'id': 5 });
       this.view = new Voyageur.Views.Location({ 'model': this.model });
 
-      this.triplocation_spy = sinon.spy(this.model, 'create_triplocation');
-      this.ajax_triplocation_spy = sinon.spy(jQuery, 'ajax');
+      this.trip_view_spy = sinon.spy(Voyageur.trip_view, 'add_location');
+      this.triplocation_spy = sinon.spy(this.model, 'triplocation_json');
 
       this.view.add_location_to_trip();
-
-      this.server.respond();
     });
     
-    it('creates a new triplocation', function() {
+    it('creates triplocation data from the location', function() {
       expect(this.triplocation_spy.called).to.be.true;
     });
 
     it('assigns the location id to the new triplocation', function() {
-      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('location_id', this.model.get('id'));
+      expect(this.triplocation_spy.returnValues[0]).to.have.property('location_id', this.model.get('id'));
     });
 
     it('assigns the location to the new triplocation', function() {
-      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('location', this.model);
+      expect(this.triplocation_spy.returnValues[0]).to.have.property('location', this.model);
     });
 
     it('assigns the trip id to the new triplocation', function() {
-      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('trip_id', this.trip.get('id'));
+      expect(this.triplocation_spy.returnValues[0]).to.have.property('trip_id', this.trip.get('id'));
     });
 
-    it('adds the new triplocation to the trip collection', function() {
-      expect(this.trip.get('triplocations').models).to.include(this.triplocation_spy.returnValues[0]);
-    });
-
-    it('sets the new triplocation position to the end of the list', function() {
-      expect(this.triplocation_spy.returnValues[0].attributes).to.have.property('position', 2);
-    });
-
-    it('sends the trip model to the server', function() {
-      expect(this.ajax_triplocation_spy.calledWith(sinon.match.has('trip_id', this.trip.get('id')))).to.be.true;
-    });
-
-    it('updates the new triplocation with the id from the server', function() {
-      expect(this.triplocation.get('id')).to.be.above(0);
-    });
-
-    it('updates the trip distance from the server', function() {
-      expect(this.triplocation.get('distance')).to.be.above(0);
+    it('adds the triplocation data to the trip', function() {
+      expect(this.trip_view_spy.called).to.be.true;
     });
 
   });

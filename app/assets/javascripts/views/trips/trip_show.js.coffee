@@ -11,7 +11,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
-    @model.on 'change', @render
+    @model.on 'sync', @render
     $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
     @model.fetch()
 
@@ -26,11 +26,15 @@ class Voyageur.Views.Trip extends Backbone.View
     moved_loc.set({'position': index})
     @model.get('triplocations').add(moved_loc, at: index)
     @model.get('triplocations').at(index).save()
+    #NOTE: render?
 
-  add_triplocation: (triploc) =>
-    triploc.set({'position': @model.get('triplocations').length + 1})
-    @model.get('triplocations').add(triploc)
-    # FIXME: save the collection or have the model do it
+  add_location: (data) =>
+    data['position'] = @model.get('triplocations').length + 1
+    @model.get('triplocations').create(data)
+    # NOTE: should we be saving here, or have the model do it on change?
+#    @model.save()
+#    @model.fetch()
+    #NOTE: render?
 
   render: =>
 #    console.log "rendering trip: ", @model
