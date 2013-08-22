@@ -67,6 +67,9 @@ describe "Voyageur.Views.Trip", ->
     it 'sends the new triplocation to the server', ->
       expect(@triplocation_ajax_spy.getCall(0).args[0].type).to.equal('POST')
 
+    it 'gets the new triplocation from the server', ->
+      expect(@triplocation_ajax_spy.getCall(1).args[0].type).to.equal('GET')
+
     it 'updates the new triplocation with an ID from the server', ->
       @server.respond()
       last_triplocation = @trip.get('triplocations').models[@trip.get('triplocations').length - 1]
