@@ -47,11 +47,12 @@ describe "Voyageur.Views.Trip", ->
       @triplocation_ajax_spy = sinon.spy(jQuery, 'ajax')
 
       @location_data = { 'location': { 'address': '10 Main Street, Burlington VT', 'title': 'Location One' }, 'location_id': 5 }
-      @view.add_location(@location_data)
+      @added_location = @view.add_location(@location_data)
 
     afterEach ->
       @server.restore()
       @triplocation_ajax_spy.restore()
+      @trip.get('triplocations').remove(@added_location)
 
     it 'increases the size of the triplocation collection by one', ->
       expect(@trip.get('triplocations').length).to.equal 2
@@ -74,3 +75,19 @@ describe "Voyageur.Views.Trip", ->
       @server.respond()
       last_triplocation = @trip.get('triplocations').models[@trip.get('triplocations').length - 1]
       expect(last_triplocation.attributes).to.have.property('id', 102)
+
+  describe 'on change', ->
+
+    beforeEach ->
+      @foo_spy = sinon.spy(jQuery, 'ajax')
+
+      @change_spy = sinon.spy(@view, 'render') # FIXME: render() is not being triggered on most of the add_location()s
+      @location_data = { 'location': { 'address': '50 Main Street, Burlington VT', 'title': 'Location Two', 'id': 55 }, 'location_id': 55, 'trip_id': 1 }
+      @another_added_location = @view.add_location(@location_data)
+
+    afterEach ->
+      @change_spy.restore()
+      @trip.get('triplocations').remove(@another_added_location)
+
+    it 'renders the view', ->
+      expect(@change_spy.called).to.be.true
