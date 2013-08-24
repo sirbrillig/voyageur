@@ -17,8 +17,4 @@ class Triplocation < ActiveRecord::Base
     return unless self.user.nil?
     self.user = self.trip.user
   end
-
-  def num_triplocations
-    self.trip.locations.size
-  end
 end
