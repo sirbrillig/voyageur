@@ -15,10 +15,11 @@ class Voyageur.Views.Triplocation extends Backbone.View
     this
 
   remove_location: (e) =>
-    e.preventDefault()
+    e.preventDefault() if e
     url = 'triplocations/' + @model.id
     $.ajax url,
       type: 'DELETE',
       success: () =>
         @model.get('trip').fetch() # trigger an update of the whole list
     @remove() # no need to wait
+    @model.destroy()
