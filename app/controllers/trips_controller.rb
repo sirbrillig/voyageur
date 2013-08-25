@@ -91,17 +91,6 @@ class TripsController < ApplicationController
   end
 
   def update
-    @trip = Trip.where(id: params[:id], user_id: current_user.id).first
-
-    respond_to do |format|
-      params[:trip][:triplocations] = [] if params[:trip][:triplocations].nil? # NOTE: this is a hack because somewhere between backbone and here [] becomes nil
-      if @trip.update_attributes(params[:trip].slice(*Trip.accessible_attributes))
-        format.html { redirect_to locations_url, notice: 'Trip was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: "edit" }
-        format.json { render json: @location.errors, status: :unprocessable_entity }
-      end
-    end
+    raise "Trip#update has been deprecated. Update individual Triplocations instead."
   end
 end

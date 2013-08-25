@@ -10,7 +10,7 @@ class TriplocationsController < ApplicationController
   end
 
   def create
-    @triplocation = Triplocation.create!(params[:triplocation].slice(:trip_id, :location_id))
+    @triplocation = Triplocation.create!(params[:triplocation].slice(:trip_id, :location_id, :position))
     respond_to do |format|
       format.json { head :no_content }
     end

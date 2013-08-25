@@ -21,7 +21,7 @@ window.Voyageur =
     doc.ajaxError (event, jqxhr, settings, exception) =>
       if ( jqxhr.responseText && jqxhr.responseText.length > 0 )
         error = "A server error occurred when I tried to access the URL '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that! Try doing what you just did again or reload the page."
-      else
+      else # FIXME: on failure, try again for a while before giving up
         error = "When I tried to do that last action, I wasn't able to connect to the server. You may want to check your Internet connection and try doing what you just did again."
       console.log error
       alert error

@@ -32,7 +32,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   add_location: (data) =>
 #    console.log "adding location: ", JSON.stringify(data)
-    data['position'] = @model.get('triplocations').length + 1 #FIXME: make sure the position persists to the server; position is I think filtered out currently
+    data['position'] = @model.get('triplocations').length + 1
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes
     @model.fetch() # This is to get an ID for the new triplocation and populate the distance
     triploc
@@ -59,8 +59,8 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault() if e
-    @model.set('triplocations', [])
-    @model.save()
+    while @model.get('triplocations').length > 0
+      @model.get('triplocations').remove(@model.get('triplocations').at(0))
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null
