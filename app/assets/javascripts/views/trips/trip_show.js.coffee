@@ -64,8 +64,8 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault() if e
-    while @model.get('triplocations').length > 0
-      @model.get('triplocations').remove(@model.get('triplocations').at(0))
+    triplocs = @model.get('triplocations').map (triploc) -> triploc
+    triplocs.map (triploc) -> triploc.destroy()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null
