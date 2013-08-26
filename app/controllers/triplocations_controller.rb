@@ -10,9 +10,13 @@ class TriplocationsController < ApplicationController
   end
 
   def create
-    @triplocation = Triplocation.create!(params[:triplocation].slice(:trip_id, :location_id, :position))
+    @triplocation = Triplocation.create(params[:triplocation].slice(:trip_id, :location_id, :position))
     respond_to do |format|
-      format.json { head :no_content }
+      if @triplocation
+        format.json { render json: @triplocation }
+      else
+        format.json { render json: @triplocation.errors, status: :unprocessable_entity }
+      end
     end
   end
 

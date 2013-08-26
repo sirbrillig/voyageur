@@ -10,7 +10,7 @@ describe "Voyageur.Views.Triplocation", ->
 
   describe "#remove_location", ->
     beforeEach ->
-      @triplocation = new Voyageur.Models.Triplocation position: 1
+      @triplocation = new Voyageur.Models.Triplocation position: 1, id: 101
       @triplocation_view = new Voyageur.Views.Triplocation model: @triplocation
       Voyageur.trip_view.model.get('triplocations').add(@triplocation)
       @triplocation_ajax_spy = sinon.spy(jQuery, 'ajax')
