@@ -52,10 +52,8 @@ class Trip < ActiveRecord::Base
   end
 
   def as_json(options={})
-    options['methods'] ||= []
-    options['methods'] << :distance
-    options['methods'] << :num_avail_locations
-    super(options)
+    # FIXME: preserve original options
+    super(methods: [ :distance, :num_avail_locations ])
   end
 
   private

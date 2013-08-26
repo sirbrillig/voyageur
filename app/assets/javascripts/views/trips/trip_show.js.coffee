@@ -37,9 +37,10 @@ class Voyageur.Views.Trip extends Backbone.View
   add_location: (data) =>
 #    console.log "adding location: ", JSON.stringify(data)
     data['position'] = @model.get('triplocations').length + 1
-    triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes
+    triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
     # FIXME: get the distance, etc. without overwriting the triplocations (which fetch would do)
     @model.fetch()
+    @model.get('triplocations').fetch()
     triploc
 
   render: =>
