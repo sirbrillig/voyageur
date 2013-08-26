@@ -102,3 +102,4 @@ class Voyageur.Views.Trip extends Backbone.View
       else
         console.log 'Error loading map: ', result, status
       # FIXME: display any google errors
+      # (https://developers.google.com/maps/documentation/javascript/reference#DirectionsStatus)
