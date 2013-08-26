@@ -11,11 +11,9 @@ class Voyageur.Views.Trip extends Backbone.View
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
-    # FIXME: most of these are probably unnecessary
     @model.on 'sync', @render
     @model.get('triplocations').on 'add', @render
     @model.get('triplocations').on 'remove', @render
-    @model.get('triplocations').on 'change', @render
     $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
     @model.fetch()
 
