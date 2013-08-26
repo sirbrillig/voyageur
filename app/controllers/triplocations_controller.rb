@@ -6,7 +6,7 @@ class TriplocationsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @triplocations, include: :location }
+      format.json { render json: @triplocations }
     end
   end
 

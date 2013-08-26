@@ -17,9 +17,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').on 'remove', @render
     @model.get('triplocations').on 'change', @render
     $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
-    # FIXME: get the distance, etc. without overwriting the triplocations (which fetch would do)
     @model.fetch()
-    @model.get('triplocations').fetch()
 
   start_drag: (event, ui) =>
     @start_index = ui.item.index()
@@ -38,9 +36,7 @@ class Voyageur.Views.Trip extends Backbone.View
 #    console.log "adding location: ", JSON.stringify(data)
     data['position'] = @model.get('triplocations').length + 1
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
-    # FIXME: get the distance, etc. without overwriting the triplocations (which fetch would do)
     @model.fetch()
-    @model.get('triplocations').fetch()
     triploc
 
   render: =>
@@ -51,7 +47,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       triplocation_area.append triploc_view.render().el
-    @render_map()
+    @render_map() if @model.get('triplocations').length > 1
     this
 
   render_map: =>

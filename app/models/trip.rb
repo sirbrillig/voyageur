@@ -51,9 +51,12 @@ class Trip < ActiveRecord::Base
     self.triplocations[index].move_lower if index < self.triplocations.size
   end
 
-  def as_json(options={})
-    # FIXME: preserve original options
-    super(methods: [ :distance, :num_avail_locations ])
+  def serializable_hash(options={})
+    options = {
+      include: :triplocations,
+      methods: [ :distance, :num_avail_locations ]
+    }.update(options)
+    super(options)
   end
 
   private

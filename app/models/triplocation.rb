@@ -18,4 +18,9 @@ class Triplocation < ActiveRecord::Base
     raise "Trip must be set" if self.trip.nil?
     self.user = self.trip.user
   end
+
+  def serializable_hash(options={})
+    options = { include: :location }.update(options)
+    super(options)
+  end
 end
