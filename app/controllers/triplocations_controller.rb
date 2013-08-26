@@ -1,6 +1,15 @@
 class TriplocationsController < ApplicationController
   before_filter :authenticate_user!
 
+  def index
+    @triplocations = current_user.trips.first.triplocations
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @triplocations, include: :location }
+    end
+  end
+
   def show
     @triplocation = Triplocation.where(id: params[:id], user_id: current_user.id).first
 

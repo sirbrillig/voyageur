@@ -1,4 +1,4 @@
-class Voyageur.Models.Location extends Backbone.Model
+class Voyageur.Models.Location extends Backbone.RelationalModel
   name: 'location'
 
   defaults:

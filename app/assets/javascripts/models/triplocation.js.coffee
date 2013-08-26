@@ -8,3 +8,9 @@ class Voyageur.Models.Triplocation extends Backbone.RelationalModel
     trip_id: null
     location_id: null
     position: null
+
+  relations: [
+    type: Backbone.HasOne
+    key: 'location'
+    relatedModel: 'Voyageur.Models.Location'
+  ]
