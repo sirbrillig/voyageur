@@ -14,6 +14,7 @@ window.Voyageur =
 
   setup_spinner: () ->
     doc = $(document)
+    $.ajaxSetup timeout: 5000
     doc.ajaxStart =>
       $('.trip .summary').html '<br/>'
       $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
@@ -25,7 +26,6 @@ window.Voyageur =
         error = "When I tried to do that last action, I wasn't able to connect to the server. You may want to check your Internet connection and try doing what you just did again."
       console.log error
       alert error
-      $('.trip .summary').spin(false)
 
   enable_tabs: () ->
     $('#library').removeClass 'active' # allows graceful degrading
