@@ -14,7 +14,7 @@ window.Voyageur =
 
   setup_spinner: () ->
     doc = $(document)
-    $.ajaxSetup timeout: 5000
+    $.ajaxSetup timeout: 20000
     doc.ajaxStart =>
       $('.trip .summary').html '<br/>'
       $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
