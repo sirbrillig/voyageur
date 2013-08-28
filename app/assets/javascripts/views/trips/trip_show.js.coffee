@@ -47,7 +47,11 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       triplocation_area.append triploc_view.render().el
-    @render_map() if @model.get('triplocations').length > 1
+    if @model.get('triplocations').length < 1
+      $('.clear-trip').attr('disabled', true)
+    else
+      $('.clear-trip').attr('disabled', false)
+      @render_map()
     this
 
   render_map: =>
@@ -61,6 +65,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault() if e
+    return if @model.get('triplocations').length < 1
     @clearing = true
     triplocs = @model.get('triplocations').map (triploc) -> triploc
     triplocs.map (triploc) -> triploc.destroy()
