@@ -4,7 +4,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   template: JST['trips/show']
 
-  start_index: null
+  clearing: false
 
   events:
     'click a.clear-trip': 'clear_trip'
@@ -13,7 +13,6 @@ class Voyageur.Views.Trip extends Backbone.View
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
-    @model.get('triplocations').on 'add', @render
     @model.get('triplocations').on 'remove', @render
     $('.trip').sortable
       items: ".location_block"
@@ -34,10 +33,12 @@ class Voyageur.Views.Trip extends Backbone.View
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length + 1
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
+    @render
     @model.fetch()
     triploc
 
   render: =>
+    return if @clearing
 #    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
@@ -60,8 +61,10 @@ class Voyageur.Views.Trip extends Backbone.View
 
   clear_trip: (e) =>
     e.preventDefault() if e
+    @clearing = true
     triplocs = @model.get('triplocations').map (triploc) -> triploc
     triplocs.map (triploc) -> triploc.destroy()
+    @clearing = false
     @model.fetch()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
