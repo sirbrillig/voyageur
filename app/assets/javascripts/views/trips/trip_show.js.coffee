@@ -8,30 +8,30 @@ class Voyageur.Views.Trip extends Backbone.View
 
   events:
     'click a.clear-trip': 'clear_trip'
+    'update-sort': 'update_sort'
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
     @model.get('triplocations').on 'add', @render
     @model.get('triplocations').on 'remove', @render
-    $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
+    $('.trip').sortable
+      items: ".location_block"
+      opacity: 0.5
+      revert: "invalid"
+      stop: @stop_drag
     @model.fetch()
 
-  start_drag: (event, ui) =>
-    @start_index = ui.item.index()
-
   stop_drag: (event, ui) =>
-    # FIXME: write specs for this
-    trip_id = Voyageur.get_trip_id()
-    index = ui.item.index()
-    moved_loc = @model.get('triplocations').models[@start_index]
-    @model.get('triplocations').remove(moved_loc)
-    moved_loc.set({'position': index})
-    @model.get('triplocations').add(moved_loc, at: index)
-    @model.get('triplocations').at(index).save()
+    ui.item.trigger('drop', ui.item.index())
+
+  update_sort: (event, model, position) =>
+    model.set('position': position)
+    model.save()
+    @model.get('triplocations').add(model)
+    @model.fetch()
 
   add_location: (data) =>
-#    console.log "adding location: ", JSON.stringify(data)
     data['position'] = @model.get('triplocations').length + 1
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
     @model.fetch()
@@ -42,6 +42,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     return this if triplocation_area.length < 1
+    @model.get('triplocations').sort()
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       triplocation_area.append triploc_view.render().el
@@ -61,6 +62,7 @@ class Voyageur.Views.Trip extends Backbone.View
     e.preventDefault() if e
     triplocs = @model.get('triplocations').map (triploc) -> triploc
     triplocs.map (triploc) -> triploc.destroy()
+    @model.fetch()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null

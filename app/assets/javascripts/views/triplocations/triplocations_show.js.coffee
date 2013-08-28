@@ -5,9 +5,7 @@ class Voyageur.Views.Triplocation extends Backbone.View
 
   events:
     'click a.remove-button': 'remove_location'
-
-  initialize: =>
-#    console.log "triplocation: ", @model
+    'drop': 'drop'
 
   render: =>
     @setElement @template({triplocation: @model})
@@ -17,3 +15,6 @@ class Voyageur.Views.Triplocation extends Backbone.View
     e.preventDefault() if e
     @model.destroy()
     @remove()
+
+  drop: (e, index) =>
+    @$el.trigger 'update-sort', [ @model, index ]
