@@ -16,7 +16,6 @@ window.Voyageur =
     doc = $(document)
     $.ajaxSetup timeout: 20000
     doc.ajaxStart =>
-      $('.trip .summary').html '<br/>'
       $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
     doc.ajaxComplete => $('.trip .summary').spin(false)
     doc.ajaxError (event, jqxhr, settings, exception) =>
