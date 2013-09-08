@@ -29,7 +29,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @model.fetch()
 
   add_location: (data) =>
-    data['position'] = @model.get('triplocations').length + 1
+    data['position'] = @model.get('triplocations').length
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
     @render()
     @model.fetch()
