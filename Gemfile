@@ -42,6 +42,7 @@ group :development, :test do
   gem 'sqlite3'
   gem 'selenium-webdriver'
   gem 'konacha'
+  gem 'sinon-rails'
   gem 'phantomjs'
 end
 

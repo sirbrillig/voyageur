@@ -5,20 +5,16 @@ class Voyageur.Views.Triplocation extends Backbone.View
 
   events:
     'click a.remove-button': 'remove_location'
-
-  initialize: =>
-#    console.log "triplocation: ", @model
-#    @model.bind 'remove', => @model.destroy() # FIXME: this would also trigger on a move
+    'drop': 'drop'
 
   render: =>
     @setElement @template({triplocation: @model})
     this
 
   remove_location: (e) =>
-    e.preventDefault()
-    url = 'triplocations/' + @model.id
-    $.ajax url,
-      type: 'DELETE',
-      success: () =>
-        @model.get('trip').fetch() # trigger an update of the whole list
-    @remove() # no need to wait
+    e.preventDefault() if e
+    @model.destroy()
+    @remove()
+
+  drop: (e, index) =>
+    @$el.trigger 'update-sort', [ @model, index ]

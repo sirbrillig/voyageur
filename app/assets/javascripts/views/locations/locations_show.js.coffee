@@ -14,12 +14,6 @@ class Voyageur.Views.Location extends Backbone.View
     this
 
   add_location_to_trip: (e) =>
-    # NOTE: it would be nice to add the triplocation directly to the trip in the
-    # UI, but that would require building a triplocation from scratch using the
-    # location (and no ID!) and that's not a simple thing.
-    e.preventDefault()
-    url = 'trips/' + Voyageur.get_trip_id() + '/add/' + @model.id
-    $.ajax url,
-      type: 'GET',
-      success: ->
-        Voyageur.trip_view.model.fetch()
+    e.preventDefault() if e
+    # NOTE: is there a way to avoid keeping the trip view reference like this?
+    Voyageur.trip_view.add_location(@model.triplocation_json())

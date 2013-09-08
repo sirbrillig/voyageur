@@ -30,7 +30,7 @@ class Trip < ActiveRecord::Base
   def add_location(location, index=nil)
     raise "Error adding location '#{location}' to trip: no user is assigned to that location." unless location and location.user
     trip = self
-    tloc = Triplocation.create { |triploc| triploc.location = location; triploc.trip = trip; triploc.user = location.user }
+    tloc = Triplocation.create!(location: location, trip: trip)
     if index
       position = position_for_index(index)
       tloc.insert_at(position)
@@ -51,10 +51,12 @@ class Trip < ActiveRecord::Base
     self.triplocations[index].move_lower if index < self.triplocations.size
   end
 
-  def as_json(options={})
-    # FIXME: it would be nice if we could move half of this to
-    # Triplocation#as_json, but that doesn't work for some reason.
-    super( include: { :triplocations => { include: [ :location ], methods: :num_triplocations } }, methods: [ :distance, :num_avail_locations ] )
+  def serializable_hash(options={})
+    options = {
+      include: :triplocations,
+      methods: [ :distance, :num_avail_locations ]
+    }.update(options)
+    super(options)
   end
 
   private

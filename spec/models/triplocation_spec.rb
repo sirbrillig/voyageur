@@ -8,6 +8,20 @@ describe Triplocation do
     @loc2 = FactoryGirl.create(:work_location, user: @user)
   end
 
+  it "does not allow an empty trip_id on create" do
+    expect{Triplocation.create!(location: @loc1)}.to raise_error
+  end
+
+  it "does not allow an empty trip_id on update" do
+    triploc = Triplocation.create!(trip: @trip, location: @loc1)
+    triploc.trip_id = nil
+    expect{triploc.save!}.to raise_error
+  end
+
+  it "does not allow an empty location_id on create" do
+    expect{Triplocation.create!(trip: @trip)}.to raise_error
+  end
+
   context "when locations are added to a Trip" do
     before do
       @triploc1 = @trip.add_location @loc1

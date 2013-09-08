@@ -1,11 +1,8 @@
 .summary
-  - if ( ! @trip )
-    - console.log "Error showing trip: trip is not defined."
-  - if @trip.get('triplocations').length > 0
-    %nav.actions
-      %a#clear_trip.btn.btn-warning.clear-trip{href: "/trips/#{@trip.id}/clear"}
-        %i.icon-asterisk
-        Clear Trip
+  %nav.actions
+    %a#clear_trip.btn.btn-warning.clear-trip{href: "/trips/#{@trip.id}/clear"}
+      %i.icon-asterisk
+      Clear Trip
   %h1 This Trip
   %h1= "#{@distance} miles total"
 - if @trip.get('triplocations').length > 1

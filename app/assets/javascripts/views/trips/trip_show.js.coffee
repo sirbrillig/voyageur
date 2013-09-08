@@ -4,53 +4,73 @@ class Voyageur.Views.Trip extends Backbone.View
 
   template: JST['trips/show']
 
-  start_index: null
+  clearing: false
 
   events:
     'click a.clear-trip': 'clear_trip'
+    'update-sort': 'update_sort'
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
-    $('.trip').sortable({ items: ".location_block", opacity: 0.5, revert: "invalid", start: @start_drag, stop: @stop_drag })
+    @model.get('triplocations').on 'remove', @render
+    $('.trip').sortable
+      items: ".location_block"
+      opacity: 0.5
+      revert: "invalid"
+      stop: @stop_drag
     @model.fetch()
 
-  start_drag: (event, ui) =>
-    @start_index = ui.item.index()
-
   stop_drag: (event, ui) =>
-    trip_id = Voyageur.get_trip_id()
-    index = ui.item.index()
-    moved_loc = @model.get('triplocations').models[@start_index]
-    @model.get('triplocations').remove(moved_loc)
-    moved_loc.set({'position': index})
-    @model.get('triplocations').add(moved_loc, at: index)
-    @model.get('triplocations').at(index).save()
-    @render()
+    ui.item.trigger('drop', ui.item.index())
+
+  update_sort: (event, model, position) =>
+    model.set('position': position)
+    model.save()
+    @model.get('triplocations').add(model)
+    @model.fetch()
+
+  add_location: (data) =>
+    data['position'] = @model.get('triplocations').length + 1
+    triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
+    @render
+    @model.fetch()
+    triploc
 
   render: =>
+    return if @clearing
 #    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
+    return this if triplocation_area.length < 1
+    @model.get('triplocations').sort()
     @model.get('triplocations').each (triploc) =>
       triploc_view = new Voyageur.Views.Triplocation model: triploc
       triplocation_area.append triploc_view.render().el
-    @render_map()
+    if @model.get('triplocations').length < 1
+      $('.clear-trip').attr('disabled', true)
+    else
+      $('.clear-trip').attr('disabled', false)
+      @render_map()
     this
 
   render_map: =>
     # FIXME: map doesn't look so good at small width
     @setup_map()
-    @calc_route(@model.get('triplocations').map (triploc) -> triploc.get('location').address)
+    @calc_route(@model.get('triplocations').map (triploc) -> triploc.get('location').get('address'))
 
   meters_to_miles: (meters) ->
     miles_per_meter = 0.000621371
     (meters * miles_per_meter).toFixed(1)
 
   clear_trip: (e) =>
-    e.preventDefault()
-    @model.set('triplocations', [])
-    @model.save()
+    e.preventDefault() if e
+    return if @model.get('triplocations').length < 1
+    @clearing = true
+    triplocs = @model.get('triplocations').map (triploc) -> triploc
+    triplocs.map (triploc) -> triploc.destroy()
+    @clearing = false
+    @model.fetch()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null
@@ -92,3 +112,4 @@ class Voyageur.Views.Trip extends Backbone.View
       else
         console.log 'Error loading map: ', result, status
       # FIXME: display any google errors
+      # (https://developers.google.com/maps/documentation/javascript/reference#DirectionsStatus)

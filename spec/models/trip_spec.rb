@@ -10,6 +10,7 @@ describe Trip do
     @loc1.user = @user
     @loc2.user = @user
     @loc3.user = @user
+    @trip.user = @user
   end
 
   context "when adding a Location" do
