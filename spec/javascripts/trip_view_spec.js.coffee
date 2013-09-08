@@ -77,6 +77,13 @@ describe "Voyageur.Views.Trip", ->
       expect(last_triplocation.attributes).to.have.property('id', 102)
 
   describe '#stop_drag', ->
+    it 'triggers a "drop" event', ->
+      listener = sinon.spy()
+      @page.on('drop', listener)
+      object = { item: @page }
+      @view.stop_drag(null, object)
+      expect(listener.called).to.be.true
+
     it 'changes the position attribute of the moved model'
     it 'sorts the collection so that the models are ordered by position'
 
