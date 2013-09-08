@@ -31,12 +31,13 @@ class Voyageur.Views.Trip extends Backbone.View
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length + 1
     triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
-    @render
+    @render()
     @model.fetch()
     triploc
 
   render: =>
 #    console.log "rendering trip: ", @model
+    # TODO: don't render if we're clearing.
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     return this if triplocation_area.length < 1
