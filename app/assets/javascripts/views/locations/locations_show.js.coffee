@@ -6,9 +6,6 @@ class Voyageur.Views.Location extends Backbone.View
   events:
     'click a.add-button': 'add_location_to_trip'
 
-  initialize: =>
-#    console.log "location: ", @model
-
   render: =>
     @setElement @template({location: @model, trip_id: Voyageur.get_trip_id()})
     this
