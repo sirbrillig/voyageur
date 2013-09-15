@@ -84,9 +84,6 @@ describe "Voyageur.Views.Trip", ->
       @view.stop_drag(null, object)
       expect(listener.called).to.be.true
 
-    it 'changes the position attribute of the moved model'
-    it 'sorts the collection so that the models are ordered by position'
-
   describe 'on change', ->
 
     beforeEach ->
