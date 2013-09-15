@@ -25,3 +25,24 @@ describe "Voyageur.Views.Triplocation", ->
 
     it "sends the removal to the server", ->
       expect(@triplocation_ajax_spy.called).to.be.true
+
+  describe '#drop', ->
+    beforeEach ->
+      @triplocation = new Voyageur.Models.Triplocation position: 0, id: 101
+      @triplocation_2 = new Voyageur.Models.Triplocation position: 1, id: 102
+      @triplocation_view = new Voyageur.Views.Triplocation model: @triplocation
+      Voyageur.trip_view.model.get('triplocations').add(@triplocation)
+      Voyageur.trip_view.model.get('triplocations').add(@triplocation_2)
+      @listener = sinon.spy()
+      @triplocation_view.$el.on('update-sort', @listener)
+      @triplocation_view.drop(null, 1)
+
+    afterEach ->
+      @triplocation.destroy()
+      @triplocation_2.destroy()
+
+    it "triggers an 'update-sort' event on the DOM element", ->
+      expect(@listener.called).to.be.true
+
+    it "passes the model and index to the 'update-sort' event", ->
+      expect(@listener.calledWith(@listener.args[0][0], @triplocation, 1)).to.be.true
