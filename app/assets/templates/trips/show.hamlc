@@ -4,7 +4,10 @@
       %i.icon-asterisk
       Clear Trip
   %h1 This Trip
-  %h1= "#{@distance} miles total"
+  - if window.Voyageur.offline
+    %h1.offline= "server connection failed, still trying..."
+  - else
+    %h1= "#{@distance} miles total"
 - if @trip.get('triplocations').length > 1
   .map
     #map_canvas

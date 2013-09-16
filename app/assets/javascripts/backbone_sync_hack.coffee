@@ -15,6 +15,9 @@ Backbone.sync = (method, model, options) ->
     console.log 'sync canceled because I can\'t get to the server'
     return null
 
+  $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
+  $(document).ajaxComplete => $('.trip .summary').spin(false)
+
   # save reference to original toJSON()
   model.oldToJSON = model.toJSON
 

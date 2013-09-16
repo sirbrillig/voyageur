@@ -9,7 +9,6 @@ window.Voyageur =
   initialize: ->
     @enable_tabs()
     @begin_monitor()
-    @setup_spinner()
     @trip_view = new Voyageur.Views.Trip
     new Voyageur.Views.LocationsIndex(@trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
@@ -30,16 +29,11 @@ window.Voyageur =
           console.log 'the server just came back online'
           window.Voyageur.offline = false
           window.Voyageur.trip_view.model.save()
+          window.Voyageur.trip_view.model.fetch()
       error: ->
         console.log 'ping failed'
         window.Voyageur.offline = true
     )
-
-  setup_spinner: ->
-    doc = $(document)
-    doc.ajaxStart =>
-      $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
-    doc.ajaxComplete => $('.trip .summary').spin(false)
 
   enable_tabs: ->
     $('#library').removeClass 'active' # allows graceful degrading
