@@ -19,7 +19,7 @@ window.Voyageur =
   monitor_connection: ->
     console.log 'ping'
     $.ajax(
-      url: '/locations'
+      url: '/ping'
       complete: ->
         setTimeout( ->
           window.Voyageur.monitor_connection()
