@@ -19,30 +19,27 @@ window.Voyageur =
   monitor_connection: ->
     console.log 'ping'
     $.ajax(
-      url: '/'
+      url: '/locations'
       complete: ->
         setTimeout( ->
           window.Voyageur.monitor_connection()
         , 2000)
       success: ->
         console.log 'pong'
+        if window.Voyageur.offline
+          console.log 'the server just came back online'
+          window.Voyageur.offline = false
+          window.Voyageur.trip_view.model.save()
       error: ->
         console.log 'ping failed'
+        window.Voyageur.offline = true
     )
 
   setup_spinner: ->
     doc = $(document)
-    $.ajaxSetup timeout: 20000
     doc.ajaxStart =>
       $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
     doc.ajaxComplete => $('.trip .summary').spin(false)
-    doc.ajaxError (event, jqxhr, settings, exception) =>
-      if ( jqxhr.responseText && jqxhr.responseText.length > 0 )
-        error = "A server error occurred when I tried to access the URL '" + settings.url + "': " + jqxhr.responseText + "; Sorry about that! Try doing what you just did again or reload the page."
-      else
-        error = "When I tried to do that last action, I wasn't able to connect to the server. You may want to check your Internet connection and try doing what you just did again."
-      console.log error
-      alert error
 
   enable_tabs: ->
     $('#library').removeClass 'active' # allows graceful degrading

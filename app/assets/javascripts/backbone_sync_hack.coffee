@@ -11,6 +11,10 @@ Backbone.oldSync = Backbone.sync
 
 # override original method
 Backbone.sync = (method, model, options) ->
+  if window.Voyageur.offline
+    console.log 'sync canceled because I can\'t get to the server'
+    return null
+
   # save reference to original toJSON()
   model.oldToJSON = model.toJSON
 
