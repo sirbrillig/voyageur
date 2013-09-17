@@ -19,4 +19,4 @@ class Voyageur.Models.Trip extends Backbone.RelationalModel
   ]
 
   save: ->
-    @get('triplocations').invoke 'save'
+    @sync('update', this, {})
