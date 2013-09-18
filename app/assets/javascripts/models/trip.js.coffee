@@ -17,3 +17,6 @@ class Voyageur.Models.Trip extends Backbone.RelationalModel
     reverseRelation:
       key: 'trip'
   ]
+
+  save: ->
+    @sync('update', this, {})

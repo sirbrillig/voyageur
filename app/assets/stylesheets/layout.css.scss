@@ -126,6 +126,10 @@ ul.nav-tabs {
   background-color: darken($location-background-color, 10%);
   text-align: center;
   font-family: 'Alegreya SC', sans-serif;
+
+  h1.offline {
+    color: red;
+  }
 }
 
 .location {
