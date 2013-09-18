@@ -13,25 +13,23 @@ window.Voyageur =
     new Voyageur.Views.LocationsIndex(@trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
   begin_monitor: ->
-    setTimeout(@monitor_connection, 2000)
+    # Make sure there's a timeout for poor connections.
+    $.ajaxSetup(timeout: 30000)
+    setTimeout(@monitor_connection, 5000)
 
   monitor_connection: ->
-    console.log 'ping'
     $.ajax(
       url: '/ping'
       complete: ->
         setTimeout( ->
           window.Voyageur.monitor_connection()
-        , 2000)
+        , 5000)
       success: ->
-        console.log 'pong'
         if window.Voyageur.offline
-          console.log 'the server just came back online'
           window.Voyageur.offline = false
           window.Voyageur.trip_view.model.save()
           window.Voyageur.trip_view.model.fetch()
       error: ->
-        console.log 'ping failed'
         window.Voyageur.offline = true
     )
 
