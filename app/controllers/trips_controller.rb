@@ -91,6 +91,36 @@ class TripsController < ApplicationController
   end
 
   def update
-    raise "Trip#update has been deprecated. Update individual Triplocations instead."
+    triplocations = params[:trip][:triplocations]
+    found_triplocations = []
+    errors = []
+    triplocations = [] unless triplocations
+
+    triplocations.each do |raw_triplocation|
+      triplocation = Triplocation.where(id: raw_triplocation[:id], user_id: current_user.id).first
+      if triplocation
+        # Update triplocation positions
+        errors << triplocation.errors unless triplocation.update_attributes(raw_triplocation.slice(:position))
+      else
+        # Create triplocations that don't exist
+        triplocation = Triplocation.create(raw_triplocation.slice(:trip_id, :location_id, :position))
+        errors << triplocation.errors unless triplocation
+      end
+      found_triplocations << triplocation
+    end
+
+    # Remove any triplocations that have been removed from the data
+    @trip = Trip.where(id: params[:trip][:id], user_id: current_user.id).first
+    @trip.triplocations.each do |triplocation|
+      triplocation.destroy unless found_triplocations.include? triplocation
+    end
+
+    respond_to do |format|
+      if errors.empty?
+        format.json { head :no_content }
+      else
+        format.json { render json: errors, status: :unprocessable_entity }
+      end
+    end
   end
 end

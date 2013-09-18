@@ -86,7 +86,7 @@ describe "With Javascript", js: true do
             end
 
             it "shows the location at the end of the trip" do
-              page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc2.id}']")
+              page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
             end
           end
         end
@@ -97,12 +97,12 @@ describe "With Javascript", js: true do
             within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
             within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
             wait_for_ajax
-            within(:css, ".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']") { click_link('remove_from_trip') }
+            within(:css, ".trip .location_block[data-trip-position='0'][data-location-id='#{@loc1.id}']") { click_link('remove_from_trip') }
             wait_for_ajax
           end
 
           it "removes the location from the trip" do
-            page.should_not have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']")
+            page.should_not have_css(".trip .location_block[data-trip-position='0'][data-location-id='#{@loc1.id}']")
           end
 
           it "does not affect the other trip locations" do

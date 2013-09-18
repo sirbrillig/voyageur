@@ -63,7 +63,7 @@ describe "Voyageur.Views.Trip", ->
 
     it 'sets the new triplocation position to the end of the list', ->
       last_triplocation = @trip.get('triplocations').models[@trip.get('triplocations').length - 1]
-      expect(last_triplocation.attributes).to.have.property('position', 2)
+      expect(last_triplocation.attributes).to.have.property('position', @trip.get('triplocations').length - 1)
 
     it 'sends the new triplocation to the server', ->
       expect(@triplocation_ajax_spy.getCall(0).args[0].type).to.equal('POST')
@@ -77,15 +77,12 @@ describe "Voyageur.Views.Trip", ->
       expect(last_triplocation.attributes).to.have.property('id', 102)
 
   describe '#stop_drag', ->
-    it 'triggers a "drop" event', ->
+    it "triggers a 'drop' event on the view's item", ->
       listener = sinon.spy()
       @page.on('drop', listener)
       object = { item: @page }
       @view.stop_drag(null, object)
       expect(listener.called).to.be.true
-
-    it 'changes the position attribute of the moved model'
-    it 'sorts the collection so that the models are ordered by position'
 
   describe 'on change', ->
 
