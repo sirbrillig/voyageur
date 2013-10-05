@@ -11,7 +11,6 @@ class Voyageur.Views.Trip extends Backbone.View
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
-    @model.get('triplocations').on 'sync', @render_distance # FIXME: need to trigger this even on remove
     @model.get('triplocations').on 'remove', @render
     $('.trip').sortable
       items: ".location_block"
@@ -33,9 +32,6 @@ class Voyageur.Views.Trip extends Backbone.View
     triploc = @model.get('triplocations').create(data)
     @render()
     triploc
-
-  render_distance: (collection, triplocation) =>
-    $('#trip-distance').find('.distance').html( @meters_to_miles( triplocation.distance ) )
 
   render: =>
     console.log "rendering trip: ", @model
