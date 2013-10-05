@@ -34,7 +34,7 @@ class TriplocationsController < ApplicationController
 
     respond_to do |format|
       if @triplocation.update_attributes(params[:triplocation].slice(:position))
-        format.json { head :no_content }
+        format.json { render json: @triplocation }
       else
         format.json { render json: @triplocation.errors, status: :unprocessable_entity }
       end

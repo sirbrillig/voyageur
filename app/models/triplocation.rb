@@ -19,8 +19,12 @@ class Triplocation < ActiveRecord::Base
     self.user = self.trip.user
   end
 
+  def distance
+    self.trip.distance
+  end
+
   def serializable_hash(options={})
-    options = { include: :location }.update(options)
+    options = { include: :location, methods: [ :distance ] }.update(options)
     super(options)
   end
 end
