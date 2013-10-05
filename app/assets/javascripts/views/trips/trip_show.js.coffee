@@ -11,6 +11,7 @@ class Voyageur.Views.Trip extends Backbone.View
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
+    @model.get('triplocations').on 'sync', @render_distance # FIXME: need to trigger this even on remove
     @model.get('triplocations').on 'remove', @render
     $('.trip').sortable
       items: ".location_block"
@@ -26,18 +27,18 @@ class Voyageur.Views.Trip extends Backbone.View
     model.set('position': position)
     model.save()
     @model.get('triplocations').add(model)
-    @model.fetch()
 
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length
-    triploc = @model.get('triplocations').create(data) # FIXME: something is preventing this from triggering the add event sometimes in the specs
+    triploc = @model.get('triplocations').create(data)
     @render()
-    @model.fetch()
     triploc
 
+  render_distance: (collection, triplocation) =>
+    $('#trip-distance').find('.distance').html( @meters_to_miles( triplocation.distance ) )
+
   render: =>
-#    console.log "rendering trip: ", @model
-    # TODO: don't render if we're clearing.
+    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     return this if triplocation_area.length < 1
@@ -66,7 +67,6 @@ class Voyageur.Views.Trip extends Backbone.View
     return if @model.get('triplocations').length < 1
     triplocs = @model.get('triplocations').map (triploc) -> triploc
     triplocs.map (triploc) -> triploc.destroy()
-    @model.fetch()
 
   # Google Maps Reference: https://developers.google.com/maps/documentation/javascript/reference
   directionsDisplay: null
