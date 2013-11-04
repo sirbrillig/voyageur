@@ -8,29 +8,23 @@ window.Voyageur =
 
   initialize: ->
     @enable_tabs()
-    @begin_monitor()
     @trip_view = new Voyageur.Views.Trip
     new Voyageur.Views.LocationsIndex(@trip_view.model) # NOTE: not sure this is the best way to bind the views together
 
-  begin_monitor: ->
-    # Make sure there's a timeout for poor connections.
-    $.ajaxSetup(timeout: 30000)
-    setTimeout(@monitor_connection, 5000)
-
-  monitor_connection: ->
+  check_connection: (success) ->
     $.ajax(
       url: '/ping'
-      complete: ->
-        setTimeout( ->
-          window.Voyageur.monitor_connection()
-        , 5000)
       success: ->
         if window.Voyageur.offline
           window.Voyageur.offline = false
           window.Voyageur.trip_view.model.save()
           window.Voyageur.trip_view.model.fetch()
+        success()
       error: ->
         window.Voyageur.offline = true
+        setTimeout( ->
+          window.Voyageur.check_connection(success)
+        , 5000)
     )
 
   enable_tabs: ->
