@@ -11,9 +11,12 @@ Backbone.oldSync = Backbone.sync
 
 # override original method
 Backbone.sync = (method, model, options) ->
-  window.Voyageur.check_connection( () ->
+  if window.Voyageur.disable_connection_checking
     Backbone.rails_sync(method, model, options)
-  )
+  else
+    window.Voyageur.check_connection( () ->
+      Backbone.rails_sync(method, model, options)
+    )
 
 Backbone.rails_sync = (method, model, options) ->
   # save reference to original toJSON()
