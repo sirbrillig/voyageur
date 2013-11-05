@@ -11,13 +11,14 @@ Backbone.oldSync = Backbone.sync
 
 # override original method
 Backbone.sync = (method, model, options) ->
-  if window.Voyageur.offline
-    console.log 'sync canceled because I can\'t get to the server'
-    return null
+  if window.Voyageur.disable_connection_checking
+    Backbone.rails_sync(method, model, options)
+  else
+    window.Voyageur.check_connection( () ->
+      Backbone.rails_sync(method, model, options)
+    )
 
-  $('.trip .summary').spin({lines: 10, radius: 5, length: 5, width: 4})
-  $(document).ajaxComplete => $('.trip .summary').spin(false)
-
+Backbone.rails_sync = (method, model, options) ->
   # save reference to original toJSON()
   model.oldToJSON = model.toJSON
 

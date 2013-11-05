@@ -34,7 +34,7 @@ class Voyageur.Views.Trip extends Backbone.View
     triploc
 
   render: =>
-    console.log "rendering trip: ", @model
+#    console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     return this if triplocation_area.length < 1
