@@ -7,6 +7,7 @@ class Voyageur.Views.Trip extends Backbone.View
   events:
     'click a.clear-trip': 'clear_trip'
     'update-sort': 'update_sort'
+    'update-distance': 'update_distance'
 
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
@@ -27,6 +28,9 @@ class Voyageur.Views.Trip extends Backbone.View
     model.save()
     @model.get('triplocations').add(model)
 
+  update_distance: (event, distance) =>
+    @model.set('distance', distance)
+
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length
     triploc = @model.get('triplocations').create(data)
@@ -34,7 +38,7 @@ class Voyageur.Views.Trip extends Backbone.View
     triploc
 
   render: =>
-#    console.log "rendering trip: ", @model
+    #console.log "rendering trip: ", @model
     @$el.html @template( { trip: @model, distance: @meters_to_miles( @model.get( 'distance' ) ) } )
     triplocation_area = $('.trip_locations')
     return this if triplocation_area.length < 1

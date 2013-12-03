@@ -9,7 +9,7 @@
   - else
     %h1#trip-distance
       %span.distance= @distance
-      miles total
+      %span.distance-label miles total
 - if @trip.get('triplocations').length > 1
   .map
     #map_canvas

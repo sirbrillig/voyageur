@@ -8,14 +8,18 @@ class Voyageur.Views.Triplocation extends Backbone.View
     'drop': 'drop'
 
   initialize: =>
-    @model.on 'sync', @render_distance
+    @model.on 'sync', @sync_distance
 
   render: =>
     @setElement @template({triplocation: @model})
     this
 
-  render_distance: (collection, triplocation) =>
-    $('#trip-distance').find('.distance').html( @meters_to_miles( triplocation.distance ) )
+  render_distance: (distance) =>
+    $('#trip-distance').find('.distance').html( @meters_to_miles( distance ) )
+    $('.trip').trigger 'update-distance', [ distance ]
+
+  sync_distance: (collection, triplocation) =>
+    @render_distance( triplocation.distance )
 
   remove_location: (e) =>
     e.preventDefault() if e
