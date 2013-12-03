@@ -12,7 +12,7 @@ class Voyageur.Views.Trip extends Backbone.View
   initialize: =>
     @model = new Voyageur.Models.Trip id: Voyageur.get_trip_id()
     @model.on 'sync', @render
-    @model.get('triplocations').on 'remove', @render
+    @model.get('triplocations').on 'remove', @loading_distance
     $('.trip').sortable
       items: ".location_block"
       opacity: 0.5
@@ -31,10 +31,14 @@ class Voyageur.Views.Trip extends Backbone.View
   update_distance: (event, distance) =>
     @model.set('distance', distance)
 
+  loading_distance: () =>
+    @render()
+    $('#trip-distance').find('.distance').html( 'loading' )
+
   add_location: (data) =>
     data['position'] = @model.get('triplocations').length
     triploc = @model.get('triplocations').create(data)
-    @render()
+    @loading_distance()
     triploc
 
   render: =>
