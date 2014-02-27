@@ -25,7 +25,7 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
       # Set initial positions, in case they are unset
       if null == loc.get('position')
         loc.set('position': index + 1)
-        loc.save() # FIXME: this triggers a render, even if silent
+        loc.save()
 
       location_view = new Voyageur.Views.Location model: loc
       location_area.append location_view.render().el
