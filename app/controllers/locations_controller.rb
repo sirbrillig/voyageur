@@ -55,9 +55,9 @@ class LocationsController < ApplicationController
     @location = Location.where(id: params[:id], user_id: current_user.id).first
 
     respond_to do |format|
-      if @location.update_attributes(params[:location])
+      if @location.update_attributes(params[:location].slice(:position, :address, :title))
         format.html { redirect_to locations_url, notice: 'Location was successfully updated.' }
-        format.json { head :no_content }
+        format.json { render json: @location }
       else
         format.html { render action: "edit" }
         format.json { render json: @location.errors, status: :unprocessable_entity }
