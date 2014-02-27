@@ -5,8 +5,8 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
 
   initialize: (trip) =>
     @collection = new Voyageur.Collections.Locations
-    @collection.on 'sync', @render
-    @collection.fetch()
+    @collection.fetch success: =>
+      @render()
     $('.library_locations').sortable
       items: ".location"
       opacity: 0.5
