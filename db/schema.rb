@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613025320) do
+ActiveRecord::Schema.define(:version => 20140227031609) do
 
   create_table "audits", :force => true do |t|
     t.integer  "auditable_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20130613025320) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.integer  "user_id"
+    t.integer  "position"
   end
 
   create_table "triplocations", :force => true do |t|
