@@ -45,10 +45,10 @@ ActiveRecord::Schema.define(:version => 20140227031609) do
   create_table "locations", :force => true do |t|
     t.string   "title"
     t.string   "address"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.integer  "user_id"
-    t.integer  "position",   :default => 0
+    t.integer  "position"
   end
 
   create_table "triplocations", :force => true do |t|
