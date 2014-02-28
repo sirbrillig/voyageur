@@ -27,6 +27,8 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
         loc.set('position': index + 1)
         loc.save()
 
+      if window.debugMode
+        console.log 'rendering Location', loc
       location_view = new Voyageur.Views.Location model: loc
       location_area.append location_view.render().el
     this
