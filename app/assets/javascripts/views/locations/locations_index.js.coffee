@@ -24,9 +24,13 @@ class Voyageur.Views.LocationsIndex extends Backbone.View
 
       # Set initial positions, in case they are unset
       if null == loc.get('position')
+        if window.location.search.match(/debugMode=true/)
+          console.log 'no position set on Location', loc, 'setting it to', index + 1
         loc.set('position': index + 1)
         loc.save()
 
+      if window.location.search.match(/debugMode=true/)
+        console.log 'rendering Location', loc
       location_view = new Voyageur.Views.Location model: loc
       location_area.append location_view.render().el
     this
