@@ -6,6 +6,7 @@ Voyageur::Application.routes.draw do
   root :to => 'home#index'
 
   get 'ping' => 'home#ping'
+  get 'bust' => 'home#bust'
 
   resources :users do
     member do
