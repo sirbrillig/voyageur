@@ -6,8 +6,8 @@ class Trip < ActiveRecord::Base
 
   def distance
     total = 0
-    self.locations.each_with_index do |loc, index|
-      total += loc.distance_to(self.locations[index+1]) unless (index + 1) >= self.locations.size
+    self.triplocations.each_with_index do |loc, index|
+      total += loc.location.distance_to(self.triplocations[index+1].location) unless (index + 1) >= self.triplocations.size
     end
     total
   end
