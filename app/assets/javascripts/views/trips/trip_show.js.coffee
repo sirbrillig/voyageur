@@ -61,6 +61,7 @@ class Voyageur.Views.Trip extends Backbone.View
     # FIXME: map doesn't look so good at small width
     @setup_map()
     @calc_route(@model.get('triplocations').map (triploc) -> triploc.get('location').get('address'))
+    @link_map()
 
   meters_to_miles: (meters) ->
     miles_per_meter = 0.000621371
@@ -80,7 +81,6 @@ class Voyageur.Views.Trip extends Backbone.View
   setup_map: () =>
     @directionsService = new google.maps.DirectionsService() unless @directionsService
     @directionsDisplay = new google.maps.DirectionsRenderer() unless @directionsDisplay
-    # TODO: when clicking on the map, load a full google maps page.
     mapOptions =
       zoom: 11
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -93,6 +93,12 @@ class Voyageur.Views.Trip extends Backbone.View
     return unless elem
     @map_obj = new google.maps.Map elem, mapOptions
     @directionsDisplay.setMap(@map_obj)
+
+  # When clicking on the map, load a full google maps page.
+  link_map: () =>
+    google.maps.event.addListener @map_obj, 'click', () =>
+      console.log 'loading map...', @map_obj
+      # FIXME: find map URL and load it in a new tab/window
 
   calc_route: (addrs) =>
     return if addrs.length < 2
@@ -108,6 +114,7 @@ class Voyageur.Views.Trip extends Backbone.View
       travelMode: google.maps.TravelMode.DRIVING
     @directionsService.route request, (result, status) =>
       if status is google.maps.DirectionsStatus.OK
+        console.log 'loaded map', result
         @directionsDisplay.setDirections result
       else
         console.log 'Error loading map: ', result, status
