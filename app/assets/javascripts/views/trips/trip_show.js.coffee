@@ -101,11 +101,13 @@ class Voyageur.Views.Trip extends Backbone.View
       # FIXME: find map URL and load it in a new tab/window
 
   calc_distance_from_route: ( route ) ->
+    distance = 0
     try
       distance = route.legs.reduce ( (previous, leg) -> previous + leg.distance.value ), 0
     catch err
       console.log 'Error calculating distance: ' + err.message
     console.log 'distance', distance, @meters_to_miles( distance ), 'miles'
+    return distance
 
   calc_route: (addrs) =>
     return if addrs.length < 2
@@ -124,9 +126,14 @@ class Voyageur.Views.Trip extends Backbone.View
     @directionsService.route request, (result, status) =>
       if status is google.maps.DirectionsStatus.OK
         console.log 'loaded map', result
-        @calc_distance_from_route( result.routes[0] )
+        @double_check_distance @calc_distance_from_route( result.routes[0] )
         @directionsDisplay.setDirections result
       else
         console.log 'Error loading map: ', result, status
       # FIXME: display any google errors
       # (https://developers.google.com/maps/documentation/javascript/reference#DirectionsStatus)
+
+  double_check_distance: ( distance1 ) =>
+    distance2 = @model.get( 'distance' )
+    if  distance1 != distance2
+      console.log 'Warning: distance calculations do not match: ', distance1, ' (server) != ', distance2, ' (client)'
