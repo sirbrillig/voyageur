@@ -100,6 +100,13 @@ class Voyageur.Views.Trip extends Backbone.View
       console.log 'loading map...', @map_obj
       # FIXME: find map URL and load it in a new tab/window
 
+  calc_distance_from_route: ( route ) ->
+    try
+      distance = route.legs.reduce ( (previous, leg) -> previous + leg.distance.value ), 0
+    catch err
+      console.log 'Error calculating distance: ' + err.message
+    console.log 'distance', distance, @meters_to_miles( distance ), 'miles'
+
   calc_route: (addrs) =>
     return if addrs.length < 2
     start = addrs.shift()
@@ -107,6 +114,8 @@ class Voyageur.Views.Trip extends Backbone.View
     waypts = []
     for addr in addrs
       waypts.push({location: addr, stopover: true})
+    if waypts.length > 8
+      console.log 'Warning: too many waypoints, map will not be accurate.'
     request =
       origin: start
       destination: end
@@ -115,6 +124,7 @@ class Voyageur.Views.Trip extends Backbone.View
     @directionsService.route request, (result, status) =>
       if status is google.maps.DirectionsStatus.OK
         console.log 'loaded map', result
+        @calc_distance_from_route( result.routes[0] )
         @directionsDisplay.setDirections result
       else
         console.log 'Error loading map: ', result, status
