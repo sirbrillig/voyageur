@@ -27,9 +27,12 @@ class Voyageur.Views.Trip extends Backbone.View
     model.set('position': position)
     model.save()
     @model.get('triplocations').add(model)
+    # TODO: we should update the map here
+    @map_distance = false
 
   update_distance: (event, distance) =>
     @model.set('distance', distance)
+    @double_check_distance()
 
   loading_distance: () =>
     @render()
@@ -80,7 +83,6 @@ class Voyageur.Views.Trip extends Backbone.View
   setup_map: () =>
     @directionsService = new google.maps.DirectionsService() unless @directionsService
     @directionsDisplay = new google.maps.DirectionsRenderer() unless @directionsDisplay
-    # TODO: when clicking on the map, load a full google maps page.
     mapOptions =
       zoom: 11
       mapTypeId: google.maps.MapTypeId.ROADMAP
@@ -94,13 +96,35 @@ class Voyageur.Views.Trip extends Backbone.View
     @map_obj = new google.maps.Map elem, mapOptions
     @directionsDisplay.setMap(@map_obj)
 
+  # When clicking on the map, load a full google maps page.
+  link_map: (addrs) =>
+    mapUrl = 'https://www.google.com/maps/dir/' + addrs.reduce ( (previous, addr) -> previous + encodeURIComponent(addr) + '/' ), ''
+    google.maps.event.addListener @map_obj, 'click', () =>
+      if window.location.search.match(/debugMode=true/)
+        console.log 'routing to map', mapUrl
+      else
+        window.location = mapUrl
+
+  calc_distance_from_route: ( route ) ->
+    distance = 0
+    try
+      distance = route.legs.reduce ( (previous, leg) -> previous + leg.distance.value ), 0
+    catch err
+      console.log 'Error calculating distance: ' + err.message
+    if window.location.search.match(/debugMode=true/)
+      console.log 'distance from route is', distance, @meters_to_miles( distance ), 'miles'
+    return distance
+
   calc_route: (addrs) =>
     return if addrs.length < 2
+    @link_map(addrs)
     start = addrs.shift()
     end = addrs.pop()
     waypts = []
     for addr in addrs
       waypts.push({location: addr, stopover: true})
+    if waypts.length > 8
+      console.log 'Warning: too many waypoints, map will not be accurate.'
     request =
       origin: start
       destination: end
@@ -108,8 +132,29 @@ class Voyageur.Views.Trip extends Backbone.View
       travelMode: google.maps.TravelMode.DRIVING
     @directionsService.route request, (result, status) =>
       if status is google.maps.DirectionsStatus.OK
+        @map_distance = false
+        if waypts.length <= 8
+          @map_distance = @calc_distance_from_route( result.routes[0] )
+        @double_check_distance()
         @directionsDisplay.setDirections result
       else
         console.log 'Error loading map: ', result, status
       # FIXME: display any google errors
       # (https://developers.google.com/maps/documentation/javascript/reference#DirectionsStatus)
+
+  double_check_distance: () =>
+    @remove_distance_warning()
+    return unless @map_distance
+    voyageur_distance = @meters_to_miles @model.get( 'distance' )
+    return unless voyageur_distance > 0
+    map_distance = @meters_to_miles @map_distance
+    if map_distance != voyageur_distance
+      if window.location.search.match(/debugMode=true/)
+        console.log 'Warning: distance calculations do not match:', voyageur_distance, 'miles (voyageur) !=', map_distance, 'miles (google map)'
+      @add_distance_warning(voyageur_distance, map_distance)
+
+  remove_distance_warning: () =>
+    $('#trip-distance .distance .error').remove()
+
+  add_distance_warning: (voyageur_distance, map_distance) =>
+    $('#trip-distance .distance').append( ' <abbr class="error text-warning" title="The Voyageur calculation (' + voyageur_distance + ') does not match that of the map (' + map_distance + ').">(map reports ' + map_distance + ')</abbr>' )
