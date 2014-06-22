@@ -27,6 +27,8 @@ class Voyageur.Views.Trip extends Backbone.View
     model.set('position': position)
     model.save()
     @model.get('triplocations').add(model)
+    # TODO: we should update the map here
+    @map_distance = false
 
   update_distance: (event, distance) =>
     @model.set('distance', distance)
