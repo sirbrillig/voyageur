@@ -30,6 +30,7 @@ class Voyageur.Views.Trip extends Backbone.View
 
   update_distance: (event, distance) =>
     @model.set('distance', distance)
+    @double_check_distance()
 
   loading_distance: () =>
     @render()
@@ -106,7 +107,8 @@ class Voyageur.Views.Trip extends Backbone.View
       distance = route.legs.reduce ( (previous, leg) -> previous + leg.distance.value ), 0
     catch err
       console.log 'Error calculating distance: ' + err.message
-    console.log 'distance', distance, @meters_to_miles( distance ), 'miles'
+    if window.location.search.match(/debugMode=true/)
+      console.log 'distance from route is', distance, @meters_to_miles( distance ), 'miles'
     return distance
 
   calc_route: (addrs) =>
@@ -126,14 +128,29 @@ class Voyageur.Views.Trip extends Backbone.View
     @directionsService.route request, (result, status) =>
       if status is google.maps.DirectionsStatus.OK
         console.log 'loaded map', result
-        @double_check_distance @calc_distance_from_route( result.routes[0] )
+        @map_distance = false
+        if waypts.length <= 8
+          @map_distance = @calc_distance_from_route( result.routes[0] )
+        @double_check_distance()
         @directionsDisplay.setDirections result
       else
         console.log 'Error loading map: ', result, status
       # FIXME: display any google errors
       # (https://developers.google.com/maps/documentation/javascript/reference#DirectionsStatus)
 
-  double_check_distance: ( distance1 ) =>
-    distance2 = @model.get( 'distance' )
-    if  distance1 != distance2
-      console.log 'Warning: distance calculations do not match: ', distance1, ' (server) != ', distance2, ' (client)'
+  double_check_distance: () =>
+    @remove_distance_warning()
+    return unless @map_distance
+    voyageur_distance = @meters_to_miles @model.get( 'distance' )
+    return unless voyageur_distance > 0
+    map_distance = @meters_to_miles @map_distance
+    if map_distance != voyageur_distance
+      if window.location.search.match(/debugMode=true/)
+        console.log 'Warning: distance calculations do not match:', voyageur_distance, 'miles (voyageur) !=', map_distance, 'miles (google map)'
+      @add_distance_warning(voyageur_distance, map_distance)
+
+  remove_distance_warning: () =>
+    $('#trip-distance .distance .error').remove()
+
+  add_distance_warning: (voyageur_distance, map_distance) =>
+    $('#trip-distance .distance').append( ' <abbr class="error text-warning" title="The Voyageur calculation (' + voyageur_distance + ') does not match that of the map (' + map_distance + ').">(map reports ' + map_distance + ')</abbr>' )
