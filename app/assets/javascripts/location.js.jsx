@@ -1,6 +1,12 @@
 /** @jsx React.DOM */
 
+/* globals emitter */
+
 var Location = React.createClass({
+	addToTrip: function() {
+		emitter.emit( 'addToTrip', this.props.id );
+	},
+
 	render: function() {
 		return (
 			<li className="location">
@@ -10,7 +16,7 @@ var Location = React.createClass({
 						Edit
 					</a>
 					&nbsp;
-					<a className="btn btn-small add-button btn-custom">
+					<a className="btn btn-small add-button btn-custom" onClick={this.addToTrip}>
 						<i className="icon-road" />
 						Add
 					</a>
