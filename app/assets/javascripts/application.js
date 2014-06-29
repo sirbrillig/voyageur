@@ -11,20 +11,9 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery
-//= require jquery.ui.sortable
-//= require jquery.ui.tabs
-//= require jquery_ujs
-//= require spin.min
 //= require bootstrap
 //= require underscore
 //= require backbone
-//= require backbone_sync_hack
-//= require hamlcoffee
-//= require backbone-relational
 //= require voyageur
 //= require_tree ../templates
-//= require_tree ./models
-//= require_tree ./collections
-//= require_tree ./views
-//= require_tree ./routers
 //= require_tree .
