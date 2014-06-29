@@ -3,15 +3,9 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.11'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'compass-rails'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails', '~> 3.2.3'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
-  gem 'jquery-ui-rails'
-  gem 'backbone-on-rails'
-  gem 'backbone-relational-rails'
-  gem 'haml_coffee_assets'
   gem 'execjs'
 end
 
