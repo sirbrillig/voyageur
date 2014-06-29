@@ -12,8 +12,9 @@
 //
 //= require jquery
 //= require bootstrap
-//= require underscore
-//= require backbone
+//= require ready.min
+//= require event_emitter.min
+//= require reqwest.min
 //= require voyageur
 //= require_tree ../templates
 //= require_tree .
