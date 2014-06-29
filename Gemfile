@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 
 group :assets do
   gem 'sass-rails', '~> 3.2.3'
+  gem 'react-rails', '~> 0.10.0.0'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
   gem 'execjs'

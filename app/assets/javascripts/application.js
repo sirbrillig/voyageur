@@ -13,6 +13,7 @@
 //= require jquery
 //= require bootstrap
 //= require ready.min
+//= require react
 //= require event_emitter.min
 //= require reqwest.min
 //= require voyageur
