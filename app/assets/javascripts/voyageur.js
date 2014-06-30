@@ -1,4 +1,4 @@
-/* globals domready, reqwest, EventEmitter, LocationsList */
+/* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList */
 
 var emitter = new EventEmitter();
 
@@ -9,13 +9,6 @@ domready( function() {
   }).then( function(data) {
     emitter.emit( 'locations', data );
   } );
-
-  reqwest({
-    url: 'triplocations',
-    type: 'json'
-  }).then( function(data) {
-    console.log('triplocations', data);
-  } );
 });
 
 emitter.on( 'locations', function( locations ) {
@@ -23,8 +16,15 @@ emitter.on( 'locations', function( locations ) {
 } );
 
 emitter.on( 'addToTrip', function( id ) {
+  addTriplocation( id );
+} );
+
+function addTriplocation( id ) {
   var tripId = getTripId(),
-  data = { triplocation: { trip_id: tripId, location_id: id, position: 1 } };
+  data = { triplocation: { trip_id: tripId, location_id: id } };
+
+  // TODO: add the location to the list before updating the server
+  //var triplocation = { id: 0, location: location };
 
   console.log('adding', id, 'to trip', tripId, 'data', data);
   reqwest({
@@ -34,8 +34,19 @@ emitter.on( 'addToTrip', function( id ) {
     data: data
   }).then( function(data) {
     console.log('post complete', data);
+    getTriplocations();
   } );
-} );
+}
+
+function getTriplocations() {
+  reqwest({
+    url: 'triplocations',
+    type: 'json'
+  }).then( function(data) {
+    console.log('triplocations', data);
+    renderTriplocationsList( data );
+  } );
+}
 
 function getTripId() {
   var element = document.getElementsByClassName( 'trip_locations' )[0];
@@ -46,6 +57,14 @@ function renderLocationsList( locations ) {
   var element = document.getElementsByClassName( 'library_locations' )[0];
   React.renderComponent(
     LocationsList({ locations: locations }),
+    element
+  );
+}
+
+function renderTriplocationsList( triplocations ) {
+  var element = document.getElementsByClassName( 'trip_locations' )[0];
+  React.renderComponent(
+    TriplocationsList({ triplocations: triplocations }),
     element
   );
 }
