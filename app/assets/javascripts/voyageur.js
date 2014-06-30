@@ -1,17 +1,20 @@
 /* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList */
 
 var emitter = new EventEmitter();
+var Store = { locations: [], triplocations: [] };
 
 domready( function() {
-  reqwest({
-    url: 'locations',
-    type: 'json'
-  }).then( function(data) {
-    emitter.emit( 'locations', data );
-  } );
+  getLocations();
+  getTriplocations();
 });
 
+emitter.on( 'triplocations', function( triplocations ) {
+  Store.triplocations = triplocations;
+  renderTriplocationsList( triplocations );
+} );
+
 emitter.on( 'locations', function( locations ) {
+  Store.locations = locations;
   renderLocationsList( locations );
 } );
 
@@ -21,12 +24,14 @@ emitter.on( 'addToTrip', function( id ) {
 
 function addTriplocation( id ) {
   var tripId = getTripId(),
-  data = { triplocation: { trip_id: tripId, location_id: id } };
-
-  // TODO: add the location to the list before updating the server
-  //var triplocation = { id: 0, location: location };
+  data = { triplocation: { trip_id: tripId, location_id: id } },
+  location = getLocationById( id ),
+  triplocation = { id: 0, location: location };
 
   console.log('adding', id, 'to trip', tripId, 'data', data);
+
+  addTriplocationToData( triplocation );
+
   reqwest({
     url: 'triplocations/',
     type: 'json',
@@ -38,13 +43,33 @@ function addTriplocation( id ) {
   } );
 }
 
+function getLocationById( id ) {
+  return Store.locations.filter( function( location ) {
+    return ( location.id === id );
+  } )[0];
+}
+
+function addTriplocationToData( triplocation ) {
+  Store.triplocations.push( triplocation );
+  renderTriplocationsList( Store.triplocations );
+}
+
+function getLocations() {
+  reqwest({
+    url: 'locations',
+    type: 'json'
+  }).then( function(data) {
+    emitter.emit( 'locations', data );
+  } );
+}
+
 function getTriplocations() {
   reqwest({
     url: 'triplocations',
     type: 'json'
   }).then( function(data) {
     console.log('triplocations', data);
-    renderTriplocationsList( data );
+    emitter.emit( 'triplocations', data );
   } );
 }
 
