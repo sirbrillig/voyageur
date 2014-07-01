@@ -1,4 +1,4 @@
-/* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList */
+/* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList, debug */
 
 var StoreObject = function() {
   EventEmitter.call( this );
@@ -8,6 +8,7 @@ StoreObject.prototype = Object.create( EventEmitter.prototype );
 StoreObject.prototype.data = [];
 
 var emitter = new StoreObject();
+var log = debug('voyageur');
 
 // Control Functions
 
@@ -54,7 +55,7 @@ var App = function() {
       location = this.getLocationById( id ),
       triplocation = { id: 0, location: location };
 
-      console.log('adding', id, 'to trip', tripId, 'data', data);
+      log('adding', id, 'to trip', tripId, 'data', data);
 
       this.addTriplocationToData( triplocation );
 
@@ -64,7 +65,7 @@ var App = function() {
         method: 'post',
         data: data
       }).then( function(data) {
-        console.log('post complete', data);
+        log('post complete', data);
         this.getTriplocations();
       }.bind( this ) );
     },
@@ -94,7 +95,7 @@ var App = function() {
         url: 'triplocations',
         type: 'json'
       }).then( function(data) {
-        console.log('triplocations', data);
+        log('triplocations', data);
         emitter.emit( 'updateTriplocationsStore', data );
       } );
     },
