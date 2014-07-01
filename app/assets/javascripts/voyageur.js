@@ -1,36 +1,26 @@
-/* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList, debug */
-
-var StoreObject = function() {
-  EventEmitter.call( this );
-  return( this );
-};
-StoreObject.prototype = Object.create( EventEmitter.prototype );
-StoreObject.prototype.data = [];
-
-var emitter = new StoreObject();
-var log = debug('voyageur');
-
-// Control Functions
+/* globals domready, reqwest, LocationsList, Trip, debug, emitter, Store */
 
 var App = function() {
+  var log = debug('voyageur:App');
+
   return {
     initialize: function() {
       this.initializeDispatcher();
-      this.initializeStore();
       this.initializeStoreListeners();
+      this.renderTrip();
       this.getLocations();
       this.getTriplocations();
     },
 
     initializeDispatcher: function() {
       emitter.on( 'updateTriplocationsStore', function( triplocations ) {
-        this.store.triplocations.data = triplocations;
-        this.store.triplocations.emit( 'change', triplocations );
+        Store.triplocations.data = triplocations;
+        Store.triplocations.emit( 'change', triplocations );
       }.bind( this ) );
 
       emitter.on( 'updateLocationsStore', function( locations ) {
-        this.store.locations.data = locations;
-        this.store.locations.emit( 'change', locations );
+        Store.locations.data = locations;
+        Store.locations.emit( 'change', locations );
       }.bind( this ) );
 
       emitter.on( 'addToTrip', function( id ) {
@@ -38,26 +28,18 @@ var App = function() {
       }.bind( this ) );
     },
 
-    initializeStore: function() {
-      this.store = {};
-      this.store.locations = new StoreObject();
-      this.store.triplocations = new StoreObject();
-    },
-
     initializeStoreListeners: function() {
-      this.store.locations.on( 'change', this.renderLocationsList );
-      this.store.triplocations.on( 'change', this.renderTriplocationsList );
+      Store.locations.on( 'change', this.renderLocationsList );
     },
 
     addTriplocation: function( id ) {
       var tripId = this.getTripId(),
       data = { triplocation: { trip_id: tripId, location_id: id } },
-      location = this.getLocationById( id ),
-      triplocation = { id: 0, location: location };
+      triplocation = this.createNewTriplocation( id );
 
       log('adding', id, 'to trip', tripId, 'data', data);
 
-      this.addTriplocationToData( triplocation );
+      this.storeNewTriplocation( triplocation );
 
       reqwest({
         url: 'triplocations/',
@@ -71,14 +53,20 @@ var App = function() {
     },
 
     getLocationById: function( id ) {
-      return this.store.locations.data.filter( function( location ) {
+      return Store.locations.data.filter( function( location ) {
         return ( location.id === id );
       } )[0];
     },
 
-    addTriplocationToData: function( triplocation ) {
-      this.store.triplocations.data.push( triplocation );
-      this.store.triplocations.emit( 'change', this.store.triplocations.data );
+    createNewTriplocation: function( locationId ) {
+      var tripId = this.getTripId(),
+      location = this.getLocationById( locationId );
+      return { id: 0, trip_id: tripId, location: location };
+    },
+
+    storeNewTriplocation: function( triplocation ) {
+      Store.triplocations.data.push( triplocation );
+      Store.triplocations.emit( 'change', Store.triplocations.data );
     },
 
     getLocations: function() {
@@ -86,6 +74,7 @@ var App = function() {
         url: 'locations',
         type: 'json'
       }).then( function(data) {
+        log('locations fetch returned', data);
         emitter.emit( 'updateLocationsStore', data );
       } );
     },
@@ -95,7 +84,7 @@ var App = function() {
         url: 'triplocations',
         type: 'json'
       }).then( function(data) {
-        log('triplocations', data);
+        log('triplocations fetch returned', data);
         emitter.emit( 'updateTriplocationsStore', data );
       } );
     },
@@ -113,10 +102,10 @@ var App = function() {
       );
     },
 
-    renderTriplocationsList: function( triplocations ) {
+    renderTrip: function() {
       var element = document.getElementsByClassName( 'trip_locations' )[0];
       React.renderComponent(
-        TriplocationsList({ triplocations: triplocations }),
+        Trip(),
         element
       );
     }
