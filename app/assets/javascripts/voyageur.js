@@ -1,11 +1,13 @@
 /* globals domready, reqwest, EventEmitter, LocationsList, TriplocationsList */
 
-var emitter = new EventEmitter();
-var Store = { locations: [], triplocations: [] };
 var StoreObject = function() {
   EventEmitter.call( this );
   return( this );
 };
+StoreObject.prototype = Object.create( EventEmitter.prototype );
+StoreObject.prototype.data = [];
+
+var emitter = new StoreObject();
 
 // Control Functions
 
@@ -13,7 +15,7 @@ var App = function() {
   return {
     initialize: function() {
       this.initializeDispatcher();
-      this.store = new StoreObject();
+      this.initializeStore();
       this.initializeStoreListeners();
       this.getLocations();
       this.getTriplocations();
@@ -21,13 +23,13 @@ var App = function() {
 
     initializeDispatcher: function() {
       emitter.on( 'updateTriplocationsStore', function( triplocations ) {
-        Store.triplocations = triplocations;
-        this.renderTriplocationsList( triplocations );
+        this.store.triplocations.data = triplocations;
+        this.store.triplocations.emit( 'change', triplocations );
       }.bind( this ) );
 
       emitter.on( 'updateLocationsStore', function( locations ) {
-        Store.locations = locations;
-        this.renderLocationsList( locations );
+        this.store.locations.data = locations;
+        this.store.locations.emit( 'change', locations );
       }.bind( this ) );
 
       emitter.on( 'addToTrip', function( id ) {
@@ -35,8 +37,15 @@ var App = function() {
       }.bind( this ) );
     },
 
+    initializeStore: function() {
+      this.store = {};
+      this.store.locations = new StoreObject();
+      this.store.triplocations = new StoreObject();
+    },
+
     initializeStoreListeners: function() {
-      //this.store.locations.on( 'change', this.renderLocationsList );
+      this.store.locations.on( 'change', this.renderLocationsList );
+      this.store.triplocations.on( 'change', this.renderTriplocationsList );
     },
 
     addTriplocation: function( id ) {
@@ -61,14 +70,14 @@ var App = function() {
     },
 
     getLocationById: function( id ) {
-      return Store.locations.filter( function( location ) {
+      return this.store.locations.data.filter( function( location ) {
         return ( location.id === id );
       } )[0];
     },
 
     addTriplocationToData: function( triplocation ) {
-      Store.triplocations.push( triplocation );
-      this.renderTriplocationsList( Store.triplocations );
+      this.store.triplocations.data.push( triplocation );
+      this.store.triplocations.emit( 'change', this.store.triplocations.data );
     },
 
     getLocations: function() {
