@@ -1,9 +1,9 @@
 /** @jsx React.DOM */
 
 var Triplocation = React.createClass({
-	render: function() {
-		return (
-			<li className="location_block">
+  render: function() {
+    return (
+      <li className="location_block">
         <div className="location">
           <nav className="actions">
             <a className="btn btn-small remove-button">
@@ -19,9 +19,8 @@ var Triplocation = React.createClass({
             {this.props.location.address}
           </p>
         </div>
-			</li>
-		);
-	}
+      </li>
+    );
+  }
 });
-
 
