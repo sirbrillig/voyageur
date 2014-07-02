@@ -5,6 +5,7 @@ var App = function() {
 
   return {
     initialize: function() {
+      log('---- initializing App ----');
       this.initializeDispatcher();
       this.renderTrip();
       this.renderLocations();
@@ -13,19 +14,10 @@ var App = function() {
     },
 
     initializeDispatcher: function() {
-      emitter.on( 'updateTriplocationsStore', function( triplocations ) {
-        Store.triplocations.data = triplocations;
-        Store.triplocations.emit( 'change', triplocations );
-      }.bind( this ) );
-
-      emitter.on( 'updateLocationsStore', function( locations ) {
-        Store.locations.data = locations;
-        Store.locations.emit( 'change', locations );
-      }.bind( this ) );
-
-      emitter.on( 'addToTrip', function( id ) {
-        this.addTriplocation( id );
-      }.bind( this ) );
+      emitter.on( 'updateTriplocationsStore', Store.triplocations.replace.bind( Store.triplocations ) );
+      emitter.on( 'updateLocationsStore', Store.locations.replace.bind( Store.locations ) );
+      emitter.on( 'addToTrip', this.addTriplocation.bind( this ) );
+      emitter.on( 'removeFromTrip', this.removeTriplocation.bind( this ) );
     },
 
     addTriplocation: function( id ) {
@@ -33,19 +25,41 @@ var App = function() {
       data = { triplocation: { trip_id: tripId, location_id: id } },
       triplocation = this.createNewTriplocation( id );
 
-      log('adding', id, 'to trip', tripId, 'data', data);
+      log('adding location ' + id + ' to trip ' + tripId, 'data', data);
 
-      this.storeNewTriplocation( triplocation );
+      Store.add( 'triplocations', triplocation );
 
       reqwest({
         url: 'triplocations/',
         type: 'json',
         method: 'post',
         data: data
-      }).then( function(data) {
-        log('post complete', data);
+      }).then( function() {
         this.getTriplocations();
       }.bind( this ) );
+    },
+
+    removeTriplocation: function( id ) {
+      var tripId = this.getTripId(),
+      triplocation = this.getTriplocationById( id );
+
+      log('removing triplocation ' + id + ' from trip ' + tripId);
+
+      Store.remove( 'triplocations', triplocation );
+
+      reqwest({
+        url: 'triplocations/' + id,
+        type: 'json',
+        method: 'delete'
+      }).then( function() {
+        this.getTriplocations();
+      }.bind( this ) );
+    },
+
+    getTriplocationById: function( id ) {
+      return Store.triplocations.data.filter( function( triplocation ) {
+        return ( triplocation.id === id );
+      } )[0];
     },
 
     getLocationById: function( id ) {
@@ -58,11 +72,6 @@ var App = function() {
       var tripId = this.getTripId(),
       location = this.getLocationById( locationId );
       return { id: 0, trip_id: tripId, location: location };
-    },
-
-    storeNewTriplocation: function( triplocation ) {
-      Store.triplocations.data.push( triplocation );
-      Store.triplocations.emit( 'change', Store.triplocations.data );
     },
 
     getLocations: function() {
