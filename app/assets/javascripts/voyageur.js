@@ -1,4 +1,4 @@
-/* globals domready, reqwest, LocationsList, Trip, debug, emitter, Store */
+/* globals domready, reqwest, LocationsList, Trip, Library, debug, emitter, Store */
 
 var App = function() {
   var log = debug('voyageur:App');
@@ -6,8 +6,8 @@ var App = function() {
   return {
     initialize: function() {
       this.initializeDispatcher();
-      this.initializeStoreListeners();
       this.renderTrip();
+      this.renderLocations();
       this.getLocations();
       this.getTriplocations();
     },
@@ -26,10 +26,6 @@ var App = function() {
       emitter.on( 'addToTrip', function( id ) {
         this.addTriplocation( id );
       }.bind( this ) );
-    },
-
-    initializeStoreListeners: function() {
-      Store.locations.on( 'change', this.renderLocationsList );
     },
 
     addTriplocation: function( id ) {
@@ -106,6 +102,14 @@ var App = function() {
       var element = document.getElementsByClassName( 'trip_locations' )[0];
       React.renderComponent(
         Trip(),
+        element
+      );
+    },
+
+    renderLocations: function() {
+      var element = document.getElementsByClassName( 'library_locations' )[0];
+      React.renderComponent(
+        Library(),
         element
       );
     }
