@@ -36,25 +36,13 @@ var App = function() {
 
     removeTriplocation: function( id ) {
       log( '**event** removeFromTrip', id );
-      var triplocation = this.getTriplocationById( id );
+      var triplocation = Store.getById( 'triplocations', id );
       Store.remove( 'triplocations', triplocation );
-    },
-
-    getTriplocationById: function( id ) {
-      return Store.get('triplocations').filter( function( triplocation ) {
-        return ( triplocation.id === id );
-      } )[0];
-    },
-
-    getLocationById: function( id ) {
-      return Store.get('locations').filter( function( location ) {
-        return ( location.id === id );
-      } )[0];
     },
 
     createNewTriplocation: function( locationId ) {
       var tripId = this.getTripId(),
-      location = this.getLocationById( locationId );
+      location = Store.getById( 'locations', locationId );
       return { id: 0, trip_id: tripId, location: location };
     },
 

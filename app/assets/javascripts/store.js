@@ -36,6 +36,12 @@ var Store = {
     return Store[key].data;
   },
 
+  getById: function( key, id ) {
+    return Store.get( key ).filter( function( obj ) {
+      return ( obj.id === id );
+    } )[0];
+  },
+
   listenTo: function( key, event, callback ) {
     Store[key].on( event, callback );
   }
