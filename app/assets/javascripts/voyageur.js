@@ -1,4 +1,4 @@
-/* globals domready, reqwest, LocationsList, Trip, Library, debug, emitter, Store */
+/* globals domready, LocationsList, Trip, Library, debug, emitter, Store */
 
 var App = function() {
   var log = debug('voyageur:App');
@@ -47,8 +47,8 @@ var App = function() {
     },
 
     getTripId: function() {
-      var element = document.getElementsByClassName( 'trip_locations' )[0];
-      return element.getAttribute( 'trip-id' );
+      var element = document.getElementsByClassName( 'trip-id' )[0];
+      return element.getAttribute( 'data-trip-id' );
     },
 
     renderLocationsList: function( locations ) {
@@ -60,7 +60,8 @@ var App = function() {
     },
 
     renderTrip: function() {
-      var element = document.getElementsByClassName( 'trip_locations' )[0];
+      Store.add( 'trips', this.getTripId() );
+      var element = document.getElementsByClassName( 'trip' )[0];
       React.renderComponent(
         Trip(),
         element

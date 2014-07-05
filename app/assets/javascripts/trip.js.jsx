@@ -1,6 +1,7 @@
 /** @jsx React.DOM */
 
-/* globals TriplocationsList, Store, debug, reqwest, emitter */
+/* globals TriplocationsList, Store, debug, reqwest, emitter, TripHeader */
+/* globals TripMap, TripHelp */
 var TripView = {
 
   log: debug('voyageur:Trip'),
@@ -31,6 +32,18 @@ var TripView = {
       } );
     },
 
+    getTrip: function() {
+      var id = Store.get( 'trips' )[0];
+      reqwest({
+        url: 'trips/' + id,
+        type: 'json'
+      }).then( function(data) {
+        TripView.log('trip fetch returned', data);
+        TripView.log('distance', data.distance);
+        this.setState( { distance: data.distance, id: data.id } );
+      }.bind( this ) );
+    },
+
     removeTriplocation: function( triplocation ) {
       TripView.log('removing triplocation', triplocation);
       reqwest({
@@ -44,7 +57,7 @@ var TripView = {
 
     getInitialState: function() {
       TripView.log( 'triplocations initialState', Store.get( 'triplocations' ) );
-      return { triplocations: Store.get( 'triplocations' )};
+      return { triplocations: Store.get( 'triplocations' ), distance: 0 };
     },
 
     componentDidMount: function() {
@@ -57,15 +70,21 @@ var TripView = {
     onChange: function() {
       TripView.log( 'triplocations changed to', Store.get( 'triplocations' ) );
       this.setState( { triplocations: Store.get( 'triplocations' ) } );
+      this.getTrip();
     },
 
     render: function() {
       return (
-        <TriplocationsList triplocations={this.state.triplocations}/>
+        <div>
+          <TripHeader distance={this.state.distance} id={this.state.id} />
+          <TripMap triplocations={this.state.triplocations} />
+          <TriplocationsList triplocations={this.state.triplocations} />
+          <TripHelp triplocations={this.state.triplocations} locationCount={Store.get('locations').length}/>
+        </div>
       );
     }
   })
 };
 
-var Trip = TripView.Trip;
+var Trip = TripView.Trip; //jshint ignore:line
 

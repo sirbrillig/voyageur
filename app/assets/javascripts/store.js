@@ -2,38 +2,51 @@
 
 function StoreObject() {
   EventEmitter.call( this );
+  this.data = [];
   return( this );
 }
 StoreObject.prototype = Object.create( EventEmitter.prototype );
-StoreObject.prototype.data = [];
 
 var emitter = new StoreObject();
 var Store = {
   log: debug('voyageur:Store'),
 
+  stores: {},
+
+  createKey: function( key ) {
+    if ( ! Store.stores[key] ) {
+      Store.log('creating new store key', key);
+      Store.stores[key] = new StoreObject();
+    }
+  },
+
   add: function( key, data ) {
     Store.log('### adding', key, data);
-    Store[key].data.push( data );
-    Store[key].emit( 'add', data );
-    Store[key].emit( 'change', Store[key].data );
+    Store.createKey( key );
+    Store.stores[key].data.push( data );
+    Store.stores[key].emit( 'add', data );
+    Store.stores[key].emit( 'change', Store.stores[key].data );
   },
 
   remove: function( key, data ) {
     Store.log('### removing', key, data);
-    var index = Store[key].data.indexOf( data );
-    Store[key].data.splice( index, 1 );
-    Store[key].emit( 'remove', data );
-    Store[key].emit( 'change', Store[key].data );
+    Store.createKey( key );
+    var index = Store.stores[key].data.indexOf( data );
+    Store.stores[key].data.splice( index, 1 );
+    Store.stores[key].emit( 'remove', data );
+    Store.stores[key].emit( 'change', Store.stores[key].data );
   },
 
   replace: function( key, data ) {
     Store.log('### replacing', key, data);
-    Store[key].data = data;
-    Store[key].emit( 'change', data );
+    Store.createKey( key );
+    Store.stores[key].data = data;
+    Store.stores[key].emit( 'change', data );
   },
 
   get: function( key ) {
-    return Store[key].data;
+    Store.createKey( key );
+    return Store.stores[key].data;
   },
 
   getById: function( key, id ) {
@@ -43,9 +56,7 @@ var Store = {
   },
 
   listenTo: function( key, event, callback ) {
-    Store[key].on( event, callback );
+    Store.createKey( key );
+    Store.stores[key].on( event, callback );
   }
 };
-
-Store.locations = new StoreObject();
-Store.triplocations = new StoreObject();
