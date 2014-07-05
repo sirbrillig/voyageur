@@ -7,7 +7,7 @@ function StoreObject() {
 }
 StoreObject.prototype = Object.create( EventEmitter.prototype );
 
-var emitter = new StoreObject();
+var emitter = new StoreObject(); //jshint ignore:line
 var Store = {
   log: debug('voyageur:Store'),
 
@@ -41,6 +41,7 @@ var Store = {
     Store.log('### replacing', key, data);
     Store.createKey( key );
     Store.stores[key].data = data;
+    Store.stores[key].emit( 'replace', data );
     Store.stores[key].emit( 'change', data );
   },
 

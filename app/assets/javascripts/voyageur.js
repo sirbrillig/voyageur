@@ -7,8 +7,8 @@ var App = function() {
     initialize: function() {
       log('---- initializing App ----');
       this.initializeDispatcher();
-      this.renderTrip();
       this.renderLocations();
+      this.renderTrip();
     },
 
     initializeDispatcher: function() {
@@ -16,6 +16,7 @@ var App = function() {
       emitter.on( 'updateLocationsStore', this.updateLocationsStore.bind( this ) );
       emitter.on( 'addToTrip', this.addTriplocation.bind( this ) );
       emitter.on( 'removeFromTrip', this.removeTriplocation.bind( this ) );
+      emitter.on( 'clearTrip', this.clearTrip.bind( this ) );
     },
 
     updateTriplocationsStore: function( data ) {
@@ -38,6 +39,17 @@ var App = function() {
       log( '**event** removeFromTrip', id );
       var triplocation = Store.getById( 'triplocations', id );
       Store.remove( 'triplocations', triplocation );
+    },
+
+    clearTrip: function() {
+      log( '**event** clearTrip' );
+      // For some unknown reason, I have to collect the triplocations and then
+      // operate on them rather than using just one loop.
+      Store.get( 'triplocations' ).reduce( function( prev, triplocation ) {
+        return prev.concat( triplocation );
+      }, [] ).forEach( function( triplocation ) {
+        Store.remove( 'triplocations', triplocation );
+      } );
     },
 
     createNewTriplocation: function( locationId ) {

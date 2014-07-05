@@ -51,10 +51,14 @@ class Trip < ActiveRecord::Base
     self.triplocations[index].move_lower if index < self.triplocations.size
   end
 
+  def timestamp
+    return Time.now.to_i
+  end
+
   def serializable_hash(options={})
     options = {
       include: :triplocations,
-      methods: [ :distance, :num_avail_locations ]
+      methods: [ :distance, :num_avail_locations, :timestamp ]
     }.update(options)
     super(options)
   end

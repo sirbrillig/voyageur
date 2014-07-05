@@ -1,16 +1,22 @@
 /** @jsx React.DOM */
 
+/* globals emitter */
+
 var TripHeader = React.createClass({ //jshint ignore:line
   metersToMiles: function( meters ) {
     var milesPerMeter = 0.000621371;
     return (meters * milesPerMeter).toFixed(1);
   },
 
+  clearTrip: function() {
+    emitter.emit( 'clearTrip' );
+  },
+
   render: function() {
     return (
       <div className="summary">
         <nav className="actions">
-          <a id="clear_trip" className="btn btn-warning clear-trip" href={"/trips/" + this.props.id + "/clear"}>
+          <a id="clear_trip" className="btn btn-warning clear-trip" onClick={this.clearTrip}>
             <i className="icon-asterisk" />
             Clear Trip
           </a>

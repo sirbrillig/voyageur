@@ -39,8 +39,13 @@ var TripView = {
         type: 'json'
       }).then( function(data) {
         TripView.log('trip fetch returned', data);
-        TripView.log('distance', data.distance);
-        this.setState( { distance: data.distance, id: data.id } );
+        if ( this.lastTripTimestamp && data.timestamp < this.lastTripTimestamp ) {
+          TripView.log( 'timestamp is out of date. ignoring trip data.', data );
+        } else {
+          TripView.log('distance is now', data.distance);
+          this.lastTripTimestamp = data.timestamp;
+          this.setState( { distance: data.distance, id: data.id } );
+        }
       }.bind( this ) );
     },
 
@@ -50,8 +55,8 @@ var TripView = {
         url: 'triplocations/' + triplocation.id,
         type: 'json',
         method: 'delete'
-      }).then( function() {
-        this.getTriplocations();
+      }).then( function(data) {
+        TripView.log('triplocation delete returned', data);
       }.bind( this ) );
     },
 
@@ -70,13 +75,14 @@ var TripView = {
     onChange: function() {
       TripView.log( 'triplocations changed to', Store.get( 'triplocations' ) );
       this.setState( { triplocations: Store.get( 'triplocations' ) } );
-      this.getTrip();
+      // Give the database time to update.
+      setTimeout( this.getTrip, 200 );
     },
 
     render: function() {
       return (
         <div>
-          <TripHeader distance={this.state.distance} id={this.state.id} />
+          <TripHeader distance={this.state.distance} />
           <TripMap triplocations={this.state.triplocations} />
           <TriplocationsList triplocations={this.state.triplocations} />
           <TripHelp triplocations={this.state.triplocations} locationCount={Store.get('locations').length}/>
