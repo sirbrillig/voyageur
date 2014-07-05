@@ -1,23 +1,35 @@
 /** @jsx React.DOM */
 
-/* globals LocationsList, Store, debug */
+/* globals LocationsList, Store, debug, emitter, reqwest */
 var LibraryView = {
 
   log: debug('voyageur:Library'),
 
   Library: React.createClass({
+
+    getLocations: function() {
+      reqwest({
+        url: 'locations',
+        type: 'json'
+      }).then( function(data) {
+        LibraryView.log('locations fetch returned', data);
+        emitter.emit( 'updateLocationsStore', data );
+      } );
+    },
+
     getInitialState: function() {
-      LibraryView.log( 'locations initialState', Store.locations.data );
-      return { locations: Store.locations.data };
+      LibraryView.log( 'locations initialState', Store.get( 'locations' ) );
+      return { locations: Store.get( 'locations' ) };
     },
 
     componentDidMount: function() {
-      Store.locations.on( 'change', this.onChange );
+      Store.listenTo( 'locations', 'change', this.onChange );
+      this.getLocations();
     },
 
     onChange: function() {
-      LibraryView.log( 'locations changed to', Store.locations.data );
-      this.setState( { locations: Store.locations.data } );
+      LibraryView.log( 'locations changed to', Store.get( 'locations' ) );
+      this.setState( { locations: Store.get( 'locations' ) } );
     },
 
     render: function() {

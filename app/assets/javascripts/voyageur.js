@@ -9,7 +9,6 @@ var App = function() {
       this.initializeDispatcher();
       this.renderTrip();
       this.renderLocations();
-      this.getLocations();
     },
 
     initializeDispatcher: function() {
@@ -57,16 +56,6 @@ var App = function() {
       var tripId = this.getTripId(),
       location = this.getLocationById( locationId );
       return { id: 0, trip_id: tripId, location: location };
-    },
-
-    getLocations: function() {
-      reqwest({
-        url: 'locations',
-        type: 'json'
-      }).then( function(data) {
-        log('locations fetch returned', data);
-        emitter.emit( 'updateLocationsStore', data );
-      } );
     },
 
     getTripId: function() {
