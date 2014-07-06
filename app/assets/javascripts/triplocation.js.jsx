@@ -2,14 +2,14 @@
 
 /* globals emitter */
 
-var Triplocation = React.createClass({
+var Triplocation = React.createClass({ //jshint ignore:line
   removeFromTrip: function() {
     emitter.emit( 'removeFromTrip', this.props.id );
   },
 
   render: function() {
     return (
-      <li className="location_block">
+      <li className="location_block" data-triplocation-id={this.props.id}>
         <div className="location">
           <nav className="actions">
             <a className="btn btn-small remove-button" onClick={this.removeFromTrip}>

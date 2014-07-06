@@ -37,6 +37,17 @@ var Store = {
     Store.stores[key].emit( 'change', Store.stores[key].data );
   },
 
+  updateById: function( key, id, data ) {
+    Store.log('### updateById', key, id, data);
+    var item = Store.getById( key, id );
+    var index = Store.stores[key].data.indexOf( item );
+    item = data;
+    Store.stores[key].data.splice( index, 1 );
+    Store.stores[key].data.push( item );
+    Store.stores[key].emit( 'update', id, data );
+    Store.stores[key].emit( 'change', Store.stores[key].data );
+  },
+
   replace: function( key, data ) {
     Store.log('### replacing', key, data);
     Store.createKey( key );
@@ -52,7 +63,7 @@ var Store = {
 
   getById: function( key, id ) {
     return Store.get( key ).filter( function( obj ) {
-      return ( obj.id === id );
+      return ( parseInt( obj.id, 10 ) === parseInt( id, 10 ) );
     } )[0];
   },
 

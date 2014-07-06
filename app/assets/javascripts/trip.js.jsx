@@ -65,6 +65,23 @@ var TripView = {
       this.setState( { pending: true  } );
     },
 
+    moveItem: function( item ) {
+      var peers = item.parentNode.childNodes,
+      updatedTriplocations = [].reduce.call( peers, function( prev, peer, position ) {
+        position += 1; // start positions at 1
+        var itemId = peer.getAttribute( 'data-triplocation-id' ),
+        triplocation = Store.getById( 'triplocations', itemId );
+        if ( triplocation.position === position ) return prev;
+        TripView.log( 'moving', triplocation, 'to', position );
+        triplocation.position = position;
+        return prev.concat( triplocation );
+      }, [] );
+
+      updatedTriplocations.reverse().forEach( function( triplocation ) {
+        Store.updateById( 'triplocations', triplocation.id, triplocation );
+      } );
+    },
+
     getInitialState: function() {
       TripView.log( 'triplocations initialState', Store.get( 'triplocations' ) );
       return { triplocations: Store.get( 'triplocations' ), distance: 0 };
@@ -78,6 +95,11 @@ var TripView = {
     },
 
     onChange: function() {
+      if ( this.onChangeTimeout ) clearTimeout( this.onChangeTimeout );
+      this.onChangeTimeout = setTimeout( this._onChange, 100 );
+    },
+
+    _onChange: function() {
       TripView.log( 'triplocations changed to', Store.get( 'triplocations' ) );
       this.setState( { triplocations: Store.get( 'triplocations' ) } );
       this.showPending();
