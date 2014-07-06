@@ -17,6 +17,19 @@ var App = function() {
       emitter.on( 'addToTrip', this.addTriplocation.bind( this ) );
       emitter.on( 'removeFromTrip', this.removeTriplocation.bind( this ) );
       emitter.on( 'clearTrip', this.clearTrip.bind( this ) );
+      emitter.on( 'error', this.warnUser.bind( this ) );
+    },
+
+    warnUser: function( message ) {
+      log( '**event** error', message );
+      if ( this.warnUserTimeout ) clearTimeout( this.warnUserTimeout );
+      // Throttle actual warnings to prevent overwhelming the user with alerts.
+      this.warnUserTimeout = setTimeout( this._warnUser.bind( this, message ), 400 );
+    },
+
+    _warnUser: function( message ) {
+      console.warn( message );
+      alert( message );
     },
 
     updateTriplocationsStore: function( data ) {
@@ -55,7 +68,7 @@ var App = function() {
     createNewTriplocation: function( locationId ) {
       var tripId = this.getTripId(),
       location = Store.getById( 'locations', locationId );
-      return { id: 0, trip_id: tripId, location: location };
+      return { id: Math.floor( Math.random() * 1000 ), trip_id: tripId, location: location };
     },
 
     getTripId: function() {

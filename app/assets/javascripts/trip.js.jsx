@@ -19,7 +19,11 @@ var TripView = {
       }).then( function() {
         TripView.log('triplocation add complete');
         this.getTriplocations();
-      }.bind( this ) );
+      }.bind( this ) ).fail( function() {
+        TripView.log( 'triplocation add failed' );
+        var message = 'Adding a triplocation failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
+      } );
     },
 
     getTriplocations: function() {
@@ -29,6 +33,10 @@ var TripView = {
       }).then( function(data) {
         TripView.log('triplocations fetch returned', data);
         emitter.emit( 'updateTriplocationsStore', data );
+      } ).fail( function() {
+        TripView.log( 'triplocation fetch failed' );
+        var message = 'Fetching triplocations failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
       } );
     },
 
@@ -46,7 +54,11 @@ var TripView = {
           this.lastTripTimestamp = data.timestamp;
           this.setState( { distance: data.distance, id: data.id, pending: false } );
         }
-      }.bind( this ) );
+      }.bind( this ) ).fail( function() {
+        TripView.log( 'trip fetch failed' );
+        var message = 'Fetching the trip failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
+      } );
     },
 
     removeTriplocation: function( triplocation ) {
@@ -58,7 +70,11 @@ var TripView = {
       }).then( function(data) {
         TripView.log('triplocation delete returned', data);
         this.getTriplocations();
-      }.bind( this ) );
+      }.bind( this ) ).fail( function() {
+        TripView.log( 'triplocation remove failed' );
+        var message = 'Removing a triplocation failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
+      } );
     },
 
     showPending: function() {

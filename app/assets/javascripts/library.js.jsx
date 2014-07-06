@@ -14,6 +14,10 @@ var LibraryView = {
       }).then( function(data) {
         LibraryView.log('locations fetch returned', data);
         emitter.emit( 'updateLocationsStore', data );
+      } ).fail( function() {
+        LibraryView.log( 'locations fetch failed' );
+        var message = 'Fetching the locations failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
       } );
     },
 
