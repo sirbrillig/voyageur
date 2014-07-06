@@ -23,8 +23,9 @@ var TripHeader = React.createClass({ //jshint ignore:line
         </nav>
         <h1>Your Trip</h1>
         <h1 id="trip-distance">
-          <span className="distance">{this.metersToMiles( this.props.distance )}</span>
-          <span className="distance-label"> miles total</span>
+          <span className={"distance" + (this.props.pending ? ' hidden' : '')}>{this.metersToMiles( this.props.distance )}</span>
+          <span className={"distance distance-label" + (this.props.pending ? ' hidden' : '')}> miles total</span>
+          <span className={"distance distance-pending" + (this.props.pending ? '' : ' hidden')}>loading distance...</span>
         </h1>
       </div>
     );

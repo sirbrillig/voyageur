@@ -44,7 +44,7 @@ var TripView = {
         } else {
           TripView.log('distance is now', data.distance);
           this.lastTripTimestamp = data.timestamp;
-          this.setState( { distance: data.distance, id: data.id } );
+          this.setState( { distance: data.distance, id: data.id, pending: false } );
         }
       }.bind( this ) );
     },
@@ -57,7 +57,12 @@ var TripView = {
         method: 'delete'
       }).then( function(data) {
         TripView.log('triplocation delete returned', data);
+        this.getTriplocations();
       }.bind( this ) );
+    },
+
+    showPending: function() {
+      this.setState( { pending: true  } );
     },
 
     getInitialState: function() {
@@ -75,14 +80,16 @@ var TripView = {
     onChange: function() {
       TripView.log( 'triplocations changed to', Store.get( 'triplocations' ) );
       this.setState( { triplocations: Store.get( 'triplocations' ) } );
+      this.showPending();
       // Give the database time to update.
-      setTimeout( this.getTrip, 200 );
+      if ( this.gettingTrip ) clearTimeout( this.gettingTrip );
+      this.gettingTrip = setTimeout( this.getTrip, 200 );
     },
 
     render: function() {
       return (
         <div>
-          <TripHeader distance={this.state.distance} />
+          <TripHeader distance={this.state.distance} pending={this.state.pending}/>
           <TripMap triplocations={this.state.triplocations} />
           <TriplocationsList triplocations={this.state.triplocations} />
           <TripHelp triplocations={this.state.triplocations} locationCount={Store.get('locations').length}/>

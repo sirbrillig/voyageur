@@ -137,12 +137,13 @@ ul.nav-tabs {
 }
 
 .distance {
-  @include location-block;
-  background-color: transparent;
-  border: none;
   font-size: 1em;
   text-align: center;
   font-family: 'Alegreya SC', sans-serif;
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .actions {
