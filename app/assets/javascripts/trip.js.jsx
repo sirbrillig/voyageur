@@ -125,10 +125,11 @@ var TripView = {
     },
 
     render: function() {
+      var map = <TripMap triplocations={this.state.triplocations} />;
       return (
         <div>
           <TripHeader distance={this.state.distance} pending={this.state.pending}/>
-          <TripMap triplocations={this.state.triplocations} />
+          {this.state.triplocations.length > 1 ? map : ''}
           <TriplocationsList triplocations={this.state.triplocations} />
           <TripHelp triplocations={this.state.triplocations} locationCount={Store.get('locations').length}/>
         </div>
