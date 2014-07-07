@@ -12,6 +12,7 @@ var TripMapView = {
         return prev.concat( triplocation.location.address );
       }, [] );
       if ( addresses.length < 2 ) return;
+      this.linkMapToGoogle( addresses );
       var startAddress = addresses.shift();
       var endAddress = addresses.pop();
       var waypoints = addresses.reduce( function( prev, address ) {
@@ -45,6 +46,19 @@ var TripMapView = {
         TripMapView.log( 'Error loading map:', result, status );
         emitter.emit( 'error', 'Loading the map failed. Try reloading the page.' );
       }
+    },
+
+    linkMapToGoogle: function( addresses ) {
+      var mapUrl = 'https://www.google.com/maps/dir/' + addresses.reduce( function( previous, address ) {
+        return previous + encodeURIComponent( address ) + '/';
+      }, '' );
+      TripMapView.log( 'linkMapToGoogle', mapUrl );
+
+      google.maps.event.clearListeners( this.state.map );
+      google.maps.event.addListener( this.state.map, 'click', function() {
+        TripMapView.log( 'Going to map', mapUrl );
+        window.location = mapUrl;
+      } );
     },
 
     getInitialState: function() {
