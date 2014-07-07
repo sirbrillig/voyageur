@@ -12,7 +12,7 @@ var TripView = {
       TripView.log('adding triplocation', triplocation);
       var data = { triplocation: { trip_id: triplocation.trip_id, location_id: triplocation.location.id } };
       reqwest({
-        url: 'triplocations/',
+        url: 'triplocations.json',
         type: 'json',
         method: 'post',
         data: data
@@ -28,7 +28,7 @@ var TripView = {
 
     getTriplocations: function() {
       reqwest({
-        url: 'triplocations',
+        url: 'triplocations.json',
         type: 'json'
       }).then( function(data) {
         TripView.log('triplocations fetch returned', data);
@@ -43,7 +43,7 @@ var TripView = {
     getTrip: function() {
       var id = Store.get( 'trips' )[0];
       reqwest({
-        url: 'trips/' + id,
+        url: 'trips/' + id + '.json',
         type: 'json'
       }).then( function(data) {
         TripView.log('trip fetch returned', data);
@@ -64,7 +64,7 @@ var TripView = {
     removeTriplocation: function( triplocation ) {
       TripView.log('removing triplocation', triplocation);
       reqwest({
-        url: 'triplocations/' + triplocation.id,
+        url: 'triplocations/' + triplocation.id + '.json',
         type: 'json',
         method: 'delete'
       }).then( function(data) {

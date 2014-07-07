@@ -9,7 +9,7 @@ var LibraryView = {
 
     getLocations: function() {
       reqwest({
-        url: 'locations',
+        url: 'locations.json',
         type: 'json'
       }).then( function(data) {
         LibraryView.log('locations fetch returned', data);
