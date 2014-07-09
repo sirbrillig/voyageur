@@ -2,9 +2,9 @@
 
 /* globals emitter */
 
-var Location = React.createClass({
+var Location = React.createClass({ // jshint ignore:line
   addToTrip: function() {
-    emitter.emit( 'addToTrip', this.props.id );
+    emitter.emit( 'addLocationToTrip', this.props.id );
   },
 
   render: function() {

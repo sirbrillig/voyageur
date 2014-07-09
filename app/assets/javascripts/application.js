@@ -15,6 +15,7 @@
 //= require ready.min
 //= require react
 //= require debug
+//= require object-assign
 //= require event_emitter.min
 //= require reqwest.min
 //= require voyageur

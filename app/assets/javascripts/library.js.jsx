@@ -1,49 +1,33 @@
 /** @jsx React.DOM */
 
-/* globals LocationsList, Store, debug, emitter, reqwest */
-var LibraryView = {
+/* globals LocationsList, debug, FluxStore */
 
-  log: debug('voyageur:Library'),
+var Library = ( function() { //jshint ignore:line
 
-  Library: React.createClass({
+  var log = debug('voyageur:Library');
 
-    getLocations: function() {
-      reqwest({
-        url: 'locations.json',
-        type: 'json'
-      }).then( function(data) {
-        LibraryView.log('locations fetch returned', data);
-        emitter.emit( 'updateLocationsStore', data );
-      } ).fail( function() {
-        LibraryView.log( 'locations fetch failed' );
-        var message = 'Fetching the locations failed because the request returned an error. Try reloading the page.';
-        emitter.emit( 'error', message );
-      } );
-    },
+  return React.createClass({
 
     getInitialState: function() {
-      LibraryView.log( 'locations initialState', Store.get( 'locations' ) );
-      return { locations: Store.get( 'locations' ) };
+      log( 'locations initialState', FluxStore.getStore('LocationsStore').getLocations() );
+      return { locations: FluxStore.getStore('LocationsStore').getLocations() };
     },
 
     componentDidMount: function() {
-      Store.listenTo( 'locations', 'change', this.onChange );
-      this.getLocations();
+      FluxStore.getStore('LocationsStore').on( 'change', this.onChange );
+      FluxStore.getStore('LocationsStore').fetch();
     },
 
     onChange: function() {
-      LibraryView.log( 'locations changed to', Store.get( 'locations' ) );
-      this.setState( { locations: Store.get( 'locations' ) } );
+      log( 'locations changed to', FluxStore.getStore('LocationsStore').getLocations() );
+      this.setState( { locations: FluxStore.getStore('LocationsStore').getLocations() } );
     },
 
     render: function() {
       return (
-        <LocationsList locations={this.state.locations}/>
+        <LocationsList locations={this.state.locations} />
       );
     }
-  })
-};
-
-var Library = LibraryView.Library;
-
+  });
+})();
 
