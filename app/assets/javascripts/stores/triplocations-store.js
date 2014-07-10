@@ -24,7 +24,7 @@
       var triplocation = this.createNewTriplocation( location );
       this.triplocations.push( triplocation );
       this.emit( 'change' );
-      this.create( triplocation );
+      this._updateServer( this.create, triplocation );
     },
 
     removeFromTrip: function( id ) {
@@ -33,13 +33,23 @@
       var index = this.triplocations.indexOf( triplocation );
       this.triplocations.splice( index, 1 );
       this.emit( 'change' );
-      this.destroy( triplocation );
+      this._updateServer( this.destroy, triplocation );
     },
 
     clearTrip: function() {
       log('**event** clearTrip');
-      this.triplocations.forEach( this.destroy.bind( this ) );
+      var toDelete = this.triplocations.slice();
       this.triplocations = [];
+      this.emit( 'change' );
+      this._updateServer( this._deleteItems, toDelete );
+    },
+
+    _updateServer: function( func, arg ) {
+      setTimeout( func.bind( this, arg ), 100 );
+    },
+
+    _deleteItems: function( items ) {
+      items.forEach( this.destroy.bind( this ) );
     },
 
     getById: function( id ) {
@@ -49,7 +59,7 @@
     },
 
     create: function( triplocation ) {
-      log('adding triplocation', triplocation);
+      log('create', triplocation);
       var data = { triplocation: { trip_id: triplocation.trip_id, location_id: triplocation.location.id } };
       reqwest({
         url: 'triplocations.json',
@@ -57,10 +67,10 @@
         method: 'post',
         data: data
       }).then( function() {
-        log('triplocation add complete');
+        log('create complete');
         this.fetch();
       }.bind( this ) ).fail( function() {
-        log( 'triplocation add failed' );
+        log( 'triplocation create failed' );
         var message = 'Adding a triplocation failed because the request returned an error. Try reloading the page.';
         emitter.emit( 'error', message );
       } );
@@ -73,22 +83,28 @@
     },
 
     destroy: function( triplocation ) {
-      log('removing triplocation', triplocation);
+      log('destroy', triplocation);
       reqwest({
         url: 'triplocations/' + triplocation.id + '.json',
         type: 'json',
         method: 'delete'
       }).then( function(data) {
-        log('triplocation delete returned', data);
+        log('destroy returned', data);
         this.fetch();
       }.bind( this ) ).fail( function() {
-        log( 'triplocation remove failed' );
+        log( 'triplocation destroy failed' );
         var message = 'Removing a triplocation failed because the request returned an error. Try reloading the page.';
         emitter.emit( 'error', message );
       } );
     },
 
     fetch: function() {
+      // Throttle calls to fetch.
+      if ( this.fetchTimeout ) clearTimeout( this.fetchTimeout );
+      this.fetchTimeout = setTimeout( this._fetch.bind( this ), 100 );
+    },
+
+    _fetch: function() {
       reqwest({
         url: 'triplocations.json',
         type: 'json'

@@ -62,11 +62,6 @@ var Trip = ( function() { //jshint ignore:line
     },
 
     onChange: function() {
-      if ( this.onChangeTimeout ) clearTimeout( this.onChangeTimeout );
-      this.onChangeTimeout = setTimeout( this._onChange, 100 );
-    },
-
-    _onChange: function() {
       log( 'triplocations changed to', FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() );
       this.setState( { triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() } );
       this.showPending();

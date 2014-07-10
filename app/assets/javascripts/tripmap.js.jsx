@@ -49,6 +49,7 @@ var TripMapView = {
     },
 
     linkMapToGoogle: function( addresses ) {
+      if ( ! this.state.map ) return;
       var mapUrl = 'https://www.google.com/maps/dir/' + addresses.reduce( function( previous, address ) {
         return previous + encodeURIComponent( address ) + '/';
       }, '' );
