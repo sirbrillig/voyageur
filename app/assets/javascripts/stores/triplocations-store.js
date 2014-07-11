@@ -11,12 +11,51 @@
       this.bindActions( {
         'addLocationToTrip': this.addLocationToTrip,
         'removeFromTrip': this.removeFromTrip,
-        'clearTrip': this.clearTrip
+        'clearTrip': this.clearTrip,
+        'moveTriplocation': this.moveTriplocation
       } );
     },
 
     getTriplocations: function() {
       return this.triplocations;
+    },
+
+    moveTriplocation: function( data ) {
+      log('**event** moveTriplocation', data);
+      var fromTriplocation = this.getById( data.from );
+      var toTriplocation = this.getById( data.to );
+      if ( fromTriplocation.position > toTriplocation.position ) {
+        // dragging up the list
+        log( 'dragging up' );
+        this.reorder( { direction: 'up', from: fromTriplocation, to: toTriplocation } );
+      } else {
+        // dragging down the list
+        log( 'dragging down' );
+        this.reorder( { direction: 'down', from: fromTriplocation, to: toTriplocation } );
+      }
+    },
+
+    reorder: function( data ) {
+      log( 'reorder', data, 'moving ' + data.from.position + ' to ' + data.to.position );
+      data.from.position = data.to.position;
+
+      var startMoving = false;
+      ( data.direction === 'down' ? this.triplocations.reverse() : this.triplocations).forEach( function( triplocation ) {
+        if ( triplocation.id === data.from.id ) return;
+        if ( startMoving || ( triplocation.id === data.to.id ) ) {
+          startMoving = true;
+          if ( data.direction === 'down' ) {
+            triplocation.position -= 1;
+          } else {
+            triplocation.position += 1;
+          }
+          // We don't need to update the server here because the server
+          // recalculates the other positions itself.
+          //this._updateServer( this.move, data.from );
+        }
+      }, this );
+      this._updateServer( this.move, data.from );
+      this.emit( 'change' );
     },
 
     addLocationToTrip: function( location ) {
@@ -80,6 +119,24 @@
       var tripId = getTripId(),
       location = FluxStore.getStore('LocationsStore').getById( locationId );
       return { id: Math.floor( Math.random() * 1000 ), trip_id: tripId, location: location };
+    },
+
+    move: function( triplocation ) {
+      log('move', triplocation);
+      var data = { id: triplocation.id, triplocation: triplocation };
+      reqwest({
+        url: 'triplocations/' + triplocation.id + '.json',
+        type: 'json',
+        method: 'put',
+        data: data
+      }).then( function(data) {
+        log('move returned', data);
+        this.fetch();
+      }.bind( this ) ).fail( function() {
+        log( 'triplocation move failed' );
+        var message = 'Moving a triplocation failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
+      } );
     },
 
     destroy: function( triplocation ) {

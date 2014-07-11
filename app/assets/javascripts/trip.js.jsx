@@ -35,24 +35,6 @@ var Trip = ( function() { //jshint ignore:line
       this.setState( { pending: true  } );
     },
 
-    // TODO: this is not implemented yet
-    //moveItem: function( item ) {
-    //var peers = item.parentNode.childNodes,
-    //updatedTriplocations = [].reduce.call( peers, function( prev, peer, position ) {
-    //position += 1; // start positions at 1
-    //var itemId = peer.getAttribute( 'data-triplocation-id' ),
-    //triplocation = Store.getById( 'triplocations', itemId );
-    //if ( triplocation.position === position ) return prev;
-    //log( 'moving', triplocation, 'to', position );
-    //triplocation.position = position;
-    //return prev.concat( triplocation );
-    //}, [] );
-    //
-    //updatedTriplocations.reverse().forEach( function( triplocation ) {
-    //Store.updateById( 'triplocations', triplocation.id, triplocation );
-    //} );
-    //},
-
     getInitialState: function() {
       log( 'triplocations initialState', FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() );
       return { triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations(), distance: 0 };
