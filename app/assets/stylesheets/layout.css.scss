@@ -135,10 +135,12 @@ ul.nav-tabs {
 .location {
   @include location-block;
 
+  &.moving-over,
   .moving-over & {
     background: rgb(255, 255, 144);
   }
 
+  &.moving,
   .moving & {
     opacity: 0.3;
     background: rgb(237, 255, 105);

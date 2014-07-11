@@ -7,6 +7,48 @@
     initialize: function() {
       log('initialize LocationsStore');
       this.locations = [];
+
+      this.bindActions( {
+        'moveLocation': this.moveLocation
+      } );
+    },
+
+    moveLocation: function( data ) {
+      log('**event** moveLocation', data);
+      var fromLocation = this.getById( data.from );
+      var toLocation = this.getById( data.to );
+      if ( fromLocation.position > toLocation.position ) {
+        // dragging up the list
+        log( 'dragging up' );
+        this.reorder( { direction: 'up', from: fromLocation, to: toLocation } );
+      } else {
+        // dragging down the list
+        log( 'dragging down' );
+        this.reorder( { direction: 'down', from: fromLocation, to: toLocation } );
+      }
+    },
+
+    reorder: function( data ) {
+      log( 'reorder', data, 'moving ' + data.from.position + ' to ' + data.to.position );
+      data.from.position = data.to.position;
+
+      var startMoving = false;
+      ( data.direction === 'down' ? this.locations.reverse() : this.locations).forEach( function( location ) {
+        if ( location.id === data.from.id ) return;
+        if ( startMoving || ( location.id === data.to.id ) ) {
+          startMoving = true;
+          if ( data.direction === 'down' ) {
+            location.position -= 1;
+          } else {
+            location.position += 1;
+          }
+          // We don't need to update the server here because the server
+          // recalculates the other positions itself.
+          //this._updateServer( this.move, data.from );
+        }
+      }, this );
+      this._updateServer( this.move, data.from );
+      this.emit( 'change' );
     },
 
     getLocations: function() {
@@ -17,6 +59,28 @@
       return this.locations.filter( function( obj ) {
         return ( parseInt( obj.id, 10 ) === parseInt( id, 10 ) );
       } )[0];
+    },
+
+    _updateServer: function( func, arg ) {
+      setTimeout( func.bind( this, arg ), 100 );
+    },
+
+    move: function( location ) {
+      log('move', location);
+      var data = { id: location.id, location: location };
+      reqwest({
+        url: 'locations/' + location.id + '.json',
+        type: 'json',
+        method: 'put',
+        data: data
+      }).then( function(data) {
+        log('move returned', data);
+        this.fetch();
+      }.bind( this ) ).fail( function() {
+        log( 'location move failed' );
+        var message = 'Moving a location failed because the request returned an error. Try reloading the page.';
+        emitter.emit( 'error', message );
+      } );
     },
 
     fetch: function() {
