@@ -8,6 +8,8 @@ var Library = ( function() { //jshint ignore:line
 
   return React.createClass({
 
+    displayName: 'Library',
+
     getInitialState: function() {
       log( 'locations initialState', FluxStore.getStore('LocationsStore').getLocations() );
       return { locations: FluxStore.getStore('LocationsStore').getLocations() };

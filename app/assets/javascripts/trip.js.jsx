@@ -8,6 +8,8 @@ var Trip = ( function() { //jshint ignore:line
 
   return React.createClass({
 
+    displayName: 'Trip',
+
     getTrip: function() {
       var id = getTripId();
       reqwest({

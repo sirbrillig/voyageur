@@ -2,10 +2,12 @@
 
 /* globals emitter, debug, google */
 
-var TripMapView = {
-  log: debug( 'voyageur:TripMap' ),
+var TripMap = ( function() { //jshint ignore:line
+  var log = debug( 'voyageur:TripMap' );
 
-  TripMap: React.createClass({
+  return React.createClass({
+
+    displayName: 'TripMap',
 
     calculateRoute: function() {
       var addresses = this.props.triplocations.reduce( function( prev, triplocation ) {
@@ -20,7 +22,7 @@ var TripMapView = {
       }, [] );
       if ( waypoints.length > 8 ) {
         // TODO: warn the user here
-        TripMapView.log( 'Too many waypoints, map will not be accurate', waypoints );
+        log( 'Too many waypoints, map will not be accurate', waypoints );
         return;
       }
       var request = {
@@ -34,16 +36,16 @@ var TripMapView = {
     },
 
     requestDirections: function( request ) {
-      TripMapView.log( 'calculateRoute sending request', request );
+      log( 'calculateRoute sending request', request );
       this.directionsService.route( request, this.updateDirections );
     },
 
     updateDirections: function( result, status ) {
-      TripMapView.log( 'updateDirections', result, status );
+      log( 'updateDirections', result, status );
       if ( status === google.maps.DirectionsStatus.OK ) {
         this.directionsRenderer.setDirections( result );
       } else {
-        TripMapView.log( 'Error loading map:', result, status );
+        log( 'Error loading map:', result, status );
         emitter.emit( 'error', 'Loading the map failed. Try reloading the page.' );
       }
     },
@@ -53,11 +55,11 @@ var TripMapView = {
       var mapUrl = 'https://www.google.com/maps/dir/' + addresses.reduce( function( previous, address ) {
         return previous + encodeURIComponent( address ) + '/';
       }, '' );
-      TripMapView.log( 'linkMapToGoogle', mapUrl );
+      log( 'linkMapToGoogle', mapUrl );
 
       google.maps.event.clearListeners( this.state.map );
       google.maps.event.addListener( this.state.map, 'click', function() {
-        TripMapView.log( 'Going to map', mapUrl );
+        log( 'Going to map', mapUrl );
         window.location = mapUrl;
       } );
     },
@@ -95,7 +97,7 @@ var TripMapView = {
         mapTypeControl: false
       };
 
-      TripMapView.log( 'creating map', mapOptions );
+      log( 'creating map', mapOptions );
       var map = new google.maps.Map( this.getDOMNode(), mapOptions );
       this.directionsRenderer.setMap( map );
 
@@ -107,7 +109,5 @@ var TripMapView = {
       this.calculateRoute();
     }
 
-  })
-};
-
-var TripMap = TripMapView.TripMap; //jshint ignore:line
+  });
+})();
