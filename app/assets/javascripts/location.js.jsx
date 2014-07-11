@@ -19,11 +19,16 @@ var Location = (function() { // jshint ignore:line
       var dataTransfer = evt.nativeEvent.dataTransfer;
       dataTransfer.effectAllowed = 'move';
       dataTransfer.setData( 'text/plain', this.props.title );
+      dataTransfer.setData( 'draggedType', 'location' );
+      this.props.setDraggedType( 'location' );
       dataTransfer.setData( 'draggedItem', this.props.id );
       this.setState( { moving: true } );
     },
 
     dragOver: function( evt ) {
+      // dataTransfer is not available here for some annoying reason, so we do our best
+      var type = this.props.getDraggedType();
+      if ( type !== 'location' ) return true;
       evt.preventDefault();
       this.setState( { movingOver: true } );
     },
@@ -33,6 +38,7 @@ var Location = (function() { // jshint ignore:line
     },
 
     dragEnd: function() {
+      this.props.setDraggedType( null );
       this.setState( { moving: false, movingOver: false } );
     },
 
