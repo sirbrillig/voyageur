@@ -23,7 +23,7 @@ $location-background-color: #f5f5f5;
   a, a:hover {
     text-decoration: none;
   }
-  
+
   h1 {
     font-size: 1.1em;
     margin: 0px;
@@ -134,6 +134,15 @@ ul.nav-tabs {
 
 .location {
   @include location-block;
+
+  .moving-over & {
+    background: rgb(255, 255, 144);
+  }
+
+  .moving & {
+    opacity: 0.3;
+    background: rgb(237, 255, 105);
+  }
 }
 
 .distance {
@@ -164,7 +173,7 @@ ul.nav-tabs {
   }
 }
 
-#map_canvas { 
+#map_canvas {
   @include location-block;
   height: 90px;
 }
