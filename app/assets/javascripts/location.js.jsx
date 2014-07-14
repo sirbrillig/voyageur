@@ -29,7 +29,9 @@ var Location = (function() { // jshint ignore:line
         console.error( 'dataTransfer types not found when dragging. dataTransfer=', evt.dataTransfer );
         return;
       }
-      var sameType = types.contains( 'librarylocation' );
+      var sameType = false;
+      if ( typeof types.contains === 'function' ) sameType = types.contains( 'librarylocation' );
+      if ( typeof types.indexOf === 'function' ) sameType = ( ~ types.indexOf( 'librarylocation' ) );
       if ( ! sameType ) return true;
       evt.preventDefault();
       this.setState( { movingOver: true } );

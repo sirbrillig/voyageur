@@ -29,7 +29,9 @@ var Triplocation = (function() { //jshint ignore:line
         console.error( 'dataTransfer types not found when dragging. dataTransfer=', evt.dataTransfer );
         return;
       }
-      var sameType = types.contains( 'triplocation' );
+      var sameType = false;
+      if ( typeof types.contains === 'function' ) sameType = types.contains( 'triplocation' );
+      if ( typeof types.indexOf === 'function' ) sameType = ( ~ types.indexOf( 'triplocation' ) );
       if ( ! sameType ) return true;
       evt.preventDefault();
       this.setState( { movingOver: true } );
