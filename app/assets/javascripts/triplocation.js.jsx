@@ -18,18 +18,18 @@ var Triplocation = (function() { //jshint ignore:line
       log('drag started', this.props.id);
       var dataTransfer = evt.nativeEvent.dataTransfer;
       dataTransfer.effectAllowed = 'move';
-      dataTransfer.setData( 'text/plain', this.props.location.title );
       dataTransfer.setData( 'triplocation', true );
       dataTransfer.setData( 'draggedItem', this.props.id );
       this.setState( { moving: true } );
     },
 
     dragOver: function( evt ) {
-      var items = evt.dataTransfer.items;
-      var sameType = Object.keys( items ).some( function( key ) {
-        if ( items[key].type === 'triplocation' ) return true;
-        return false;
-      } );
+      var types = evt.dataTransfer.types;
+      if ( ! types ) {
+        console.error( 'dataTransfer types not found when dragging. dataTransfer=', evt.dataTransfer );
+        return;
+      }
+      var sameType = types.contains( 'triplocation' );
       if ( ! sameType ) return true;
       evt.preventDefault();
       this.setState( { movingOver: true } );
@@ -59,6 +59,8 @@ var Triplocation = (function() { //jshint ignore:line
       return (
         <li className={"triplocation location_block" + ( this.state.movingOver ? ' moving-over' : '' ) + ( this.state.moving ? ' moving' : '' )}
           data-triplocation-id={this.props.id}
+          data-location-id={this.props.libraryLocation.id}
+          data-trip-position={this.props.position}
           draggable="true"
           onDragStart={this.startDrag}
           onDragOver={this.dragOver}
@@ -74,10 +76,10 @@ var Triplocation = (function() { //jshint ignore:line
             </nav>
             <h1 data-toggle="collapse" data-target={"#trip-address-" + this.props.id}>
               <i className="icon-resize-full" />
-              {this.props.location.title}
+              {this.props.libraryLocation.title}
             </h1>
             <p id={"trip-address-" + this.props.id} className="address collapse">
-              {this.props.location.address}
+              {this.props.libraryLocation.address}
             </p>
           </div>
         </li>

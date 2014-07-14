@@ -58,9 +58,9 @@
       this.emit( 'change' );
     },
 
-    addLocationToTrip: function( location ) {
-      log('**event** addLocationToTrip', location);
-      var triplocation = this.createNewTriplocation( location );
+    addLocationToTrip: function( libraryLocation ) {
+      log('**event** addLocationToTrip', libraryLocation);
+      var triplocation = this.createNewTriplocation( libraryLocation );
       this.triplocations.push( triplocation );
       this.emit( 'change' );
       this._updateServer( this.create, triplocation );
@@ -117,8 +117,8 @@
 
     createNewTriplocation: function( locationId ) {
       var tripId = getTripId(),
-      location = FluxStore.getStore('LocationsStore').getById( locationId );
-      return { id: Math.floor( Math.random() * 1000 ), trip_id: tripId, location: location };
+      libraryLocation = FluxStore.getStore('LocationsStore').getById( locationId );
+      return { id: Math.floor( Math.random() * 1000 ), trip_id: tripId, location: libraryLocation };
     },
 
     move: function( triplocation ) {

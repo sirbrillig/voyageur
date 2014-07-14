@@ -18,18 +18,18 @@ var Location = (function() { // jshint ignore:line
       log('drag started', this.props.id);
       var dataTransfer = evt.nativeEvent.dataTransfer;
       dataTransfer.effectAllowed = 'move';
-      dataTransfer.setData( 'text/plain', this.props.title );
-      dataTransfer.setData( 'location', true );
+      dataTransfer.setData( 'librarylocation', true );
       dataTransfer.setData( 'draggedItem', this.props.id );
       this.setState( { moving: true } );
     },
 
     dragOver: function( evt ) {
-      var items = evt.dataTransfer.items;
-      var sameType = Object.keys( items ).some( function( key ) {
-        if ( items[key].type === 'location' ) return true;
-        return false;
-      } );
+      var types = evt.dataTransfer.types;
+      if ( ! types ) {
+        console.error( 'dataTransfer types not found when dragging. dataTransfer=', evt.dataTransfer );
+        return;
+      }
+      var sameType = types.contains( 'librarylocation' );
       if ( ! sameType ) return true;
       evt.preventDefault();
       this.setState( { movingOver: true } );
@@ -59,6 +59,7 @@ var Location = (function() { // jshint ignore:line
       return (
         <li className={"location" + ( this.state.movingOver ? ' moving-over' : '' ) + ( this.state.moving ? ' moving' : '' )}
           data-triplocation-id={this.props.id}
+          data-library-position={this.props.position}
           draggable="true"
           onDragStart={this.startDrag}
           onDragOver={this.dragOver}

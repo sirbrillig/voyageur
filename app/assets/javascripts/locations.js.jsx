@@ -9,7 +9,7 @@ var LocationsList = React.createClass({ //jshint ignore:line
       if ( loc1.position > loc2.position ) return 1;
       return 0;
     } ).map( function( location ) {
-      return <Location key={location.id} id={location.id} title={location.title} address={location.address} />;
+      return <Location key={location.id} id={location.id} title={location.title} address={location.address} position={location.position} />;
     } );
     return (
       <div className="locations">
