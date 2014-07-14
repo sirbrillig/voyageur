@@ -44,6 +44,7 @@ var App = function() {
 
 // Begin App
 domready( function() {
+  if ( ! /locations$/.test(window.location) ) return;
   var app = new App();
   app.initialize();
 });

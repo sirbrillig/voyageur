@@ -7,6 +7,7 @@ describe "With Javascript", js: true do
     page.evaluate_script('jQuery.isReady&&jQuery.active==0').class.should_not eql(String) until page.evaluate_script('jQuery.isReady&&jQuery.active==0') or (start_time + 5.seconds) < Time.now do
       sleep 1
     end
+    sleep 2
   end
 
   describe "The Location list page" do
@@ -25,7 +26,7 @@ describe "With Javascript", js: true do
       before do
         @user = FactoryGirl.create(:user)
         visit new_user_session_path
-        fill_in('user[email]', :with => @user.email) 
+        fill_in('user[email]', :with => @user.email)
         fill_in('user[password]', :with => @user.password)
         click_button('Sign in')
       end
@@ -67,7 +68,7 @@ describe "With Javascript", js: true do
 
         context "when the 'add to trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
             wait_for_ajax
           end
 
@@ -77,7 +78,7 @@ describe "With Javascript", js: true do
 
           context "for two locations" do
             before do
-              within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
+              within(:css, ".library .location[data-location-id='#{@loc2.id}']") { find('.add-button').click }
               wait_for_ajax
             end
 
@@ -86,23 +87,23 @@ describe "With Javascript", js: true do
             end
 
             it "shows the location at the end of the trip" do
-              page.should have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc2.id}']")
+              page.should have_css(".trip .location_block[data-trip-position='2'][data-location-id='#{@loc2.id}']")
             end
           end
         end
 
         context "when the 'remove from trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
-            within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc2.id}']") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
             wait_for_ajax
-            within(:css, ".trip .location_block[data-trip-position='0'][data-location-id='#{@loc1.id}']") { click_link('remove_from_trip') }
+            within(:css, ".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']") { find('.remove-button').click() }
             wait_for_ajax
           end
 
           it "removes the location from the trip" do
-            page.should_not have_css(".trip .location_block[data-trip-position='0'][data-location-id='#{@loc1.id}']")
+            page.should_not have_css(".trip .location_block[data-trip-position='1'][data-location-id='#{@loc1.id}']")
           end
 
           it "does not affect the other trip locations" do
@@ -116,28 +117,28 @@ describe "With Javascript", js: true do
 
         context "when the 'delete location' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
             wait_for_ajax
-            within(:css, ".library .location_#{@loc1.id}") { find('.edit-button').click }
-            click_link('delete_location')
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.edit-button').click }
+            find('#delete_location').click()
             page.driver.browser.switch_to.alert.accept
             wait_for_ajax
           end
 
           it "removes the location from the library" do
-            page.should_not have_css(".library .location_#{@loc1.id}")
+            page.should_not have_css(".library .location[data-location-id='#{@loc1.id}']")
           end
 
           it "removes the location from the trip" do
-            page.should_not have_css(".trip .location_#{@loc1.id}")
+            page.should_not have_css(".trip .location[data-location-id='#{@loc1.id}']")
           end
         end
 
         context "when the 'clear trip' button is clicked" do
           before do
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
             wait_for_ajax
-            click_link('clear_trip')
+            find('.clear-trip').click()
             wait_for_ajax
           end
 
@@ -153,9 +154,9 @@ describe "With Javascript", js: true do
         context "when a trip location is dragged up one place" do
           before do
             pending "drag-and-drop in selenium doesn't work"
-            within(:css, ".library .location_#{@loc1.id}") { find('.add-button').click }
-            within(:css, ".library .location_#{@loc2.id}") { find('.add-button').click }
-            within(:css, ".library .location_#{@loc3.id}") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc1.id}']") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc2.id}']") { find('.add-button').click }
+            within(:css, ".library .location[data-location-id='#{@loc3.id}']") { find('.add-button').click }
             wait_for_ajax
 
             element = page.first(:css, ".trip .location_block[data-trip-position='2']")

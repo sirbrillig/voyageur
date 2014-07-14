@@ -3,6 +3,7 @@ class TriplocationsController < ApplicationController
   skip_before_filter :verify_authenticity_token, :only => [:create, :destroy, :update]
 
   def index
+    raise "Current user has no trips" if current_user.trips.empty?
     @triplocations = current_user.trips.first.triplocations
 
     respond_to do |format|

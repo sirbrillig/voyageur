@@ -58,7 +58,7 @@ var Location = (function() { // jshint ignore:line
     render: function() {
       return (
         <li className={"location" + ( this.state.movingOver ? ' moving-over' : '' ) + ( this.state.moving ? ' moving' : '' )}
-          data-triplocation-id={this.props.id}
+          data-location-id={this.props.id}
           data-library-position={this.props.position}
           draggable="true"
           onDragStart={this.startDrag}
