@@ -16,7 +16,9 @@ gem 'bcrypt-ruby', '~> 3.0.0'
 gem 'haml'
 gem 'haml-rails'
 
-gem 'bootstrap-sass'
+gem 'bootstrap-sass',
+  git: 'https://github.com/twbs/bootstrap-sass',
+  ref: '540ad23430b1bdb2c72591daf61507ec9e38e468'
 gem 'bootstrap-generators', '~> 2.1'
 gem 'simple_form'
 

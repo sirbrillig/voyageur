@@ -3,9 +3,9 @@ if defined?(Konacha)
     require 'rspec/core'
     require 'rspec/core/configuration'
     require 'rspec/core/formatters/documentation_formatter'
-    require 'capybara/poltergeist'
-    config.driver       = :poltergeist
-    RSpec.configure { |c| c.color_enabled = true }
+    # require 'capybara/poltergeist'
+    # config.driver       = :poltergeist
+    # RSpec.configure { |c| c.color_enabled = true }
     config.formatters   = [RSpec::Core::Formatters::DocumentationFormatter.new(STDOUT)]
   end
 end
