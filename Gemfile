@@ -4,11 +4,12 @@ gem 'rails', '3.2.11'
 
 group :assets do
   gem 'sass-rails', '~> 3.2.3'
-  gem 'react-rails', '~> 0.10.0.0'
   gem 'uglifier', '>= 1.0.3'
   gem 'jquery-rails'
   gem 'execjs'
 end
+
+gem 'react-rails', '~> 0.10.0.0'
 
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '~> 3.0.0'
