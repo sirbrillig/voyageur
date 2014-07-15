@@ -1,0 +1,10 @@
+%li.location_block{data-triplocation-id: @triplocation.id, data-location-id: @triplocation.get('location').get('id'), data-trip-position: @triplocation.get('position'), class: "location_#{@triplocation.get('location').get('id')} trip_location_#{@triplocation.get('position')}"}
+  .location
+    %nav.actions
+      %a#remove_from_trip.btn.btn-small.remove-button{href: "/trips/#{Voyageur.get_trip_id()}/remove/#{@triplocation.get('position')}", title: 'Remove this location from the Trip'}
+        %i.icon-minus-sign
+        Remove
+    %h1{title: @triplocation.get('location').get('address'), 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{@triplocation.id}"}
+      %i.icon-resize-full
+      = @triplocation.get('location').get('title')
+    %p.address{id: "trip_address_#{@triplocation.id}", class:"collapse"}= @triplocation.get('location').get('address')

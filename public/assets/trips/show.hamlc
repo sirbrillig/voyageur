@@ -1,0 +1,34 @@
+.summary
+  %nav.actions
+    %a#clear_trip.btn.btn-warning.clear-trip{href: "/trips/#{@trip.id}/clear"}
+      %i.icon-asterisk
+      Clear Trip
+  %h1 This Trip
+  - if window.Voyageur.offline
+    %h1.offline= "server connection failed, still trying..."
+  - else
+    %h1#trip-distance
+      %span.distance= @distance
+      %span.distance-label miles total
+- if @trip.get('triplocations').length > 1
+  .map
+    #map_canvas
+
+%ul.trip_locations{class: "trip_id_#{@trip.id}", "trip-id": @trip.id}
+  - if @trip.get('triplocations').length == 1
+    .help_box
+      %i.icon-bell
+      %h1 Add another location to this trip from your Locations.
+  - else if @trip.get('triplocations').length == 0
+    - if @trip.get('num_avail_locations') > 1
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to this trip from your Locations.
+    - else if @trip.get('num_avail_locations') == 1
+      .help_box
+        %i.icon-bell
+        %h1 Add another location to the list by clicking the 'Add Location' button.
+    - else if @trip.get('num_avail_locations') == 0
+      .help_box
+        %i.icon-bell
+        %h1 Add a location to the list by clicking the 'Add Location' button.
