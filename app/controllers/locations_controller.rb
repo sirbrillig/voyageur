@@ -1,6 +1,7 @@
 class LocationsController < ApplicationController
   before_filter :authenticate_user!
   before_filter :authenticate_admin, only: :audits
+  skip_before_filter :verify_authenticity_token, :only => [:update]
 
   def index
     @locations = current_user.locations

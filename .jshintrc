@@ -1,0 +1,21 @@
+{
+	"eqeqeq": true,
+	"eqnull": true,
+	"es3": true,
+	"expr": true,
+	"immed": true,
+	"noarg": true,
+	"onevar": true,
+	"quotmark": "true",
+	"trailing": true,
+	"undef": true,
+	"unused": true,
+
+	"browser": true,
+
+  "devel": "true",
+
+	"globals": {
+    "React": true
+	}
+}

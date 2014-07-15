@@ -13,12 +13,13 @@
   - if @trip
     - if @trip.locations.size > 0
       - @trip.locations.each_with_index do |loc, index|
+        - triplocation = @trip.triplocations[index]
         %li.location_block{class: "location_#{loc.id} trip_location_#{index}"}
           .location
             %nav.actions
               = link_to(image_tag('arrow_up.png'), up_trip_path(@trip, index), :id => "move_up", title: 'Move this location up one step in the trip.')
               = link_to(image_tag('arrow_down.png'), down_trip_path(@trip, index), :id => "move_down", title: 'Move this location one step down in the trip.')
-              = link_to(raw('<i class="icon-minus-sign"></i> Remove'), remove_trip_path(@trip, index), :id => "remove_from_trip", title: 'Remove this location from the trip.', class: 'btn btn-small remove-button')
+              = link_to(raw('<i class="icon-minus-sign"></i> Remove'), triplocation_path(triplocation.id), :method => :delete, :id => "remove_from_trip", title: 'Remove this location from the trip.', class: 'btn btn-small remove-button')
             %h1{title: loc.address, 'data-toggle' => 'collapse', 'data-target' => "#trip_address_#{loc.id}"}
               %i.icon-resize-full
               = loc.title
