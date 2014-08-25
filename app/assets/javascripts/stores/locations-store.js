@@ -6,11 +6,34 @@
   return FluxStore.createStore( emitter, 'LocationsStore', {
     initialize: function() {
       log('initialize LocationsStore');
+      this.allLocations = [];
       this.locations = [];
 
       this.bindActions( {
-        'moveLocation': this.moveLocation
+        'moveLocation': this.moveLocation,
+        'filterLocations': this.filterLocations
       } );
+    },
+
+    filterLocations: function( value ) {
+      log('**event** filterLocations', value);
+      this.locations = this.allLocations;
+      this.locations = this.locations.filter( function(locationObject) {
+        return this.doesLocationMatch(locationObject, value);
+      }.bind( this ) );
+      this.emit( 'change' );
+    },
+
+    doesLocationMatch: function( locationObject, value ) {
+      value = value.toLowerCase();
+      if (~ locationObject.title.toLowerCase().indexOf(value)) return true;
+      if (~ locationObject.address.toLowerCase().indexOf(value)) return true;
+      return false;
+    },
+
+    setLocations: function( locations ) {
+      this.allLocations = locations;
+      this.locations = locations;
     },
 
     moveLocation: function( data ) {
@@ -89,7 +112,7 @@
         type: 'json'
       }).then( function(data) {
         log('locations fetch returned', data);
-        this.locations = data;
+        this.setLocations( data );
         this.emit( 'change' );
       }.bind( this ) ).fail( function() {
         log( 'location fetch failed' );

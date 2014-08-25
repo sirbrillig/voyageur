@@ -1,6 +1,6 @@
 /** @jsx React.DOM */
 
-/* globals LocationsList, debug, FluxStore */
+/* globals SearchArea, LocationsList, debug, FluxStore */
 
 var Library = ( function() { //jshint ignore:line
 
@@ -27,7 +27,10 @@ var Library = ( function() { //jshint ignore:line
 
     render: function() {
       return (
-        <LocationsList locations={this.state.locations} />
+        <div>
+          <SearchArea />
+          <LocationsList locations={this.state.locations} />
+        </div>
       );
     }
   });
