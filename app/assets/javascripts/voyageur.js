@@ -1,4 +1,4 @@
-/* globals domready, LocationsList, Trip, Library, debug, emitter */
+/* globals domready, Trip, Library, debug, emitter */
 
 var App = function() {
   var log = debug('voyageur:App');
@@ -9,6 +9,21 @@ var App = function() {
       emitter.on( 'error', this.warnUser.bind( this ) );
       this.renderLocations();
       this.renderTrip();
+      this.listenToTyping();
+    },
+
+    listenToTyping: function() {
+      document.body.addEventListener('keyup', function(evt) {
+        // pressing forward slash focuses the search field
+        if (evt.keyCode === 191) this.focusSearch();
+      }.bind( this ));
+    },
+
+    focusSearch: function() {
+      var searchField = document.getElementsByClassName('location-search');
+      if (searchField.length < 1) return;
+      searchField = searchField[0];
+      searchField.focus();
     },
 
     warnUser: function( message ) {
