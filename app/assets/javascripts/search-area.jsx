@@ -25,7 +25,7 @@ var SearchArea = ( function() { //jshint ignore:line
 
     render: function() {
       return (
-        <input type="search" placeholder="Search" value={this.state.value} onChange={this.onChange} />
+        <input type="search" className="location-search" placeholder="Search" value={this.state.value} onChange={this.onChange} />
       );
     }
   });

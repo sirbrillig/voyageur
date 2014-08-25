@@ -193,6 +193,13 @@ td.small {
   @extend small;
 }
 
+input.location-search {
+  width: 100%;
+  box-sizing: border-box;
+  height: 30px;
+  margin: 2px 0;
+}
+
 @media (min-width: 768px) {
   .navbar-inner {
     height: 8.5em;
