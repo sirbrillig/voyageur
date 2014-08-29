@@ -13,14 +13,20 @@ var App = function() {
     },
 
     listenToTyping: function() {
-      document.body.addEventListener('keyup', function(evt) {
+      document.body.addEventListener('keydown', function(evt) {
         // pressing forward slash focuses the search field
         if (evt.keyCode === 191) this.focusSearch();
         // pressing escape clears the search field
         if (evt.keyCode === 27) this.clearSearch();
         // pressing up and down changes the selected location
-        if (evt.keyCode === 40) this.moveSelectDown();
-        if (evt.keyCode === 38) this.moveSelectUp();
+        if (evt.keyCode === 40) {
+          evt.preventDefault();
+          this.moveSelectDown();
+        }
+        if (evt.keyCode === 38) {
+          evt.preventDefault();
+          this.moveSelectUp();
+        }
         // pressing enter adds the selected location
         if (evt.keyCode === 13) this.addSelectedLocationToTrip();
       }.bind( this ));
@@ -46,10 +52,18 @@ var App = function() {
 
     moveSelectUp: function() {
       emitter.emit('decrementSelectedIndex');
+      this.scrollToLocation();
     },
 
     moveSelectDown: function() {
       emitter.emit('incrementSelectedIndex');
+      this.scrollToLocation();
+    },
+
+    scrollToLocation: function() {
+      var element = document.getElementsByClassName('selected-location')[0];
+      if ( ! element ) return;
+      window.scrollTo( 0, element.offsetTop - ( window.innerHeight / 2 ) );
     },
 
     addSelectedLocationToTrip: function() {

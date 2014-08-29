@@ -20,8 +20,8 @@ $location-background-color: #f5f5f5;
   list-style-type: none;
   background-color: $location-background-color;
 
-  &.selected {
-    border: 2px dotted rgb(184, 184, 255);
+  &.selected-location {
+    background-color: #d9edf7;
   }
 
   a, a:hover {
