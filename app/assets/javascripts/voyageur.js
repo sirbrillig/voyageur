@@ -1,4 +1,4 @@
-/* globals domready, Trip, Library, debug, emitter */
+/* globals domready, Trip, Library, debug, emitter, FluxStore */
 
 var App = function() {
   var log = debug('voyageur:App');
@@ -16,14 +16,27 @@ var App = function() {
       document.body.addEventListener('keyup', function(evt) {
         // pressing forward slash focuses the search field
         if (evt.keyCode === 191) this.focusSearch();
+        // pressing escape clears the search field
+        if (evt.keyCode === 27) this.clearSearch();
       }.bind( this ));
     },
 
-    focusSearch: function() {
+    getSearchField: function() {
       var searchField = document.getElementsByClassName('location-search');
       if (searchField.length < 1) return;
-      searchField = searchField[0];
-      searchField.focus();
+      return searchField[0];
+    },
+
+    focusSearch: function() {
+      var searchField = this.getSearchField();
+      if (searchField) searchField.focus();
+    },
+
+    clearSearch: function() {
+      var searchField = this.getSearchField();
+      if (! searchField) return;
+      searchField.value = '';
+      emitter.emit('filterLocations', '');
     },
 
     warnUser: function( message ) {
