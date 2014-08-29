@@ -12,7 +12,10 @@ var Library = ( function() { //jshint ignore:line
 
     getInitialState: function() {
       log( 'locations initialState', FluxStore.getStore('LocationsStore').getLocations() );
-      return { locations: FluxStore.getStore('LocationsStore').getLocations() };
+      return {
+        locations: FluxStore.getStore('LocationsStore').getLocations(),
+        selectedIndex: FluxStore.getStore('LocationsStore').getSelectedIndex()
+      };
     },
 
     componentDidMount: function() {
@@ -21,15 +24,18 @@ var Library = ( function() { //jshint ignore:line
     },
 
     onChange: function() {
-      log( 'locations changed to', FluxStore.getStore('LocationsStore').getLocations() );
-      this.setState( { locations: FluxStore.getStore('LocationsStore').getLocations() } );
+      log( 'locations changed to', FluxStore.getStore('LocationsStore').getLocations(), 'with selectedIndex', FluxStore.getStore('LocationsStore').getSelectedIndex() );
+      this.setState( {
+        locations: FluxStore.getStore('LocationsStore').getLocations(),
+        selectedIndex: FluxStore.getStore('LocationsStore').getSelectedIndex()
+      } );
     },
 
     render: function() {
       return (
         <div>
           <SearchArea />
-          <LocationsList locations={this.state.locations} />
+          <LocationsList locations={this.state.locations} selectedIndex={this.state.selectedIndex} />
         </div>
       );
     }

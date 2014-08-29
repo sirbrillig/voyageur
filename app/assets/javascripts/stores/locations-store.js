@@ -8,11 +8,34 @@
       log('initialize LocationsStore');
       this.allLocations = [];
       this.locations = [];
+      this.selectedIndex = 0;
 
       this.bindActions( {
         'moveLocation': this.moveLocation,
-        'filterLocations': this.filterLocations
+        'filterLocations': this.filterLocations,
+        'incrementSelectedIndex': this.incrementSelectedIndex,
+        'decrementSelectedIndex': this.decrementSelectedIndex
       } );
+    },
+
+    incrementSelectedIndex: function() {
+      if ( this.selectedIndex === this.locations.length - 1 ) return;
+      this.selectedIndex += 1;
+      this.emit( 'change' );
+    },
+
+    decrementSelectedIndex: function() {
+      if ( this.selectedIndex === 0 ) return;
+      this.selectedIndex -= 1;
+      this.emit( 'change' );
+    },
+
+    getSelectedIndex: function() {
+      return this.selectedIndex;
+    },
+
+    getSelectedLocation: function() {
+      return this.locations[ this.selectedIndex ];
     },
 
     filterLocations: function( value ) {
@@ -21,6 +44,7 @@
       this.locations = this.locations.filter( function(locationObject) {
         return this.doesLocationMatch(locationObject, value);
       }.bind( this ) );
+      this.selectedIndex = 0;
       this.emit( 'change' );
     },
 

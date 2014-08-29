@@ -59,7 +59,7 @@ var Location = (function() { // jshint ignore:line
 
     render: function() {
       return (
-        <li className={"location" + ( this.state.movingOver ? ' moving-over' : '' ) + ( this.state.moving ? ' moving' : '' )}
+        <li className={"location" + ( this.state.movingOver ? ' moving-over' : '' ) + ( this.state.moving ? ' moving' : '' ) + ( this.props.selected ? ' selected' : '' )}
           data-location-id={this.props.id}
           data-library-position={this.props.position}
           draggable="true"

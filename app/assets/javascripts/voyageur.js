@@ -18,6 +18,11 @@ var App = function() {
         if (evt.keyCode === 191) this.focusSearch();
         // pressing escape clears the search field
         if (evt.keyCode === 27) this.clearSearch();
+        // pressing up and down changes the selected location
+        if (evt.keyCode === 40) this.moveSelectDown();
+        if (evt.keyCode === 38) this.moveSelectUp();
+        // pressing enter adds the selected location
+        if (evt.keyCode === 13) this.addSelectedLocationToTrip();
       }.bind( this ));
     },
 
@@ -37,6 +42,20 @@ var App = function() {
       if (! searchField) return;
       searchField.value = '';
       emitter.emit('filterLocations', '');
+    },
+
+    moveSelectUp: function() {
+      emitter.emit('decrementSelectedIndex');
+    },
+
+    moveSelectDown: function() {
+      emitter.emit('incrementSelectedIndex');
+    },
+
+    addSelectedLocationToTrip: function() {
+      var selectedLocation = FluxStore.getStore('LocationsStore').getSelectedLocation();
+      log('addSelectedLocationToTrip', selectedLocation);
+      if ( selectedLocation ) emitter.emit( 'addLocationToTrip', selectedLocation.id );
     },
 
     warnUser: function( message ) {
