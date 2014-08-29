@@ -167,13 +167,29 @@
         type: 'json'
       }).then( function(data) {
         log('triplocations fetch returned', data);
-        this.triplocations = data;
-        this.emit( 'change' );
+        this.setTriplocations(data);
       }.bind( this ) ).fail( function() {
         log( 'triplocation fetch failed' );
         var message = 'Fetching triplocations failed because the request returned an error. Try reloading the page.';
         emitter.emit( 'error', message );
       } );
+    },
+
+    setTriplocations: function( triplocations ) {
+      if ( ! this.sameTrip(triplocations) ) {
+        log('trip has changed, sending change event');
+        this.triplocations = triplocations;
+        this.emit( 'change' );
+      } else {
+        log('trip has not changed, silently updating');
+        this.triplocations = triplocations;
+      }
+    },
+
+    sameTrip: function( data ) {
+      var newData = data.map( function(item) { return item.location.id; } );
+      var oldData = this.triplocations.map( function(item) { return item.location.id; } );
+      return (newData.length === oldData.length && newData.every( function(val, index) { return val === oldData[index]; } ));
     }
   } );
 } )();
