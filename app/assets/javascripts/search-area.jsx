@@ -11,7 +11,7 @@ var SearchArea = ( function() { //jshint ignore:line
     displayName: 'SearchArea',
 
     getInitialState: function() {
-      return { value: '' };
+      return { value: '', placeholderText: "Search by pressing '/'" };
     },
 
     onChange: function(event) {
@@ -19,13 +19,26 @@ var SearchArea = ( function() { //jshint ignore:line
       log( 'onChange', value );
       if ( /^\s+/.test(value) ) return;
       this.setState({value: value});
-      // TODO: debounce filtering
       emitter.emit('filterLocations', value);
     },
 
+    onFocus: function() {
+      var placeholderText = "Search by pressing '/'";
+      if ( document.activeElement === document.querySelector('.location-search') ) placeholderText = "Search by typing here";
+      this.setState({placeholderText: placeholderText});
+    },
+
     render: function() {
+      var placeholderText = "Search by pressing '/'";
+      if ( document.activeElement === document.querySelector('.location-search') ) placeholderText = "Search by typing here";
       return (
-        <input type="search" className="location-search" placeholder="Search" value={this.state.value} onChange={this.onChange} />
+        <input type="search" className="location-search"
+          placeholder={this.state.placeholderText}
+          value={this.state.value}
+          onChange={this.onChange}
+          onFocus={this.onFocus}
+          onBlur={this.onFocus}
+          />
       );
     }
   });
