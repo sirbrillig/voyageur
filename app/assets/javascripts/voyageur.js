@@ -13,13 +13,7 @@ var App = function() {
     },
 
     listenToTyping: function() {
-      document.body.addEventListener('keyup', function(evt) {
-        // pressing forward slash focuses the search field
-        if (evt.keyCode === 191) this.focusSearch();
-      }.bind( this ));
       document.body.addEventListener('keydown', function(evt) {
-        // pressing escape clears the search field
-        if (evt.keyCode === 27) this.clearSearch();
         // pressing up and down changes the selected location
         if (evt.keyCode === 40) {
           evt.preventDefault();
@@ -38,18 +32,6 @@ var App = function() {
       var searchField = document.getElementsByClassName('location-search');
       if (searchField.length < 1) return;
       return searchField[0];
-    },
-
-    focusSearch: function() {
-      var searchField = this.getSearchField();
-      if (searchField) searchField.focus();
-    },
-
-    clearSearch: function() {
-      var searchField = this.getSearchField();
-      if (! searchField) return;
-      searchField.value = '';
-      emitter.emit('filterLocations', '');
     },
 
     moveSelectUp: function() {

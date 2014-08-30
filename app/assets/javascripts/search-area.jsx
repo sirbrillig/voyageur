@@ -14,6 +14,27 @@ var SearchArea = ( function() { //jshint ignore:line
       return { value: '', placeholderText: "Search by pressing '/'" };
     },
 
+    componentDidMount: function() {
+      document.body.addEventListener('keyup', function(evt) {
+        // pressing forward slash focuses the search field
+        if (evt.keyCode === 191) this.focusSearch();
+        // pressing escape clears the search field
+        if (evt.keyCode === 27) this.clearSearch();
+        // pressing enter also clears the search (after adding takes place)
+        if (evt.keyCode === 13) this.clearSearch();
+      }.bind( this ));
+    },
+
+    focusSearch: function() {
+      var searchField = document.querySelector('.location-search');
+      if (searchField) searchField.focus();
+    },
+
+    clearSearch: function() {
+      this.setState({value: ''});
+      emitter.emit('filterLocations', '');
+    },
+
     onChange: function(event) {
       var value = event.target.value;
       log( 'onChange', value );
