@@ -1,4 +1,4 @@
-/* globals domready, LocationsList, Trip, Library, debug, emitter */
+/* globals domready, Trip, Library, debug, emitter */
 
 var App = function() {
   var log = debug('voyageur:App');
