@@ -13,9 +13,11 @@ var App = function() {
     },
 
     listenToTyping: function() {
-      document.body.addEventListener('keydown', function(evt) {
+      document.body.addEventListener('keyup', function(evt) {
         // pressing forward slash focuses the search field
         if (evt.keyCode === 191) this.focusSearch();
+      }.bind( this ));
+      document.body.addEventListener('keydown', function(evt) {
         // pressing escape clears the search field
         if (evt.keyCode === 27) this.clearSearch();
         // pressing up and down changes the selected location
