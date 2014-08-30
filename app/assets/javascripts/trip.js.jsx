@@ -1,7 +1,7 @@
 /** @jsx React.DOM */
 
-/* globals TriplocationsList, debug, reqwest, emitter, TripHeader */
-/* globals TripMap, TripHelp, FluxStore, getTripId */
+/* globals TriplocationsList, debug, TripHeader */
+/* globals TripMap, TripHelp, FluxStore */
 var Trip = ( function() { //jshint ignore:line
 
   var log = debug('voyageur:Trip');
@@ -10,48 +10,30 @@ var Trip = ( function() { //jshint ignore:line
 
     displayName: 'Trip',
 
-    getTrip: function() {
-      var id = getTripId();
-      reqwest({
-        url: 'trips/' + id + '.json',
-        type: 'json'
-      }).then( function(data) {
-        log('trip fetch returned', data);
-        if ( this.lastTripTimestamp && data.timestamp < this.lastTripTimestamp ) {
-          log( 'timestamp is out of date. ignoring trip data.', data );
-        } else {
-          log('distance is now', data.distance);
-          this.lastTripTimestamp = data.timestamp;
-          this.setState( { distance: data.distance, id: data.id, pending: false } );
-        }
-      }.bind( this ) ).fail( function() {
-        log( 'trip fetch failed' );
-        var message = 'Fetching the trip failed because the request returned an error. Try reloading the page.';
-        emitter.emit( 'error', message );
-      } );
-    },
-
-    showPending: function() {
-      this.setState( { pending: true  } );
-    },
-
     getInitialState: function() {
       log( 'triplocations initialState', FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() );
-      return { triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations(), distance: 0 };
+      return {
+        triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations(),
+        distance: FluxStore.getStore( 'TripStore' ).getDistance(),
+        pending: false
+      };
     },
 
     componentDidMount: function() {
       FluxStore.getStore('TriplocationsStore').on( 'change', this.onChange );
+      FluxStore.getStore('TripStore').on( 'change', this.updateDistance );
       FluxStore.getStore('TriplocationsStore').fetch();
+      FluxStore.getStore('TripStore').fetch();
+    },
+
+    updateDistance: function() {
+      log( 'distance changed to', FluxStore.getStore( 'TripStore' ).getDistance() );
+      this.setState( { distance: FluxStore.getStore( 'TripStore' ).getDistance(), pending: false } );
     },
 
     onChange: function() {
       log( 'triplocations changed to', FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() );
-      this.setState( { triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations() } );
-      this.showPending();
-      // Give the database time to update.
-      if ( this.gettingTrip ) clearTimeout( this.gettingTrip );
-      this.gettingTrip = setTimeout( this.getTrip, 200 );
+      this.setState( { triplocations: FluxStore.getStore( 'TriplocationsStore' ).getTriplocations(), pending: true } );
     },
 
     render: function() {
