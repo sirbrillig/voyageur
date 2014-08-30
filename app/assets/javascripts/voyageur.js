@@ -1,4 +1,4 @@
-/* globals domready, Trip, Library, debug, emitter, FluxStore */
+/* globals domready, Trip, Library, debug, emitter */
 
 var App = function() {
   var log = debug('voyageur:App');
@@ -9,51 +9,6 @@ var App = function() {
       emitter.on( 'error', this.warnUser.bind( this ) );
       this.renderLocations();
       this.renderTrip();
-      this.listenToTyping();
-    },
-
-    listenToTyping: function() {
-      document.body.addEventListener('keydown', function(evt) {
-        // pressing up and down changes the selected location
-        if (evt.keyCode === 40) {
-          evt.preventDefault();
-          this.moveSelectDown();
-        }
-        if (evt.keyCode === 38) {
-          evt.preventDefault();
-          this.moveSelectUp();
-        }
-        // pressing enter adds the selected location
-        if (evt.keyCode === 13) this.addSelectedLocationToTrip();
-      }.bind( this ));
-    },
-
-    getSearchField: function() {
-      var searchField = document.getElementsByClassName('location-search');
-      if (searchField.length < 1) return;
-      return searchField[0];
-    },
-
-    moveSelectUp: function() {
-      emitter.emit('decrementSelectedIndex');
-      this.scrollToLocation();
-    },
-
-    moveSelectDown: function() {
-      emitter.emit('incrementSelectedIndex');
-      this.scrollToLocation();
-    },
-
-    scrollToLocation: function() {
-      var element = document.getElementsByClassName('selected-location')[0];
-      if ( ! element ) return;
-      window.scrollTo( 0, element.offsetTop - ( window.innerHeight / 2 ) );
-    },
-
-    addSelectedLocationToTrip: function() {
-      var selectedLocation = FluxStore.getStore('LocationsStore').getSelectedLocation();
-      log('addSelectedLocationToTrip', selectedLocation);
-      if ( selectedLocation ) emitter.emit( 'addLocationToTrip', selectedLocation.id );
     },
 
     warnUser: function( message ) {
