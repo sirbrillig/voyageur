@@ -9,6 +9,7 @@
       this.allLocations = [];
       this.locations = [];
       this.selectedIndex = 0;
+      this.currentFilter = '';
 
       this.bindActions( {
         'moveLocation': this.moveLocation,
@@ -39,7 +40,9 @@
     },
 
     filterLocations: function( value ) {
-      log('**event** filterLocations', value);
+      log('**event** filterLocations', value, 'currentFilter', this.currentFilter);
+      if ( this.currentFilter === value ) return log('currentFilter has not changed');
+      this.currentFilter = value;
       this.locations = this.allLocations;
       this.locations = this.locations.filter( function(locationObject) {
         return this.doesLocationMatch(locationObject, value);
