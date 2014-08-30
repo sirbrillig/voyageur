@@ -83,6 +83,12 @@ var TripMap = ( function() { //jshint ignore:line
     },
 
     componentDidMount : function() {
+      if ( ! window.google ) {
+        log( 'google is not defined' );
+        var message = 'The map failed to load because Google is not reachable. Try reloading the page.';
+        emitter.emit( 'error', message );
+        return;
+      }
       this.directionsService = new google.maps.DirectionsService();
       this.directionsRenderer = new google.maps.DirectionsRenderer();
 
@@ -106,6 +112,12 @@ var TripMap = ( function() { //jshint ignore:line
     },
 
     componentWillReceiveProps : function() {
+      if ( ! window.google ) {
+        log( 'google is not defined' );
+        var message = 'The map failed to load because Google is not reachable. Try reloading the page.';
+        emitter.emit( 'error', message );
+        return;
+      }
       this.calculateRoute();
     }
 

@@ -6,11 +6,61 @@
   return FluxStore.createStore( emitter, 'LocationsStore', {
     initialize: function() {
       log('initialize LocationsStore');
+      this.allLocations = [];
       this.locations = [];
+      this.selectedIndex = 0;
+      this.currentFilter = '';
 
       this.bindActions( {
-        'moveLocation': this.moveLocation
+        'moveLocation': this.moveLocation,
+        'filterLocations': this.filterLocations,
+        'incrementSelectedIndex': this.incrementSelectedIndex,
+        'decrementSelectedIndex': this.decrementSelectedIndex
       } );
+    },
+
+    incrementSelectedIndex: function() {
+      if ( this.selectedIndex === this.locations.length - 1 ) return;
+      this.selectedIndex += 1;
+      this.emit( 'change' );
+    },
+
+    decrementSelectedIndex: function() {
+      if ( this.selectedIndex === 0 ) return;
+      this.selectedIndex -= 1;
+      this.emit( 'change' );
+    },
+
+    getSelectedIndex: function() {
+      return this.selectedIndex;
+    },
+
+    getSelectedLocation: function() {
+      return this.locations[ this.selectedIndex ];
+    },
+
+    filterLocations: function( value ) {
+      log('**event** filterLocations', value, 'currentFilter', this.currentFilter);
+      if ( this.currentFilter === value ) return log('currentFilter has not changed');
+      this.currentFilter = value;
+      this.locations = this.allLocations;
+      this.locations = this.locations.filter( function(locationObject) {
+        return this.doesLocationMatch(locationObject, value);
+      }.bind( this ) );
+      this.selectedIndex = 0;
+      this.emit( 'change' );
+    },
+
+    doesLocationMatch: function( locationObject, value ) {
+      value = value.toLowerCase();
+      if (~ locationObject.title.toLowerCase().indexOf(value)) return true;
+      if (~ locationObject.address.toLowerCase().indexOf(value)) return true;
+      return false;
+    },
+
+    setLocations: function( locations ) {
+      this.allLocations = locations;
+      this.locations = locations;
     },
 
     moveLocation: function( data ) {
@@ -89,7 +139,7 @@
         type: 'json'
       }).then( function(data) {
         log('locations fetch returned', data);
-        this.locations = data;
+        this.setLocations( data );
         this.emit( 'change' );
       }.bind( this ) ).fail( function() {
         log( 'location fetch failed' );

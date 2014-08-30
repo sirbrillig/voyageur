@@ -108,6 +108,7 @@
       }).then( function() {
         log('create complete');
         this.fetch();
+        emitter.emit( 'updateDistance' );
       }.bind( this ) ).fail( function() {
         log( 'triplocation create failed' );
         var message = 'Adding a triplocation failed because the request returned an error. Try reloading the page.';
@@ -132,6 +133,7 @@
       }).then( function(data) {
         log('move returned', data);
         this.fetch();
+        emitter.emit( 'updateDistance' );
       }.bind( this ) ).fail( function() {
         log( 'triplocation move failed' );
         var message = 'Moving a triplocation failed because the request returned an error. Try reloading the page.';
@@ -148,6 +150,7 @@
       }).then( function(data) {
         log('destroy returned', data);
         this.fetch();
+        emitter.emit( 'updateDistance' );
       }.bind( this ) ).fail( function() {
         log( 'triplocation destroy failed' );
         var message = 'Removing a triplocation failed because the request returned an error. Try reloading the page.';
@@ -167,13 +170,17 @@
         type: 'json'
       }).then( function(data) {
         log('triplocations fetch returned', data);
-        this.triplocations = data;
-        this.emit( 'change' );
+        this.setTriplocations(data);
       }.bind( this ) ).fail( function() {
         log( 'triplocation fetch failed' );
         var message = 'Fetching triplocations failed because the request returned an error. Try reloading the page.';
         emitter.emit( 'error', message );
       } );
+    },
+
+    setTriplocations: function( triplocations ) {
+      this.triplocations = triplocations;
+      this.emit( 'change' );
     }
   } );
 } )();
