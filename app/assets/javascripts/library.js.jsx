@@ -34,6 +34,7 @@ var Library = ( function() { //jshint ignore:line
     render: function() {
       return (
         <div>
+          <div className="library-info location">Press '/' to Search, 'esc' to clear, up/down to select and 'enter' to add.</div>
           <SearchArea />
           <LocationsList locations={this.state.locations} selectedIndex={this.state.selectedIndex} />
         </div>
